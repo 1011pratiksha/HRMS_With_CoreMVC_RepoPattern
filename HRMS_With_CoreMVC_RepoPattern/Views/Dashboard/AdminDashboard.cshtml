@@ -1,0 +1,418 @@
+﻿
+@{
+    ViewData["title"] = "Admin Dashboard";
+}
+
+<div class="sidebar">
+
+    <div class="menu-title">Main Menu</div>
+
+    <div class="menu-item">
+        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
+            <span>Dashboard</span>
+            <span class="arrow">▼</span>
+        </a>
+
+        <div class="submenu">
+            <a href="">Admin Dashboard</a>
+            <a href="">Organizational List</a>
+        </div>
+    </div>
+
+    <div class="menu-item">
+        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
+            <span>Employees</span>
+            <span class="arrow">▼</span>
+        </a>
+
+        <div class="submenu">
+            <a href="">Add Department</a>
+            <a href="">Add Role</a>
+            <a href="">Add Designation</a>
+            <a href="">Employee List</a>
+            <a href="">Employee Grid</a>
+            <a href="">Employee Details</a>
+        </div>
+    </div>
+
+    <div class="menu-item">
+        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
+            <span>Events</span>
+            <span class="arrow">▼</span>
+        </a>
+
+        <div class="submenu">
+            <a href="">Add Event</a>
+            <a href="">Add Master Event</a>
+            <a href="">Event List</a>
+        </div>
+    </div>
+
+    <div class="menu-item">
+        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
+            <span>Training</span>
+            <span class="arrow">▼</span>
+        </a>
+
+        <div class="submenu">
+            <a href="">Training List</a>
+            <a href="">Trainers</a>
+            <a href="">Training Type</a>
+        </div>
+    </div>
+
+    <div class="menu-item">
+        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
+            <span>Performance & Goal</span>
+            <span class="arrow">▼</span>
+        </a>
+
+        <div class="submenu">
+
+            <div class="submenu-item">
+                <a href="javascript:void(0)" class="submenu-link" onclick="Dropdown(this)">
+                    <span>Performance</span>
+                    <span class="arrow">▼</span>
+                </a>
+
+                <div class="nested-submenu">
+                    <a href="">Performance Indicators</a>
+                    <a href="">Performance Appraisal</a>
+                    <a href="">Performance Review</a>
+                </div>
+            </div>
+
+            <div class="submenu-item">
+                <a href="javascript:void(0)" class="submenu-link" onclick="Dropdown(this)">
+                    <span>Goal</span>
+                    <span class="arrow">▼</span>
+                </a>
+
+                <div class="nested-submenu">
+                    <a href="">Goal Type</a>
+                    <a href="">Goal Tracking</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="menu-item">
+        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
+            <span>Master Documents</span>
+            <span class="arrow">▼</span>
+        </a>
+
+        <div class="submenu">
+
+            <div class="submenu-item">
+                <a href="javascript:void(0)" class="submenu-link" onclick="Dropdown(this)">
+                    <span>Add Master Document</span>
+                    <span class="arrow">▼</span>
+                </a>
+
+                <div class="nested-submenu">
+                    <a href="">Add Document Name (Admin)</a>
+                    <a href="">Add Document Name (Employee)</a>
+                </div>
+            </div>
+
+            <div class="submenu-item">
+                <a href="javascript:void(0)" class="submenu-link" onclick="Dropdown(this)">
+                    <span>Master Document List</span>
+                    <span class="arrow">▼</span>
+                </a>
+
+                <div class="nested-submenu">
+                    <a href="">Admin Document List</a>
+                    <a href="">Employee Document List</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="menu-item">
+        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
+            <span>Documents</span>
+            <span class="arrow">▼</span>
+        </a>
+
+        <div class="submenu">
+
+            <div class="submenu-item">
+                <a href="javascript:void(0)" class="submenu-link" onclick="Dropdown(this)">
+                    <span>Upload Documents</span>
+                    <span class="arrow">▼</span>
+                </a>
+
+                <div class="nested-submenu">
+                    <a href="">Upload Document</a>
+                    <a href="">Document List</a>
+                </div>
+            </div>
+
+            <div class="submenu-item">
+                <a href="javascript:void(0)" class="submenu-link" onclick="Dropdown(this)">
+                    <span>Generate Letter</span>
+                    <span class="arrow">▼</span>
+                </a>
+
+                <div class="nested-submenu">
+                    <a href="">Generate Offer Letter</a>
+                    <a href="">Generate Resignation Letter</a>
+                    <a href="">Generated Letters List</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="menu-item">
+        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
+            <span>Projects</span>
+            <span class="arrow">▼</span>
+        </a>
+
+        <div class="submenu">
+            <a href="">Project</a>
+            <a href="">Task</a>
+            <a href="">TaskBoard</a>
+        </div>
+    </div>
+
+    <div class="menu-item">
+        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
+            <span>Reports</span>
+            <span class="arrow">▼</span>
+        </a>
+
+        <div class="submenu">
+            <a href="">Employee Report</a>
+            <a href="">Attendance Report</a>
+            <a href="">Leave Report</a>
+            <a href="">Payslip Report</a>
+            <a href="">Project Report</a>
+            <a href="">Task Report</a>
+            <a href="">Daily Report</a>
+        </div>
+    </div>
+
+    <div class="menu-item">
+        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
+            <span>Attendance</span>
+            <span class="arrow">▼</span>
+        </a>
+
+        <div class="submenu">
+
+            <div class="submenu-item">
+                <a href="javascript:void(0)" class="submenu-link" onclick="Dropdown(this)">
+                    <span>Leaves</span>
+                    <span class="arrow">▼</span>
+                </a>
+
+                <div class="nested-submenu">
+                    <a href="">Add Leave Type</a>
+                    <a href="">Add Leave</a>
+                    <a href="">Department Leave Details</a>
+                    <a href="">Leave Setting</a>
+                </div>
+            </div>
+
+            <a href="">Attendance (Admin)</a>
+            <a href="">TimeSheet</a>
+
+        </div>
+    </div>
+
+    <div class="menu-item">
+        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
+            <span>Payroll</span>
+            <span class="arrow">▼</span>
+        </a>
+
+        <div class="submenu">
+            <a href="">Add Employee Salary</a>
+            <a href="">Master Payroll</a>
+            <a href="">Employee Salary List</a>
+            <a href="">Generate Payslips Monthly</a>
+            <a href="">Transaction History</a>
+        </div>
+    </div>
+
+    <div class="menu-item">
+        <a href="" class="menu-link">
+            <span>Promotion</span>
+        </a>
+    </div>
+
+    <div class="menu-item">
+        <a href="" class="menu-link">
+            <span>Resignation</span>
+        </a>
+    </div>
+
+    <div class="menu-item">
+        <a href="" class="menu-link">
+            <span>Termination</span>
+        </a>
+    </div>
+
+    <div class="menu-item">
+        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
+            <span>Help & Supports</span>
+            <span class="arrow">▼</span>
+        </a>
+
+        <div class="submenu">
+            <a href="">Knowledge Base</a>
+            <a href="">Activities</a>
+        </div>
+    </div>
+
+    <div class="menu-item">
+        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
+            <span>Tickets</span>
+            <span class="arrow">▼</span>
+        </a>
+
+        <div class="submenu">
+            <a href="">Tickets</a>
+            <a href="">Ticket Details</a>
+        </div>
+    </div>
+
+    <div class="menu-item">
+        <a href="" class="menu-link">
+            <span>Logout</span>
+        </a>
+    </div>
+
+</div>
+
+<style>
+
+.sidebar {
+    width: 260px;
+    min-height: 100vh;
+    background-color: #ffffff;
+    border-right: 1px solid #e5e5e5;
+    padding: 20px 12px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.menu-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: #999;
+    padding: 10px 15px;
+    margin-bottom: 5px;
+}
+
+
+.menu-item {
+    width: 100%;
+}
+
+.menu-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+    padding: 11px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.menu-link:hover {
+    background-color: #f5f5f5;
+}
+
+
+
+.arrow {
+    font-size: 10px;
+    transition: transform 0.2s ease;
+}
+
+
+.submenu {
+    display: none;
+    padding-left: 15px;
+}
+
+.submenu a {
+    display: block;
+    text-decoration: none;
+    color: #666;
+    font-size: 13px;
+    padding: 8px 15px;
+}
+
+.submenu a:hover {
+    color: #000;
+    background-color: #f7f7f7;
+}
+
+
+
+.nested-submenu {
+    display: none;
+    padding-left: 15px;
+}
+
+.nested-submenu a {
+    display: block;
+    padding: 7px 15px;
+    font-size: 12px;
+}
+
+   
+.menu-item.open > .submenu {
+    display: block;
+}
+
+.submenu-item.open > .nested-submenu {
+    display: block;
+}
+
+.menu-item.open > .menu-link .arrow,
+.submenu-item.open > .submenu-link .arrow {
+    transform: rotate(180deg);
+}
+
+
+
+.submenu-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none;
+    color: #666;
+    font-size: 13px;
+    padding: 8px 15px;
+    cursor: pointer;
+}
+
+.submenu-link:hover {
+    background-color: #f7f7f7;
+}
+    </style>
+
+
+<script>
+
+    function Dropdown(element) {
+
+        var parent = element.parentElement;
+
+        parent.classList.toggle("open");
+
+    }
+
+</script>
+
