@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
+using HRMS_With_CoreMVC_RepoPattern.Models;
 
 namespace Pulse360.Models
 {
@@ -73,7 +74,9 @@ namespace Pulse360.Models
 
         public ICollection<FileUpload> FileUploads { get; set; }
 
-        public virtual ICollection<Projects> Projects { get; set; } = new List<Projects>();
+        public List<Projects> Projects { get; set; } 
+
+        public  List<TaskMembers> TaskMembers { get; set; }
 
 
     }

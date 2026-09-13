@@ -3,10 +3,6 @@
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Emit;
 
-﻿using Microsoft.EntityFrameworkCore;
-using Pulse360.Models;
-using System.Diagnostics;
-
 
 namespace HRMS_With_CoreMVC_RepoPattern.Data
 {
@@ -17,16 +13,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Data
         {
         }
 
-
-        public DbSet<EventTypes> EventTypes { get; set; }
-        public DbSet<EventModel> Events { get; set; }
-
-        public DbSet<TaskBoards> TaskBoards { get; set; }
-        public DbSet<Tasks> Task { get; set; }
-
-        public DbSet<TaskMembers> Taskmember { get; set; }
-
-        public DbSet<Projects> AllProjects { get; set; }
+     
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -58,10 +45,10 @@ namespace HRMS_With_CoreMVC_RepoPattern.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
 
-                e.HasOne(x => x.User)
-               .WithMany(x => x.Task)
-               .HasForeignKey(x => x.UserId)
-               .OnDelete(DeleteBehavior.Restrict);
+                e.HasOne(x => x.Users)
+                 .WithMany(x => x.TaskMembers)
+                 .HasForeignKey(x => x.UserId)
+                 .OnDelete(DeleteBehavior.Restrict);
 
             });
 
