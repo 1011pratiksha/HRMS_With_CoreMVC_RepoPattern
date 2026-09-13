@@ -6,12 +6,12 @@ namespace Pulse360.Models
     {
         [Key]
         public int DepartmentId { get; set; }
-        [Required(ErrorMessage = "Department Name is required.")]
+      
         public string Name { get; set; }
-        public int? NoOfEmployee { get; set; }
-        [Required(ErrorMessage = "Status is required.")]
+        public int NoOfEmployee { get; set; }
+       
         public string Status { get; set; }
-        public DateTime? CreatedAt { get; set; }/* = DateTime.UtcNow;*/
+        public DateTime? CreatedAt { get; set; }
         public string? CreatedBy { get; set; }
         public string? ModifiedBy { get; set; }
         public DateTime? ModifiedAt { get; set; }
@@ -22,7 +22,7 @@ namespace Pulse360.Models
         public List<Earning> Earnings { get; set; }
         public List<Deduction> Deductions { get; set; }
 
-        //public List<User> Users { get; set; }
+       
 
     }
 }
