@@ -67,6 +67,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Models
         public DateTime? ModifiedAt { get; set; }
         public ICollection<TaskMembers> TaskMembers { get; set; }
 
+<<<<<<< HEAD
         public List<Timesheet> Timesheets { get; set; }
 
         public List<LeaveBalance> LeaveBalances { get; set; }
@@ -75,6 +76,9 @@ namespace HRMS_With_CoreMVC_RepoPattern.Models
         public ICollection<FileUpload> FileUploads { get; set; }
 
         public virtual ICollection<Projects> Projects { get; set; } = new List<Projects>();
+=======
+        public List<Projects> Projects { get; set; } 
+>>>>>>> b5b404ba5f5774415438c1fd3d61918b599f7259
 
 
     }
