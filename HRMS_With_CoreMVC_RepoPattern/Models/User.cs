@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using HRMS_With_CoreMVC_RepoPattern.Models;
-using Pulse360.Models;
+
 
 namespace HRMS_With_CoreMVC_RepoPattern.Models
 {
