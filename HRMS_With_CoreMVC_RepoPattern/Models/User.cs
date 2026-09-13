@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using HRMS_With_CoreMVC_RepoPattern.Models;
-using Pulse360.Models;
+
 
 namespace HRMS_With_CoreMVC_RepoPattern.Models
 {
@@ -67,8 +67,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Models
         public string? CreatedBy { get; set; }
         public string? ModifiedBy { get; set; }
         public DateTime? ModifiedAt { get; set; }
-
-       
 
         public List<Projects> Projects { get; set; } 
 
