@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Pulse360.Models
+namespace HRMS_With_CoreMVC_RepoPattern.Models
 {
     public class Role
     {

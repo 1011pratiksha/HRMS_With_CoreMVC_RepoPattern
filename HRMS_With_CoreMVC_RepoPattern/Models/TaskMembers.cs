@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Pulse360.Models;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
@@ -14,9 +15,9 @@ namespace HRMS_With_CoreMVC_RepoPattern.Models
         public Tasks Task { get; set; }
 
 
-        [ForeignKey("User")]
+        [ForeignKey("Users")]
         public int UserId { get; set; }
-        public User User { get; set; }
+        public User Users { get; set; }
 
     }
 }
