@@ -24,8 +24,7 @@ namespace Pulse360.Models
         public int PreviousyearsofExp { get; set; }
         public string Category { get; set; }
 
-        [Column("Sub_Category")]
-        public string SubCategory { get; set; }
+        public string Sub_Category { get; set; }
 
         public int? Weightage { get; set; }
 
