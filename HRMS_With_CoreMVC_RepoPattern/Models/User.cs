@@ -2,8 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using HRMS_With_CoreMVC_RepoPattern.Models;
+using Pulse360.Models;
 
-namespace Pulse360.Models
+namespace HRMS_With_CoreMVC_RepoPattern.Models
 {
     public class User
     {
@@ -67,12 +68,7 @@ namespace Pulse360.Models
         public string? ModifiedBy { get; set; }
         public DateTime? ModifiedAt { get; set; }
 
-        public List<Timesheet> Timesheets { get; set; }
-
-        public List<LeaveBalance> LeaveBalances { get; set; }
-        public List<LeaveRequest> LeaveRequests { get; set; }
-
-        public ICollection<FileUpload> FileUploads { get; set; }
+       
 
         public List<Projects> Projects { get; set; } 
 
