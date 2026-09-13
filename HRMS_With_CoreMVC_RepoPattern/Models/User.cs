@@ -72,8 +72,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Models
 
         public List<Projects> Projects { get; set; } 
 
-        public  List<TaskMembers> TaskMembers { get; set; }
-
+public ICollection<TaskMembers> Task { get; set; }
 
     }
 }
