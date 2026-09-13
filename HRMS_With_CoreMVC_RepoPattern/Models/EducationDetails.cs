@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Pulse360.Models
+namespace HRMS_With_CoreMVC_RepoPattern.Models
 {
     public class EducationDetails
     {
