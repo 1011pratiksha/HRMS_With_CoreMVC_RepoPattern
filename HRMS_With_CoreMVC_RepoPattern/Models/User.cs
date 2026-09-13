@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
-using HRMS_With_CoreMVC_RepoPattern.Models;
-
 
 namespace HRMS_With_CoreMVC_RepoPattern.Models
 {
@@ -63,16 +61,21 @@ namespace HRMS_With_CoreMVC_RepoPattern.Models
         public string ProfilePicture { get; set; }
 
         public string? ReportingManager { get; set; }
-        public DateTime? CreatedAt { get; set; }/* = DateTime.UtcNow;*/
+        public DateTime? CreatedAt { get; set; }
         public string? CreatedBy { get; set; }
         public string? ModifiedBy { get; set; }
         public DateTime? ModifiedAt { get; set; }
+        public ICollection<TaskMembers> TaskMembers { get; set; }
 
-       
+        public List<Timesheet> Timesheets { get; set; }
 
-        public List<Projects> Projects { get; set; } 
+        public List<LeaveBalance> LeaveBalances { get; set; }
+        public List<LeaveRequest> LeaveRequests { get; set; }
 
-public ICollection<TaskMembers> Task { get; set; }
+        public ICollection<FileUpload> FileUploads { get; set; }
+
+        public virtual ICollection<Projects> Projects { get; set; } = new List<Projects>();
+
 
     }
 }
