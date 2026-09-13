@@ -68,8 +68,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Models
         public string? ModifiedBy { get; set; }
         public DateTime? ModifiedAt { get; set; }
 
-       
-
         public List<Projects> Projects { get; set; } 
 
 public ICollection<TaskMembers> Task { get; set; }
