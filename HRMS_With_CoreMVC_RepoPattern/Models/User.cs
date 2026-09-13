@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 
-namespace Pulse360.Models
+namespace HRMS_With_CoreMVC_RepoPattern.Models
 {
     public class User
     {
