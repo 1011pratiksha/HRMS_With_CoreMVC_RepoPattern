@@ -18,4 +18,4 @@
     <Folder Include="Repository\" />
     <Folder Include="Services\" />
   </ItemGroup>
-/Project>
+</Project>
