@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Pulse360.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace HRMS_With_CoreMVC_RepoPattern.Models
 {
@@ -63,7 +64,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Models
         [Required(ErrorMessage = "Manager is Required.")]
         public string ManagerName { get; set; }
 
-        public  List<Users> User { get; set; } = new List<Users>();
+        public  List<User> Users { get; set; } 
 
         public  List<Tasks> Task { get; set; }
 

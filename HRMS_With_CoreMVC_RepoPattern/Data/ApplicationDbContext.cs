@@ -1,4 +1,4 @@
-﻿using HRMS_With_CoreMVC_RepoPattern.Models;
+using HRMS_With_CoreMVC_RepoPattern.Models;
 using Microsoft.EntityFrameworkCore;
 using Pulse360.Models;
 using System.Reflection.Emit;
@@ -39,16 +39,14 @@ namespace HRMS_With_CoreMVC_RepoPattern.Data
             builder.Entity<TaskMembers>(e =>
             {
                 e.HasOne(x => x.Task)
-                .WithMany(x => x.Taskmember)
-                .HasForeignKey(x => x.TaskId)
-                .OnDelete(DeleteBehavior.Restrict);
+                 .WithMany(x => x.Taskmember)
+                 .HasForeignKey(x => x.TaskId)
+                 .OnDelete(DeleteBehavior.Restrict);
 
-
-                e.HasOne(x => x.User)
-               .WithMany(x => x.Task)
-               .HasForeignKey(x => x.UserId)
-               .OnDelete(DeleteBehavior.Restrict);
-
+                e.HasOne(x => x.Users)
+                 .WithMany()
+                 .HasForeignKey(x => x.UserId)
+                 .OnDelete(DeleteBehavior.Restrict);
             });
 
             builder.Entity<TaskBoards>(e =>
@@ -83,7 +81,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Data
 
         public DbSet<Trainer> Trainer { get; set; }
 
-        public DbSet<FileUpload> FileUploads { get; set; }
+
 
         public DbSet<Promotion> Promotion { get; set; }
         public DbSet<Resignation> Resignation { get; set; }
