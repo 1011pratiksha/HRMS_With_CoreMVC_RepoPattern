@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Pulse360.Models;
-using System.Diagnostics;
+﻿using HRMS_With_CoreMVC_RepoPattern.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace HRMS_With_CoreMVC_RepoPattern.Data
 {
@@ -9,6 +9,60 @@ namespace HRMS_With_CoreMVC_RepoPattern.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+        }
+
+       
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<EventModel>(e =>
+            {
+                e.HasOne(x => x.EventType)
+                .WithMany(x => x.Event)
+                .HasForeignKey(x => x.EventTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
+
+
+
+            builder.Entity<Tasks>(e =>
+            {
+                e.HasOne(x => x.Project)
+                .WithMany(x => x.Task)
+                .HasForeignKey(x => x.ProjectId)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            builder.Entity<TaskMembers>(e =>
+            {
+                e.HasOne(x => x.Task)
+                .WithMany(x => x.Taskmember)
+                .HasForeignKey(x => x.TaskId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
+                e.HasOne(x => x.User)
+               .WithMany(x => x.Task)
+               .HasForeignKey(x => x.UserId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            });
+
+            builder.Entity<TaskBoards>(e =>
+            {
+                e.HasOne(x => x.Project)
+                 .WithMany(x => x.TaskBoard)
+                 .HasForeignKey(x => x.ProjectId)
+                 .OnDelete(DeleteBehavior.Restrict);
+
+                e.HasOne(x => x.Task)
+                 .WithMany(x => x.TaskBoard)
+                 .HasForeignKey(x => x.TaskId)
+                 .OnDelete(DeleteBehavior.Restrict);
+            });
+
         }
         public DbSet<Chat> Chats { get; set; }
         public DbSet<EmployeeFamilyDetail> EmployeeFamilyDetails { get; set; }
