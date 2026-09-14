@@ -30,11 +30,11 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
         }
 
         [HttpPost]
-        public IActionResult SignUp(User us)
+        public async Task<IActionResult> SignUp(User us)
         {
             if (ModelState.IsValid)
             {
-                authService.SignUp(us);
+              await  authService.SignUp(us);
 
                 TempData["Success"] = "User Registered Successfully";
 
