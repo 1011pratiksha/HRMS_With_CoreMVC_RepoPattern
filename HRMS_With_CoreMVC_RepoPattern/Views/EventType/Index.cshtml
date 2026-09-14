@@ -1,0 +1,124 @@
+﻿@model List<EventTypes>
+
+   @*  This Is A Header Part *@
+
+<div>
+    <h2>Holidays</h2>
+
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a>
+                <i class="bi bi-house"></i>
+            </a>
+        </li>
+        <li class="breadcrumb-item">Event</li>
+        <li class="breadcrumb-item active">Holidays List</li>
+    </ol>
+</div>
+
+@* This is Add Event Type Form *@
+
+<div class="row">
+
+<div class="col-md-6">
+    <div class="card">
+
+        <div class="card-header">
+            <h5>Add Event Type</h5>
+        </div>
+
+        <div class="card-body">
+
+            <form method="post" asp-action="AddMaster" asp-controller="EventType">
+
+                <label>Event Type Name</label>
+                <input type="text"
+                       name="Name"
+                       class="form-control" />
+
+                <br />
+
+                <label>Color</label>
+                <input type="color"
+                       name="color"
+                       value="#563d7c"
+                       class="form-control form-control-color" />
+                       
+                <span class="small">Choose a color for this event type</span>
+                <br />
+                <br/>
+
+                <button type="submit" class="btn btn-warning">
+                    Add Event Type
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+@* Now Start The EventType  List *@
+
+  <div class="col-md-6">
+
+    <div class="card">
+
+        <div class="card-header">
+            <h5>Existing Event Types</h5>
+        </div>
+
+        <div class="card-body">
+
+            <table class="table">
+
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Color</th>
+                        <th>Sample</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>@item.Name</td>
+
+                            <td>
+                                @item.color
+                            </td>
+
+                           
+                                <td>
+                                    <input type="color"
+                                           value="@item.color"
+                                           disabled />
+                                </td>
+
+                            <td>
+                                <a asp-action="DeleteEvent" 
+                                asp-controller="EventType"
+                                asp-route-id="@item.Id"> 
+                                <i class="bi bi-trash"></i>
+                            </a>
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+</div>

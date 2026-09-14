@@ -1,9 +1,13 @@
 using HRMS_With_CoreMVC_RepoPattern.Data;
+using HRMS_With_CoreMVC_RepoPattern.Repository;
+using HRMS_With_CoreMVC_RepoPattern.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddScoped<IEventTypeService, EventTypeService>();
+builder.Services.AddScoped<IEventService,  EventService>();
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -30,7 +34,7 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+    pattern: "{controller=EventType}/{action=Index}/{id?}")
     .WithStaticAssets();
 
 
