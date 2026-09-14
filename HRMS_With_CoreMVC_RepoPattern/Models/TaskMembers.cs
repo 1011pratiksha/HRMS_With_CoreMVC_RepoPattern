@@ -1,7 +1,4 @@
-﻿
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace HRMS_With_CoreMVC_RepoPattern.Models
 {
@@ -10,12 +7,9 @@ namespace HRMS_With_CoreMVC_RepoPattern.Models
         [Key]
         public int AssignedId { get; set; }
 
-        [ForeignKey("Task")]
         public int TaskId { get; set; }
         public Tasks Task { get; set; }
 
-
-        [ForeignKey("Users")]
         public int UserId { get; set; }
         public User User { get; set; }
     }

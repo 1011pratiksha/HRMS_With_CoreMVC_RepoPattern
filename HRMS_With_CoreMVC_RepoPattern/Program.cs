@@ -1,5 +1,7 @@
 using HRMS_With_CoreMVC_RepoPattern.Data;
 using Microsoft.EntityFrameworkCore;
+using HRMS_With_CoreMVC_RepoPattern.Repository;
+using HRMS_With_CoreMVC_RepoPattern.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +10,8 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("dbconn")));
+
+builder.Services.AddScoped<ILeaveService, LeaveService>();
 
 var app = builder.Build();
 
