@@ -6,6 +6,7 @@ using HRMS_With_CoreMVC_RepoPattern.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -14,6 +15,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         builder.Configuration.GetConnectionString("dbconn")
     ));
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IPromotionRepository, PromotionService>();
+builder.Services.AddScoped<ITrainerRepository, TrainerService>();
 
 
 
