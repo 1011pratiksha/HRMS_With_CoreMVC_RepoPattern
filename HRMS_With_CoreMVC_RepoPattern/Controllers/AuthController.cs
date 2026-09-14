@@ -47,9 +47,9 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
         }
 
         [HttpPost]
-        public IActionResult SignIn(string Email, string Password)
+        public async Task<IActionResult> SignIn(string Email, string Password)
         {
-            var role = authService.SignIn(Email, Password);
+            var role = await authService.SignIn(Email, Password);
 
             if (role == "Admin")
             {
