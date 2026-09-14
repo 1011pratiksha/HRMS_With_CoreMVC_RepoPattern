@@ -1,4 +1,3 @@
-﻿using HRMS_With_CoreMVC_RepoPattern.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,8 +10,10 @@ namespace HRMS_With_CoreMVC_RepoPattern.Models
 
         [ForeignKey("User")]
         public int UserId { get; set; }
+
         [Column(TypeName = "decimal(18,2)")]
         public decimal TotalSalary { get; set; }
+
         [Column(TypeName = "decimal(18,2)")]
         public decimal NetSalary { get; set; }
 
@@ -22,11 +23,10 @@ namespace HRMS_With_CoreMVC_RepoPattern.Models
         [DataType(DataType.DateTime)]
         public DateTime? UpdatedDate { get; set; }
 
-        // Navigation properties
         public virtual User User { get; set; }
 
         public ICollection<EmployeeEarnings> EmployeeEarnings { get; set; }
-        public ICollection<EmployeeDeductions> EmployeeDeductions { get; set; }
 
+        public ICollection<EmployeeDeductions> EmployeeDeductions { get; set; }
     }
 }

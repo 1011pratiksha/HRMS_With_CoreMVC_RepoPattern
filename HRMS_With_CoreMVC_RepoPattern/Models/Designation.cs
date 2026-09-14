@@ -16,7 +16,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Models
         public int? NoOfEmployee { get; set; }
         [Required(ErrorMessage = "Status is required.")]
         public string status { get; set; }
-        public DateTime? CreatedAt { get; set; }/* = DateTime.UtcNow;*/
+        public DateTime? CreatedAt { get; set; }
         public string? CreatedBy { get; set; }
         public string? ModifiedBy { get; set; }
         public DateTime? ModifiedAt { get; set; }
