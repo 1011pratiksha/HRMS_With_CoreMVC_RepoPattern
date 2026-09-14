@@ -1,0 +1,19 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model User
+<form style="width:30%; border:2px solid blue; padding:30px" method="post">
+    First Name: <input type="text" class="form-control" asp-for="FirstName" placeholder="Enter First Name"/></br>
+
+    Last Name: <input type="text" class="form-control" asp-for="LastName" placeholder="Enter Last Name" /></br>
+
+    Email: <input type="email" class="form-control" asp-for="Email" placeholder="Enter Email" /></br>
+
+    Password: <input type="password" class="form-control" asp-for="PasswordHash" placeholder="Enter Pasword" /></br>
+
+    Phone Number:<input type="tel" class="form-control" asp-for="PhoneNumber" placeholder="Enter Contact Number" /></br>
+
+    <input type="submit" value="submit" class="btn-primary"/>
+</form>
