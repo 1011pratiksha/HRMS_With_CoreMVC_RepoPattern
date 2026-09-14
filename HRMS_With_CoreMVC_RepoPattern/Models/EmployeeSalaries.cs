@@ -1,4 +1,4 @@
-﻿using Pulse360.Models;
+﻿using HRMS_With_CoreMVC_RepoPattern.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

@@ -1,6 +1,5 @@
 using HRMS_With_CoreMVC_RepoPattern.Models;
 using Microsoft.EntityFrameworkCore;
-using Pulse360.Models;
 using System.Reflection.Emit;
 
 namespace HRMS_With_CoreMVC_RepoPattern.Data
@@ -43,7 +42,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Data
                  .HasForeignKey(x => x.TaskId)
                  .OnDelete(DeleteBehavior.Restrict);
 
-                e.HasOne(x => x.Users)
+                e.HasOne(x => x.User)
                  .WithMany()
                  .HasForeignKey(x => x.UserId)
                  .OnDelete(DeleteBehavior.Restrict);
@@ -60,6 +59,14 @@ namespace HRMS_With_CoreMVC_RepoPattern.Data
                  .WithMany(x => x.TaskBoard)
                  .HasForeignKey(x => x.TaskId)
                  .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            builder.Entity<LeaveBalance>(e =>
+            {
+                e.HasOne(x => x.MasterLeaveType)
+                    .WithMany(x => x.LeaveBalances)
+                    .HasForeignKey(x => x.LeaveTypeId)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
 
         }
@@ -86,13 +93,13 @@ namespace HRMS_With_CoreMVC_RepoPattern.Data
         public DbSet<Promotion> Promotion { get; set; }
         public DbSet<Resignation> Resignation { get; set; }
         public DbSet<Termination> Termination { get; set; }
-
+        public DbSet<FileUpload> FileUpload { get; set; }
         public DbSet<AdminDocuments> AdminDocuments { get; set; }
         public DbSet<TaskBoards> TaskBoards { get; set; }
         public DbSet<Tasks> Task { get; set; }
 
         public DbSet<TaskMembers> Taskmember { get; set; }
-
+        public DbSet<Timesheet> Timesheet { get; set; }
         public DbSet<EmployeePerformance> EmployeePerformances { get; set; }
 
 

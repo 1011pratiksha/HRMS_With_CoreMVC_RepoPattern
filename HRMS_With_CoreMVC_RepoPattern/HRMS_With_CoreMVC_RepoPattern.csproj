@@ -7,16 +7,45 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Include="wwwroot\uploads\40c33cb6-b2e8-47e7-98ff-8326fde41b93.jpeg" />
+	  <None Include="wwwroot\uploads\510e8f86-c443-446f-adff-d0f66892b2ec.jpeg" />
+	  <None Include="wwwroot\uploads\5879339-middle.png" />
+	  <None Include="wwwroot\uploads\678a9e03-d4e0-4573-9ae6-2f642d6a29cf.png" />
+	  <None Include="wwwroot\uploads\6d4dc04a-e547-43ac-be82-2b2f9e6d45cd.png" />
+	  <None Include="wwwroot\uploads\99780f37-8842-4655-86a7-64e374c88928.png" />
+	  <None Include="wwwroot\uploads\bank letter_199.jpg" />
+	  <None Include="wwwroot\uploads\BK.PNG" />
+	  <None Include="wwwroot\uploads\buyer 99_1.jpg" />
+	  <None Include="wwwroot\uploads\corbel.png" />
+	  <None Include="wwwroot\uploads\da9a7b94-ec03-444d-a035-fac51edc00b7.png" />
+	  <None Include="wwwroot\uploads\dsp.png" />
+	  <None Include="wwwroot\uploads\e38983f8-e60e-4a31-b788-ea89034d9971.png" />
+	  <None Include="wwwroot\uploads\FLAVEX PDF_1.jpg" />
+	  <None Include="wwwroot\uploads\IMG_20230714_114721.jpg" />
+	  <None Include="wwwroot\uploads\krish sign.png" />
+	  <None Include="wwwroot\uploads\krish.jpg" />
+	  <None Include="wwwroot\uploads\krish.jpg.jpeg" />
+	  <None Include="wwwroot\uploads\ME2.jpeg" />
+	  <None Include="wwwroot\uploads\photo.jpeg" />
+	  <None Include="wwwroot\uploads\profile pic.png" />
+	  <None Include="wwwroot\uploads\Sa.jpg" />
+	  <None Include="wwwroot\uploads\Screenshot 2025-01-01 112359.png" />
+	  <None Include="wwwroot\uploads\Screenshot 2025-01-15 015445.png" />
+	  <None Include="wwwroot\uploads\stamp.jpg" />
+	  <None Include="wwwroot\uploads\unnamed.png" />
+	  <None Include="wwwroot\uploads\user1.jpg" />
+	  <None Include="wwwroot\uploads\user2.jpg" />
+	  <None Include="wwwroot\uploads\WhatsApp Image 2024-12-31 at 12.13.41 PM %281%29.jpeg" />
+	  <None Include="wwwroot\uploads\WhatsApp Image 2025-02-16 at 3.56.28 PM.jpeg" />
+	  <None Include="wwwroot\uploads\whatsapp-dp-stylish-killer-attitude-cute-cartoon-girl.jpeg" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.12" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.12">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="Repository\" />
-		<Folder Include="Services\" />
 	</ItemGroup>
 
 </Project>

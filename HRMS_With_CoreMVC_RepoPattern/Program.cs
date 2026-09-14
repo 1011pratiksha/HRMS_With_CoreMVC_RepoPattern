@@ -1,4 +1,6 @@
 using HRMS_With_CoreMVC_RepoPattern.Data;
+using HRMS_With_CoreMVC_RepoPattern.Repository;
+using HRMS_With_CoreMVC_RepoPattern.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,7 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("dbconn")));
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("dbconn")
+    ));
+builder.Services.AddScoped<IResignationRepository, ResignationService>();
+builder.Services.AddScoped<ITerminationRepository, TerminationService>();
 
 var app = builder.Build();
 
@@ -24,11 +30,11 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapStaticAssets();
+app.UseStaticFiles();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+    pattern: "{controller=Resignation}/{action=Index}/{id?}")
     .WithStaticAssets();
 
 
