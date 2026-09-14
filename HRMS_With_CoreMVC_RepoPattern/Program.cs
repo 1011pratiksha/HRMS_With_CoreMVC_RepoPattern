@@ -5,13 +5,21 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Add services to the container.
+builder.Services.AddScoped<IEventTypeService, EventTypeService>();
+builder.Services.AddScoped<IEventService,  EventService>();
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("dbconn")
     ));
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IPromotionRepository, PromotionService>();
+builder.Services.AddScoped<ITrainerRepository, TrainerService>();
+
+
 builder.Services.AddScoped<IResignationRepository, ResignationService>();
 builder.Services.AddScoped<ITerminationRepository, TerminationService>();
 
@@ -34,7 +42,10 @@ app.UseStaticFiles();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Resignation}/{action=Index}/{id?}")
+    pattern: "{controller=Auth}/{action=SignIn}/{id?}")
+
+    //pattern: "{controller=Resignation}/{action=Index}/{id?}")
+
     .WithStaticAssets();
 
 

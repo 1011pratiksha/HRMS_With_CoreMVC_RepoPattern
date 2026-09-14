@@ -20,7 +20,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Data
             builder.Entity<EventModel>(e =>
             {
                 e.HasOne(x => x.EventType)
-                .WithMany(x => x.Event)
+                .WithMany(x => x.Events)
                 .HasForeignKey(x => x.EventTypeId)
                 .OnDelete(DeleteBehavior.Restrict);
             });
@@ -87,8 +87,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Data
         public DbSet<Training> Training { get; set; }
 
         public DbSet<Trainer> Trainer { get; set; }
-
-
 
         public DbSet<Promotion> Promotion { get; set; }
         public DbSet<Resignation> Resignation { get; set; }
