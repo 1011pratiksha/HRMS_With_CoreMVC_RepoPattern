@@ -7,17 +7,17 @@ namespace HRMS_With_CoreMVC_RepoPattern.Models
     {
         [Key]
         public int ResignationId { get; set; }
-        public int UserID { get; set; }  
+        public int UserId { get; set; }  
         public int DepartmentId { get; set; }  
         public DateTime NoticeDate { get; set; }
         public DateTime ResignDate { get; set; }
         public string Reason { get; set; }
 
-        [ForeignKey("UserID")]
-        public  User User { get; set; }
+        [ForeignKey("UserId")]
+        public  User? User { get; set; }
 
         [ForeignKey("DepartmentId")]
-        public  Department Department { get; set; }
+        public  Department? Department { get; set; }
       
     }
 }

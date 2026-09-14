@@ -10,6 +10,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Models
         public string Name { get; set; }
         [Required(ErrorMessage = "Please Select Any Color.")]
         public string color { get; set; }
-        public List<EventModel> Event { get; set; }
+        public List<EventModel> Events { get; set; }
     }
 }

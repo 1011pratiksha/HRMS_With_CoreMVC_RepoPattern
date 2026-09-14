@@ -1,0 +1,104 @@
+﻿@model List<Resignation>
+
+@{
+    ViewData["Title"] = "Resignations";
+}
+
+@if (TempData["msg"] != null)
+{
+    <script>
+        alert('@TempData["msg"]');
+    </script>
+}
+
+<h2>Resignation List</h2>
+
+<a asp-controller="Resignation" asp-action="AddResignation">
+    Add Resignation
+</a>
+
+<br />
+<br />
+
+<table border="1">
+
+    <tr>
+        <th>Resignation ID</th>
+        <th>Employee</th>
+        <th>Department</th>
+        <th>Reason</th>
+        <th>Notice Date</th>
+        <th>Resignation Date</th>
+        <th>Action</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+                @item.ResignationId
+            </td>
+
+            <td>
+                @if (item.User != null)
+                {
+                    <img src="@Url.Content("~/uploads/" + item.User.ProfilePicture)"
+                         width="45"
+                         height="45"
+                         style="border-radius:50%; object-fit:cover;" />
+
+                    <span>
+                        @item.User.FirstName @item.User.LastName
+                    </span>
+                }
+            </td>
+
+            <td>
+                @if (item.Department != null)
+                {
+                    @item.Department.Name
+                }
+            </td>
+
+            <td>
+                @item.Reason
+            </td>
+
+            <td>
+                @item.NoticeDate.ToString("dd/MM/yyyy")
+            </td>
+
+            <td>
+                @item.ResignDate.ToString("dd/MM/yyyy")
+            </td>
+
+            <td>
+
+                <a asp-controller="Resignation"
+                   asp-action="EditResignation"
+                   asp-route-id="@item.ResignationId">
+                    Edit
+                </a>
+
+                <form asp-controller="Resignation"
+                      asp-action="DeleteResignation"
+                      method="post">
+
+                    <input type="hidden"
+                           name="id"
+                           value="@item.ResignationId" />
+
+                    <button type="submit"
+                            onclick="return confirm('Are you sure you want to delete this resignation?');">
+                        Delete
+                    </button>
+
+                </form>
+
+            </td>
+
+        </tr>
+    }
+
+</table>

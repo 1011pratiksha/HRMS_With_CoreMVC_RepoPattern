@@ -2,6 +2,7 @@
 using HRMS_With_CoreMVC_RepoPattern.Models;
 using HRMS_With_CoreMVC_RepoPattern.Repository;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace HRMS_With_CoreMVC_RepoPattern.Services
 {
@@ -16,20 +17,19 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
             passwordHasher = new PasswordHasher<User>();
         }
 
-        public void SignUp(User us)
+        public async Task SignUp(User us)
         {
             us.PasswordHash = passwordHasher.HashPassword(us, us.PasswordHash);
 
-            db.User.Add(us);
-            db.SaveChanges();
+            await db.User.AddAsync(us);
+            await db.SaveChangesAsync();
         }
 
-        public string SignIn(string Email, string Password)
+        public async Task<string?> SignIn(string Email, string Password)
         {
-            var data = db.User
-                .Where(x => x.Email.Equals(Email))
-                .SingleOrDefault();
-
+            var data = await db.User
+      .Where(x => x.Email.Equals(Email))
+      .SingleOrDefaultAsync();
             if (data != null)
             {
                 var result = passwordHasher.VerifyHashedPassword(
@@ -40,9 +40,9 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
 
                 if (result == PasswordVerificationResult.Success)
                 {
-                    var role = db.Role
+                    var role = await db.Role
                         .Where(x => x.RoleId.Equals(data.RoleId))
-                        .SingleOrDefault();
+                        .SingleOrDefaultAsync();
 
                     if (role != null)
                     {
@@ -64,7 +64,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
                 }
             }
 
-            return "";
+            return null;
         }
     }
 }

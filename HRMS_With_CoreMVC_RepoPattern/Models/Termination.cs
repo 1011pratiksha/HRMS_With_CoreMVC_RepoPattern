@@ -10,12 +10,12 @@ namespace HRMS_With_CoreMVC_RepoPattern.Models
         public int TerminationId { get; set; }
         
         [ForeignKey("User")]
-        public int UserID { get; set; }
+        public int UserId { get; set; }
         public string TerminationType { get; set; }
         public DateTime NoticeDate { get; set; }
         public DateTime ResignDate { get; set; }     
         public string Reason { get; set; }
-        public  User User { get; set; }
+        public  User? User { get; set; }
 
     }
 }

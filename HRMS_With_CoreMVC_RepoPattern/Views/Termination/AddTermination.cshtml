@@ -1,0 +1,68 @@
+﻿@model HRMS_With_CoreMVC_RepoPattern.Models.Termination
+
+@{
+    ViewData["Title"] = "Add Termination";
+}
+
+<h2>Add Termination</h2>
+
+<form asp-action="AddTermination" method="post">
+
+    <div>
+        <label>User</label>
+
+        <select asp-for="UserId">
+            <option value="">Select User</option>
+
+            @foreach (var user in ViewBag.Users)
+            {
+                <option value="@user.UserId">
+                    @user.FirstName @user.LastName
+                </option>
+            }
+        </select>
+    </div>
+
+    <br />
+
+    <div>
+        <label>Termination Type</label>
+
+        <select asp-for="TerminationType">
+            <option value="">Select Termination Type</option>
+
+            @foreach (var type in ViewBag.TerminationTypes)
+            {
+                <option value="@type">@type</option>
+            }
+        </select>
+    </div>
+
+    <br />
+
+    <div>
+        <label>Notice Date</label>
+        <input asp-for="NoticeDate" type="date" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Resign Date</label>
+        <input asp-for="ResignDate" type="date" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Reason</label>
+        <textarea asp-for="Reason"></textarea>
+    </div>
+
+    <br />
+
+    <button type="submit">Add Termination</button>
+
+    <a asp-action="Index">Back</a>
+
+</form>
