@@ -102,8 +102,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Data
         public DbSet<Timesheet> Timesheet { get; set; }
         public DbSet<EmployeePerformance> EmployeePerformances { get; set; }
 
-        public DbSet<FileUpload> FileUpload { get; set; }
-        public DbSet<Timesheet> Timesheet { get; set; }
+       
 
 
     }
