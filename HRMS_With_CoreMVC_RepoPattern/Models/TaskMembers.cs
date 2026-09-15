@@ -8,13 +8,8 @@ namespace HRMS_With_CoreMVC_RepoPattern.Models
         [Key]
         public int AssignedId { get; set; }
 
-        [ForeignKey("Task")]
         public int TaskId { get; set; }
         public Tasks Task { get; set; }
-
-
-
-
 
         [ForeignKey("User")]
         public int UserId { get; set; }

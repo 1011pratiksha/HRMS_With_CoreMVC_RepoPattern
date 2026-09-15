@@ -2,6 +2,8 @@ using HRMS_With_CoreMVC_RepoPattern.Data;
 using HRMS_With_CoreMVC_RepoPattern.Repository;
 using HRMS_With_CoreMVC_RepoPattern.Services;
 using Microsoft.EntityFrameworkCore;
+using HRMS_With_CoreMVC_RepoPattern.Repository;
+using HRMS_With_CoreMVC_RepoPattern.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +25,8 @@ builder.Services.AddScoped<IProjectRepository, ProjectRepositoryServices>();
 
 builder.Services.AddScoped<IResignationRepository, ResignationService>();
 builder.Services.AddScoped<ITerminationRepository, TerminationService>();
+
+builder.Services.AddScoped<ILeaveService, LeaveService>();
 
 var app = builder.Build();
 
