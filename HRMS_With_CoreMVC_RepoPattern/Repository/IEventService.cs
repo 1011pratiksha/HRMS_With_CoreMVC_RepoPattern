@@ -9,5 +9,9 @@ namespace HRMS_With_CoreMVC_RepoPattern.Repository
         public List<EventTypes> GetEventTypes();
 
         public List<EventModel> GetEvent();
+
+        public void DeleteEvent(int id);
+
+        public void UpdateEvent(EventModel model);
     }
 }

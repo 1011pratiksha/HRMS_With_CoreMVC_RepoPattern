@@ -1124,17 +1124,16 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
                     b.Property<string>("AboutEmployee")
-<<<<<<< HEAD
+
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Address")
                         .IsRequired()
-=======
+
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Address")
->>>>>>> 7a71199649e7dd38884b4308b9a744c339c63f5d
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("CreatedAt")
@@ -1143,17 +1142,17 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-<<<<<<< HEAD
+
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateOfJoining")
-=======
+                    b.Property<DateTime>("DateOfJoining");
+
                     b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DateOfJoining")
->>>>>>> 7a71199649e7dd38884b4308b9a744c339c63f5d
+
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("DepartmentId")
@@ -1171,10 +1170,10 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Gender")
-<<<<<<< HEAD
+
                         .IsRequired()
-=======
->>>>>>> 7a71199649e7dd38884b4308b9a744c339c63f5d
+
+
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
@@ -1196,27 +1195,25 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProfilePicture")
-<<<<<<< HEAD
+
                         .IsRequired()
-=======
->>>>>>> 7a71199649e7dd38884b4308b9a744c339c63f5d
+
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReportingManager")
                         .HasColumnType("nvarchar(max)");
 
-<<<<<<< HEAD
+
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
-                        .IsRequired()
-=======
+                        .IsRequired();
+
                     b.Property<int?>("RoleId")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
->>>>>>> 7a71199649e7dd38884b4308b9a744c339c63f5d
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId");
@@ -1374,11 +1371,9 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
             modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.FileUpload", b =>
                 {
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
-<<<<<<< HEAD
-                        .WithMany()
-=======
+
                         .WithMany("FileUploads")
->>>>>>> 7a71199649e7dd38884b4308b9a744c339c63f5d
+
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1401,11 +1396,9 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                         .IsRequired();
 
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
-<<<<<<< HEAD
-                        .WithMany()
-=======
+
                         .WithMany("LeaveBalances")
->>>>>>> 7a71199649e7dd38884b4308b9a744c339c63f5d
+
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1426,11 +1419,8 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                         .IsRequired();
 
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
-<<<<<<< HEAD
-                        .WithMany()
-=======
+
                         .WithMany("LeaveRequests")
->>>>>>> 7a71199649e7dd38884b4308b9a744c339c63f5d
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1504,11 +1494,8 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                         .IsRequired();
 
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", null)
-<<<<<<< HEAD
-                        .WithMany("Task")
-=======
+
                         .WithMany("TaskMembers")
->>>>>>> 7a71199649e7dd38884b4308b9a744c339c63f5d
                         .HasForeignKey("UserId1");
 
                     b.Navigation("Task");
@@ -1547,11 +1534,8 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                         .IsRequired();
 
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
-<<<<<<< HEAD
-                        .WithMany()
-=======
+
                         .WithMany("Timesheets")
->>>>>>> 7a71199649e7dd38884b4308b9a744c339c63f5d
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1600,13 +1584,11 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
 
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.Role", "Role")
                         .WithMany("Users")
-<<<<<<< HEAD
+
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-=======
+                        .IsRequired()
                         .HasForeignKey("RoleId");
->>>>>>> 7a71199649e7dd38884b4308b9a744c339c63f5d
 
                     b.Navigation("Department");
 
@@ -1693,9 +1675,9 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
 
             modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.User", b =>
                 {
-<<<<<<< HEAD
+
                     b.Navigation("Task");
-=======
+
                     b.Navigation("FileUploads");
 
                     b.Navigation("LeaveBalances");
@@ -1705,7 +1687,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     b.Navigation("TaskMembers");
 
                     b.Navigation("Timesheets");
->>>>>>> 7a71199649e7dd38884b4308b9a744c339c63f5d
                 });
 #pragma warning restore 612, 618
         }

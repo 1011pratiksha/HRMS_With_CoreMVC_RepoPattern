@@ -11,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddScoped<IEventTypeService, EventTypeService>();
 builder.Services.AddScoped<IEventService,  EventService>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -43,11 +44,8 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-<<<<<<< HEAD
-    pattern: "{controller=EventType}/{action=Index}/{id?}")
-=======
-    pattern: "{controller=Auth}/{action=SignIn}/{id?}")
->>>>>>> 7a71199649e7dd38884b4308b9a744c339c63f5d
+
+    pattern: "{controller=Project}/{action=Index}/{id?}")
     .WithStaticAssets();
 
 
