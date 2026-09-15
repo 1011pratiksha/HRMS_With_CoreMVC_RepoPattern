@@ -4,43 +4,40 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HRMS_With_CoreMVC_RepoPattern.Controllers
 {
-    public class TrainerController : Controller
+    public class TrainingTypeController : Controller
     {
-        private readonly ITrainerRepository _service;
-
-        public TrainerController(ITrainerRepository service)
+        private readonly ITrainingTypeRepository _service;
+        public TrainingTypeController(ITrainingTypeRepository service)
         {
             _service = service;
         }
-
         public async Task<IActionResult> Index()
         {
             var t = await _service.FetchAll();
-            ViewBag.Role = await _service.FetchAllRoles();
             return View(t);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(Trainer model)
+        public async Task<IActionResult> Add(TrainingType t)
         {
-            string message = await _service.Add(model);
-            TempData["Message"] = message;
+            string mess = await _service.Add(t);
+            TempData["Message"] = mess;
             return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(Trainer model)
+        public async Task<IActionResult> Update(TrainingType t)
         {
-            string message = await _service.Update(model);
-            TempData["Message"] = message;
+            string mess = await _service.Update(t);
+            TempData["Message"] = mess;
             return RedirectToAction("Index");
         }
 
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
-            string message = await _service.Delete(id);
-            TempData["Message"] = message;
+            string mess = await _service.Delete(id);
+            TempData["Message"] = mess;
             return RedirectToAction("Index");
         }
     }
