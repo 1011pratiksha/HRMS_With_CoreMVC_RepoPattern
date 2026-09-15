@@ -12,7 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HRMS_With_CoreMVC_RepoPattern.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
+<<<<<<< HEAD:HRMS_With_CoreMVC_RepoPattern/Migrations/20260913135052_InitialCreate.Designer.cs
     //[Migration("20260913135052_InitialCreate")]
+=======
+    [Migration("20260913125001_InitialCreate")]
+>>>>>>> d796f6815f91bc2b634af1ce6abf7dba4ccc9136:HRMS_With_CoreMVC_RepoPattern/Migrations/20260913125001_InitialCreate.Designer.cs
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -533,6 +537,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
 //                    b.ToTable("EventTypes");
 //                });
 
+<<<<<<< HEAD:HRMS_With_CoreMVC_RepoPattern/Migrations/20260913135052_InitialCreate.Designer.cs
 //            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.FileUpload", b =>
 //                {
 //                    b.Property<int>("id")
@@ -564,6 +569,13 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
 //                    b.Property<int>("LeaveBalanceId")
 //                        .ValueGeneratedOnAdd()
 //                        .HasColumnType("int");
+=======
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.LeaveBalance", b =>
+                {
+                    b.Property<int>("LeaveBalanceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+>>>>>>> d796f6815f91bc2b634af1ce6abf7dba4ccc9136:HRMS_With_CoreMVC_RepoPattern/Migrations/20260913125001_InitialCreate.Designer.cs
 
 //                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LeaveBalanceId"));
 
@@ -952,6 +964,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
 //                    b.ToTable("Termination");
 //                });
 
+<<<<<<< HEAD:HRMS_With_CoreMVC_RepoPattern/Migrations/20260913135052_InitialCreate.Designer.cs
 //            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.Timesheet", b =>
 //                {
 //                    b.Property<int>("TimesheetId")
@@ -1003,6 +1016,13 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
 //                    b.Property<int>("TrainerId")
 //                        .ValueGeneratedOnAdd()
 //                        .HasColumnType("int");
+=======
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.Trainer", b =>
+                {
+                    b.Property<int>("TrainerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+>>>>>>> d796f6815f91bc2b634af1ce6abf7dba4ccc9136:HRMS_With_CoreMVC_RepoPattern/Migrations/20260913125001_InitialCreate.Designer.cs
 
 //                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TrainerId"));
 
@@ -1249,6 +1269,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
 //                    b.Navigation("Designation");
 //                });
 
+<<<<<<< HEAD:HRMS_With_CoreMVC_RepoPattern/Migrations/20260913135052_InitialCreate.Designer.cs
 //            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.DepartmentLeaves", b =>
 //                {
 //                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.Department", "Department")
@@ -1624,6 +1645,353 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
 
 //                    b.Navigation("LeaveRequests");
 //                });
+=======
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.DepartmentLeaves", b =>
+                {
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.Department", "Department")
+                        .WithMany("DepartmentLeaves")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.MasterLeaveType", "MasterLeaveType")
+                        .WithMany("DepartmentLeaves")
+                        .HasForeignKey("LeaveTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+
+                    b.Navigation("MasterLeaveType");
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.Designation", b =>
+                {
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.Department", "Department")
+                        .WithMany("Designations")
+                        .HasForeignKey("DepartmentId");
+
+                    b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.Earning", b =>
+                {
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.Department", "Department")
+                        .WithMany("Earnings")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.Designation", "Designation")
+                        .WithMany("Earnings")
+                        .HasForeignKey("DesignationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.EarningType", "EarningType")
+                        .WithMany("Earnings")
+                        .HasForeignKey("EarntypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+
+                    b.Navigation("Designation");
+
+                    b.Navigation("EarningType");
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.EducationDetails", b =>
+                {
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.EmployeeBankDetails", b =>
+                {
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.EmployeeFamilyDetail", b =>
+                {
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.EventModel", b =>
+                {
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.EventTypes", "EventType")
+                        .WithMany("Event")
+                        .HasForeignKey("EventTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("EventType");
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.LeaveBalance", b =>
+                {
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.DepartmentLeaves", "DepartmentLeaves")
+                        .WithMany()
+                        .HasForeignKey("DepartmentLeavesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.MasterLeaveType", "MasterLeaveType")
+                        .WithMany("LeaveBalances")
+                        .HasForeignKey("LeaveTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DepartmentLeaves");
+
+                    b.Navigation("MasterLeaveType");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.LeaveRequest", b =>
+                {
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.MasterLeaveType", "MasterLeaveType")
+                        .WithMany("LeaveRequests")
+                        .HasForeignKey("LeaveTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MasterLeaveType");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.Promotion", b =>
+                {
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.Resignation", b =>
+                {
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.TaskBoards", b =>
+                {
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.Projects", "Project")
+                        .WithMany("TaskBoard")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.Tasks", "Task")
+                        .WithMany("TaskBoard")
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+
+                    b.Navigation("Task");
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.TaskMembers", b =>
+                {
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.Tasks", "Task")
+                        .WithMany("Taskmember")
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", null)
+                        .WithMany("Task")
+                        .HasForeignKey("UserId1");
+
+                    b.Navigation("Task");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.Tasks", b =>
+                {
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.Projects", "Project")
+                        .WithMany("Task")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.Termination", b =>
+                {
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.Training", b =>
+                {
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.Trainer", "Trainer")
+                        .WithMany()
+                        .HasForeignKey("TrainerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.TrainingType", "TrainingType")
+                        .WithMany()
+                        .HasForeignKey("TrainingTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Trainer");
+
+                    b.Navigation("TrainingType");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.User", b =>
+                {
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId");
+
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.Designation", "Designation")
+                        .WithMany()
+                        .HasForeignKey("DesignationtId");
+
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.Role", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+
+                    b.Navigation("Designation");
+
+                    b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("ProjectsUser", b =>
+                {
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.Projects", null)
+                        .WithMany()
+                        .HasForeignKey("ProjectsProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.DeductionType", b =>
+                {
+                    b.Navigation("Deductions");
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.Department", b =>
+                {
+                    b.Navigation("Deductions");
+
+                    b.Navigation("DepartmentLeaves");
+
+                    b.Navigation("Designations");
+
+                    b.Navigation("Earnings");
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.Designation", b =>
+                {
+                    b.Navigation("Deductions");
+
+                    b.Navigation("Earnings");
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.EarningType", b =>
+                {
+                    b.Navigation("Earnings");
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.EventTypes", b =>
+                {
+                    b.Navigation("Event");
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.MasterLeaveType", b =>
+                {
+                    b.Navigation("DepartmentLeaves");
+
+                    b.Navigation("LeaveBalances");
+
+                    b.Navigation("LeaveRequests");
+                });
+>>>>>>> d796f6815f91bc2b634af1ce6abf7dba4ccc9136:HRMS_With_CoreMVC_RepoPattern/Migrations/20260913125001_InitialCreate.Designer.cs
 
 //            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.Projects", b =>
 //                {

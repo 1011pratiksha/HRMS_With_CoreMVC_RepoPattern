@@ -10,7 +10,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Models
 
         [ForeignKey("EmployeeSalaries")]
         public int SalaryId { get; set; }
-        [ForeignKey("User")]
         public int UserId { get; set; }
 
         [ForeignKey("Earning")]

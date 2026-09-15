@@ -4,8 +4,8 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
 {
     public interface IAuthService
     {
-        void SignUp(User us);
+        Task SignUp(User us);
 
-        string SignIn(string Email, string Password);
+        Task<string?> SignIn(string Email, string Password);
     }
 }
