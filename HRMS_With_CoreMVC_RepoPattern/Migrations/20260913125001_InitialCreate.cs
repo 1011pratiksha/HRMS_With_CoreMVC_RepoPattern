@@ -552,27 +552,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FileUpload",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FileUpload", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_FileUpload_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "LeaveBalance",
                 columns: table => new
                 {
@@ -771,39 +750,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Timesheet",
-                columns: table => new
-                {
-                    TimesheetId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    WorkHours = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ApprovedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ApprovedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ProjectId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Timesheet", x => x.TimesheetId);
-                    table.ForeignKey(
-                        name: "FK_Timesheet_AllProjects_ProjectId",
-                        column: x => x.ProjectId,
-                        principalTable: "AllProjects",
-                        principalColumn: "ProjectId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Timesheet_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Training",
                 columns: table => new
                 {
@@ -909,11 +855,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                 column: "EventTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FileUpload_UserId",
-                table: "FileUpload",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_LeaveBalance_DepartmentLeavesId",
                 table: "LeaveBalance",
                 column: "DepartmentLeavesId");
@@ -994,16 +935,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Timesheet_ProjectId",
-                table: "Timesheet",
-                column: "ProjectId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Timesheet_UserId",
-                table: "Timesheet",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Training_TrainerId",
                 table: "Training",
                 column: "TrainerId");
@@ -1068,9 +999,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                 name: "Events");
 
             migrationBuilder.DropTable(
-                name: "FileUpload");
-
-            migrationBuilder.DropTable(
                 name: "LeaveBalance");
 
             migrationBuilder.DropTable(
@@ -1093,9 +1021,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
 
             migrationBuilder.DropTable(
                 name: "Termination");
-
-            migrationBuilder.DropTable(
-                name: "Timesheet");
 
             migrationBuilder.DropTable(
                 name: "Training");

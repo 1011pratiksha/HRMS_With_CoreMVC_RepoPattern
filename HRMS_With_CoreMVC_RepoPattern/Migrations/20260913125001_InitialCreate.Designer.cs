@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HRMS_With_CoreMVC_RepoPattern.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260913125054_InitialCreate")]
+    [Migration("20260913125001_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -533,32 +533,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     b.ToTable("EventTypes");
                 });
 
-            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.FileUpload", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FilePath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("FileUpload");
-                });
-
             modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.LeaveBalance", b =>
                 {
                     b.Property<int>("LeaveBalanceId")
@@ -952,52 +926,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     b.ToTable("Termination");
                 });
 
-            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.Timesheet", b =>
-                {
-                    b.Property<int>("TimesheetId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TimesheetId"));
-
-                    b.Property<DateTime?>("ApprovedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ApprovedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WorkHours")
-                        .HasColumnType("int");
-
-                    b.HasKey("TimesheetId");
-
-                    b.HasIndex("ProjectId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Timesheet");
-                });
-
             modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.Trainer", b =>
                 {
                     b.Property<int>("TrainerId")
@@ -1348,17 +1276,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     b.Navigation("EventType");
                 });
 
-            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.FileUpload", b =>
-                {
-                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
-                        .WithMany("FileUploads")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.LeaveBalance", b =>
                 {
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.DepartmentLeaves", "DepartmentLeaves")
@@ -1374,7 +1291,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                         .IsRequired();
 
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
-                        .WithMany("LeaveBalances")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1395,7 +1312,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                         .IsRequired();
 
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
-                        .WithMany("LeaveRequests")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1469,7 +1386,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                         .IsRequired();
 
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", null)
-                        .WithMany("TaskMembers")
+                        .WithMany("Task")
                         .HasForeignKey("UserId1");
 
                     b.Navigation("Task");
@@ -1495,25 +1412,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.Timesheet", b =>
-                {
-                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.Projects", "Projects")
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
-                        .WithMany("Timesheets")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Projects");
 
                     b.Navigation("User");
                 });
@@ -1646,15 +1544,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
 
             modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.User", b =>
                 {
-                    b.Navigation("FileUploads");
-
-                    b.Navigation("LeaveBalances");
-
-                    b.Navigation("LeaveRequests");
-
-                    b.Navigation("TaskMembers");
-
-                    b.Navigation("Timesheets");
+                    b.Navigation("Task");
                 });
 #pragma warning restore 612, 618
         }
