@@ -21,7 +21,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IPromotionRepository, PromotionService>();
 builder.Services.AddScoped<ITrainerRepository, TrainerService>();
+
 builder.Services.AddScoped<ITrainingTypeRepository, TrainingTypeService>();
+
+builder.Services.AddScoped<IProjectRepository, ProjectRepositoryServices>();
 
 
 builder.Services.AddScoped<IResignationRepository, ResignationService>();
@@ -49,15 +52,12 @@ app.UseStaticFiles();
 
 app.MapControllerRoute(
     name: "default",
-<<<<<<< HEAD
 
-    pattern: "{controller=Project}/{action=Index}/{id?}")
-=======
+  //  pattern: "{controller=Project}/{action=Index}/{id?}")
     pattern: "{controller=Auth}/{action=SignIn}/{id?}")
 
     //pattern: "{controller=Resignation}/{action=Index}/{id?}")
 
->>>>>>> d796f6815f91bc2b634af1ce6abf7dba4ccc9136
     .WithStaticAssets();
 
 

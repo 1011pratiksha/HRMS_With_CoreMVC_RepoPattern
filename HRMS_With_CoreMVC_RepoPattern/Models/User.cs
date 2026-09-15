@@ -61,16 +61,20 @@ namespace HRMS_With_CoreMVC_RepoPattern.Models
 
 
         // Navigation properties
-        public List<TaskMembers> TaskMembers { get; set; }= new List<TaskMembers>();
 
-        public List<Timesheet> Timesheets { get; set; }= new List<Timesheet>();
 
-        public List<LeaveBalance> LeaveBalances { get; set; }= new List<LeaveBalance>();
+        public ICollection<TaskMembers> TaskMembers { get; set; } = new List<TaskMembers>();
 
-        public List<LeaveRequest> LeaveRequests { get; set; }= new List<LeaveRequest>();
+        public List<Timesheet> Timesheets { get; set; } = new List<Timesheet>();
 
-        public ICollection<FileUpload> FileUploads { get; set; }= new List<FileUpload>();
+        public List<LeaveBalance> LeaveBalances { get; set; } = new List<LeaveBalance>();
 
-        public List<Projects> Projects { get; set; }= new List<Projects>();
+        public List<LeaveRequest> LeaveRequests { get; set; } = new List<LeaveRequest>();
+
+        public ICollection<FileUpload> FileUploads { get; set; } = new List<FileUpload>();
+
+
+       
+        public ICollection<Projects> Projects { get; set; } = new List<Projects>();
     }
 }
