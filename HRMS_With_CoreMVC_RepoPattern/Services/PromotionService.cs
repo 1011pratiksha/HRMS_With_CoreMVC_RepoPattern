@@ -14,24 +14,24 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
             _context = context;
         }
 
-        public List<Promotion> FetchGetAll()
+        public async Task<List<Promotion>> FetchGetAll()
         {
             return _context.Promotion.Include(p => p.User).OrderByDescending(p => p.Date).ToList();
         }
 
-        public Promotion GetById(int id)
+        public async Task<Promotion> GetById(int id)
         {
             return _context.Promotion.Find(id);
         }
 
-        public string Add(Promotion p)
+        public async Task<string> Add(Promotion p)
         {
             _context.Promotion.Add(p);
             _context.SaveChanges();
             return "Promotion added successfully!";
         }
 
-        public string Update(Promotion p)
+        public async Task<string> Update(Promotion p)
         {
             var existing = _context.Promotion.Find(p.PromotionId);
             if (existing == null)
@@ -50,7 +50,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
             return "Promotion updated successfully!";
         }
 
-        public string Delete(int id)
+        public async Task<string> Delete(int id)
         {
             var promotion = _context.Promotion.Find(id);
             if (promotion == null)
@@ -65,12 +65,12 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
             }
         }
 
-        public List<User> FetchAllUsers()
+        public async Task<List<User>> FetchAllUsers()
         {
             return _context.User.ToList();
         }
 
-        public List<Designation> FetchAllDesignations()
+        public async Task<List<Designation>> FetchAllDesignations()
         {
             return _context.Designations.ToList();
         }
