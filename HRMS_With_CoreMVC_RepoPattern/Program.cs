@@ -21,6 +21,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IPromotionRepository, PromotionService>();
 builder.Services.AddScoped<ITrainerRepository, TrainerService>();
 builder.Services.AddScoped<ITrainingTypeRepository, TrainingTypeService>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepositoryServices>();
 
 
 builder.Services.AddScoped<IResignationRepository, ResignationService>();

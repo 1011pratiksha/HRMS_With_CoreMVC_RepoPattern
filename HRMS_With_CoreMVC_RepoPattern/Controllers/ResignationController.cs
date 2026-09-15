@@ -41,7 +41,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
 
                 if (user != null)
                 {
-                    r.DepartmentId = user.DepartmentId ?? 0;
+                    r.DepartmentId = user.DepartmentId ??0;
 
                     resignationRepository.AddResignation(r);
 
