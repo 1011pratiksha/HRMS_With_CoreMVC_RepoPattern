@@ -12,7 +12,6 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HRMS_With_CoreMVC_RepoPattern.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260913132018_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

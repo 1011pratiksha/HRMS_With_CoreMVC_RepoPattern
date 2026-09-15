@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 // Add services to the container.
+builder.Services.AddScoped<IAddRoleService, AddRoleService>();
 builder.Services.AddScoped<IEventTypeService, EventTypeService>();
 builder.Services.AddScoped<IEventService,  EventService>();
 builder.Services.AddControllersWithViews();
