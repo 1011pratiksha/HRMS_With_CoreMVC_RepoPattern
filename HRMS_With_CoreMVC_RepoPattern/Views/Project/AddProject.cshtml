@@ -1,0 +1,89 @@
+﻿@model Projects
+
+<form method="post"
+      asp-controller="Project"
+      asp-action="ProjectAdd"
+      enctype="multipart/form-data">
+
+    <label>Project Name</label>
+    <input type="text" name="ProjectName" class="form-control" />
+
+    <label>Client Name</label>
+    <input type="text" name="ClientName" class="form-control" />
+
+    <label>Description</label>
+    <textarea name="Description" class="form-control"></textarea>
+
+    <label>Start Date</label>
+    <input type="date" name="StartDate" class="form-control" />
+
+    <label>End Date</label>
+    <input type="date" name="EndDate" class="form-control" />
+
+    <label>Priority</label>
+    <select name="Priority" class="form-control">
+        <option value="">Select Priority</option>
+        <option value="High">High</option>
+        <option value="Medium">Medium</option>
+        <option value="Low">Low</option>
+    </select>
+
+    <label>Project Value</label>
+    <input type="number" name="ProjectValue" class="form-control" />
+
+    <label>Price Type</label>
+    <select name="PriceType" class="form-control">
+        <option value="">Select Currency Type</option>
+        <option value="INR">Indian Rupee (₹)</option>
+        <option value="USD">US Dollar ($)</option>
+        <option value="EUR">Euro (€)</option>
+        <option value="GBP">British Pound (£)</option>
+        <option value="AUD">Australian Dollar (A$)</option>
+        <option value="CAD">Canadian Dollar (C$)</option>
+        <option value="JPY">Japanese Yen (¥)</option>
+    </select>
+
+    <label>Status</label>
+    <select name="Status" class="form-control">
+        <option value="">Select Status</option>
+        <option value="Active">Active</option>
+        <option value="Inactive">Inactive</option>
+    </select>
+
+    <label>Team Members</label>
+
+    @foreach (var user in ViewBag.GetUsers)
+    {
+        <div>
+            <input type="checkbox"
+                   name="Users"
+                   value="@user.UserId" />
+
+            @user.FirstName
+        </div>
+    }
+
+    <label>Manager Name</label>
+
+    <select name="ManagerName" class="form-control">
+        <option value="">Select Manager</option>
+
+        @foreach (var manager in ViewBag.Managername)
+        {
+            <option value="@manager.FirstName">
+                @manager.FirstName
+            </option>
+        }
+    </select>
+
+    <label>Upload Project Logo</label>
+    <input type="file" name="Logo" class="form-control" />
+
+    <label>Upload File</label>
+    <input type="file" name="File" class="form-control" />
+
+    <button type="submit" class="btn btn-warning">
+        Add Project
+    </button>
+
+</form>
