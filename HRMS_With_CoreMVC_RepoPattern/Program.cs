@@ -3,6 +3,10 @@ using HRMS_With_CoreMVC_RepoPattern.Repository;
 using HRMS_With_CoreMVC_RepoPattern.Services;
 using Microsoft.EntityFrameworkCore;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> 668d3cd1817e19232b070041a9b192651c7f798f
 =======
 
 >>>>>>> 668d3cd1817e19232b070041a9b192651c7f798f
@@ -64,18 +68,26 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     pattern: "{controller=Task}/{action=Index}/{id?}")
 =======
 <<<<<<< HEAD
     pattern: "{controller=Auth}/{action=SignIn}/{id?}");
 =======
+=======
+    pattern: "{controller=Auth}/{action=SignIn}/{id?}");
+=======
+>>>>>>> 668d3cd1817e19232b070041a9b192651c7f798f
 
   //  pattern: "{controller=Project}/{action=Index}/{id?}")
     pattern: "{controller=Auth}/{action=SignIn}/{id?}")
 
     //pattern: "{controller=Resignation}/{action=Index}/{id?}")
 
+<<<<<<< HEAD
+>>>>>>> 668d3cd1817e19232b070041a9b192651c7f798f
+=======
 >>>>>>> 668d3cd1817e19232b070041a9b192651c7f798f
     .WithStaticAssets();
 
