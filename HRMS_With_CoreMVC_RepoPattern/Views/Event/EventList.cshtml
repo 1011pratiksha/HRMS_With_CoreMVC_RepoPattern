@@ -126,8 +126,22 @@
 
                         </td>
                         <td>
-                            <button>Edit</button>
-                            <button>Delete</button>
+                            <button data-bs-toggle="modal"
+                                    data-bs-target="#updateModal"
+                                    onclick="editEvent(
+                                        '@item.Id',
+                                        '@item.Title',
+                                        '@item.Date.ToString("yyyy-MM-dd")',
+                                        '@item.Status',
+                                        '@item.EventTypeId'
+                                 )">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <a asp-controller="Event"
+                               asp-action="EventDelete"
+                                asp-route-id="@item.Id">
+                                <i class="bi bi-trash"></i>
+                            </a>
                         </td>
                     </tr>
                 }
@@ -138,12 +152,92 @@
     </div>
 </div>
 
+@* Update Model *@
+
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Event</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-controller="Event" asp-action="updateEvent">
+
+                    <input type="text" name="Id" id="editId"  hidden="hidden"/>
+
+                    <br />
+
+                    <label>Event Title</label>
+                    <input type="text" name="Title" id="edittitle" class="form-control" />
+
+                    <br />
+
+                    <label>Event Date</label>
+                    <input type="date" name="Date" id="editdate" class="form-control" />
+
+                    <br />
+
+
+                    <label>Status</label>
+                    <select name="Status" id="editstatus" class="form-control">
+                        <option value="">Select Status</option>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+
+                    <br />
+
+                    <label>Event Type</label>
+                    <select name="EventTypeId" id="editeventtypeid" class="form-control">
+                        <option value="">Select Event Type</option>
+
+                        @foreach (var item in ViewBag.EventTypes)
+                        {
+                            <option value="@item.Id">@item.Name</option>
+                        }
+
+                    </select>
+                    <br />
+                    <br />
+
+                    <input type="submit" value="Update Event" />
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
 
 @section Scripts
 {
     <script>
+
+         function editEvent(id, title,date, status, eventtypeid) {
+
+            document.getElementById("editId").value = id;
+
+            document.getElementById("edittitle").value = title;
+
+            document.getElementById("editdate").value = date;
+
+            document.getElementById("editstatus").value = status;
+
+            document.getElementById("editeventtypeid").value = eventtypeid;
+
+        }
+
+
         $(document).ready(function () {
             $('#eventTable').DataTable();
         });
     </script>
+
 }

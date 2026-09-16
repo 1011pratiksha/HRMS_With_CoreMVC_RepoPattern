@@ -20,8 +20,17 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
             data.SaveChanges();
         }
 
+        public void DeleteEvent(int id)
+        {
+            var findEvent = data.Events.Find(id);
 
+            if (findEvent != null)
+            {
+                data.Events.Remove(findEvent);
+                data.SaveChanges();
 
+            }
+        }
         public List<EventModel> GetEvent()
         {
             return data.Events.Include(x => x.EventType).ToList();
@@ -30,6 +39,21 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
         public List<EventTypes> GetEventTypes()
         {
             return data.EventTypes.ToList();
+        }
+
+        public void UpdateEvent(EventModel model)
+        {
+            var oldData = data.Events.Find(model.Id);
+
+            if (oldData != null)
+            {
+                oldData.Title = model.Title;
+                oldData.Date = model.Date;
+                oldData.Status = model.Status;
+                oldData.EventTypeId = model.EventTypeId;
+            }
+
+            data.SaveChanges();
         }
     }
 }

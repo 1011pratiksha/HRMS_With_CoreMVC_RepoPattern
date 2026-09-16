@@ -34,6 +34,19 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult EventDelete(int id)
+        {
+            service.DeleteEvent(id);
+            return RedirectToAction("EventList");
+
+        }
+
+        public IActionResult updateEvent(EventModel model)
+        {
+            service.UpdateEvent(model);
+
+            return RedirectToAction("EventList");
+        }
        
     }
 }

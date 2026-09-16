@@ -6,14 +6,42 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HRMS_With_CoreMVC_RepoPattern.Migrations
 {
     /// <inheritdoc />
-    public partial class MakeUserFieldsNullable : Migration
+    public partial class updatedUser : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
+                name: "FK_Resignation_User_UserID",
+                table: "Resignation");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Termination_User_UserID",
+                table: "Termination");
+
+            migrationBuilder.DropForeignKey(
                 name: "FK_User_Role_RoleId",
                 table: "User");
+
+            migrationBuilder.RenameColumn(
+                name: "UserID",
+                table: "Termination",
+                newName: "UserId");
+
+            migrationBuilder.RenameIndex(
+                name: "IX_Termination_UserID",
+                table: "Termination",
+                newName: "IX_Termination_UserId");
+
+            migrationBuilder.RenameColumn(
+                name: "UserID",
+                table: "Resignation",
+                newName: "UserId");
+
+            migrationBuilder.RenameIndex(
+                name: "IX_Resignation_UserID",
+                table: "Resignation",
+                newName: "IX_Resignation_UserId");
 
             migrationBuilder.AlterColumn<string>(
                 name: "Status",
@@ -80,6 +108,22 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                 oldType: "nvarchar(max)");
 
             migrationBuilder.AddForeignKey(
+                name: "FK_Resignation_User_UserId",
+                table: "Resignation",
+                column: "UserId",
+                principalTable: "User",
+                principalColumn: "UserId",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Termination_User_UserId",
+                table: "Termination",
+                column: "UserId",
+                principalTable: "User",
+                principalColumn: "UserId",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
                 name: "FK_User_Role_RoleId",
                 table: "User",
                 column: "RoleId",
@@ -91,8 +135,36 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
+                name: "FK_Resignation_User_UserId",
+                table: "Resignation");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Termination_User_UserId",
+                table: "Termination");
+
+            migrationBuilder.DropForeignKey(
                 name: "FK_User_Role_RoleId",
                 table: "User");
+
+            migrationBuilder.RenameColumn(
+                name: "UserId",
+                table: "Termination",
+                newName: "UserID");
+
+            migrationBuilder.RenameIndex(
+                name: "IX_Termination_UserId",
+                table: "Termination",
+                newName: "IX_Termination_UserID");
+
+            migrationBuilder.RenameColumn(
+                name: "UserId",
+                table: "Resignation",
+                newName: "UserID");
+
+            migrationBuilder.RenameIndex(
+                name: "IX_Resignation_UserId",
+                table: "Resignation",
+                newName: "IX_Resignation_UserID");
 
             migrationBuilder.AlterColumn<string>(
                 name: "Status",
@@ -173,6 +245,22 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                 oldClrType: typeof(string),
                 oldType: "nvarchar(max)",
                 oldNullable: true);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Resignation_User_UserID",
+                table: "Resignation",
+                column: "UserID",
+                principalTable: "User",
+                principalColumn: "UserId",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Termination_User_UserID",
+                table: "Termination",
+                column: "UserID",
+                principalTable: "User",
+                principalColumn: "UserId",
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_User_Role_RoleId",

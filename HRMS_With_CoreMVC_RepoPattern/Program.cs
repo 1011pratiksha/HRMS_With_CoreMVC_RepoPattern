@@ -2,6 +2,8 @@ using HRMS_With_CoreMVC_RepoPattern.Data;
 using HRMS_With_CoreMVC_RepoPattern.Repository;
 using HRMS_With_CoreMVC_RepoPattern.Services;
 using Microsoft.EntityFrameworkCore;
+using HRMS_With_CoreMVC_RepoPattern.Repository;
+using HRMS_With_CoreMVC_RepoPattern.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IAddRoleService, AddRoleService>();
 builder.Services.AddScoped<IEventTypeService, EventTypeService>();
 builder.Services.AddScoped<IEventService,  EventService>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -19,10 +22,19 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IPromotionRepository, PromotionService>();
 builder.Services.AddScoped<ITrainerRepository, TrainerService>();
+builder.Services.AddScoped<ITrainingTypeRepository, TrainingTypeService>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepositoryServices>();
+
+builder.Services.AddScoped<ITrainingTypeRepository, TrainingTypeService>();
+
+builder.Services.AddScoped<IProjectRepository, ProjectRepositoryServices>();
 
 
 builder.Services.AddScoped<IResignationRepository, ResignationService>();
 builder.Services.AddScoped<ITerminationRepository, TerminationService>();
+builder.Services.AddScoped<ITrainingRepository, TrainingService>();
+
+builder.Services.AddScoped<ILeaveService, LeaveService>();
 
 var app = builder.Build();
 
@@ -43,6 +55,8 @@ app.UseStaticFiles();
 
 app.MapControllerRoute(
     name: "default",
+
+  //  pattern: "{controller=Project}/{action=Index}/{id?}")
     pattern: "{controller=Auth}/{action=SignIn}/{id?}")
 
     //pattern: "{controller=Resignation}/{action=Index}/{id?}")
