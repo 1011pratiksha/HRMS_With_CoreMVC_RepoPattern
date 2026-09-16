@@ -48,4 +48,10 @@
 		</PackageReference>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="wwwroot\Logo\" />
+	  <Folder Include="wwwroot\File\" />
+	  <Folder Include="wwwroot\Profile\" />
+	</ItemGroup>
+
 </Project>

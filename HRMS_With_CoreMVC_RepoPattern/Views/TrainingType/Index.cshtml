@@ -1,0 +1,152 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model List<HRMS_With_CoreMVC_RepoPattern.Models.TrainingType>
+
+@{
+    ViewData["Title"] = "Training Types";
+}
+
+<h2>Training Type Management</h2>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+
+<button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addModal">
+    Add Training Type
+</button>
+
+<table id="trainingTypeTable" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.TrainingTypeId</td>
+                <td>@item.TrainingTypeName</td>
+                <td>@item.Description</td>
+                <td>
+                    @if (item.Status == "Active")
+                    {
+                        <span class="badge bg-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Inactive</span>
+                    }
+                </td>
+                <td>
+                    <button class="btn btn-sm btn-warning"
+                            data-bs-toggle="modal"
+                            data-bs-target="#editModal"
+                            onclick="loadEditModal(@item.TrainingTypeId, '@item.TrainingTypeName', '@item.Description', '@item.Status')">
+                        Edit
+                    </button>
+                    <form asp-action="Delete" method="post" style="display:inline;" onsubmit="return confirm('Delete this training type?');">
+                        <input type="hidden" name="id" value="@item.TrainingTypeId" />
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Add Modal -->
+<div class="modal fade" id="addModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="Add" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Training Type</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label>Name</label>
+                        <input type="text" name="TrainingTypeName" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label>Description</label>
+                        <textarea name="Description" class="form-control" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label>Status</label>
+                        <select name="Status" class="form-select" required>
+                            <option value="">Select</option>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="Edit" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Training Type</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="TrainingTypeId" id="editTrainingTypeId" />
+                    <div class="mb-3">
+                        <label>Name</label>
+                        <input type="text" name="TrainingTypeName" id="editTrainingTypeName" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label>Description</label>
+                        <textarea name="Description" id="editDescription" class="form-control" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label>Status</label>
+                        <select name="Status" id="editStatus" class="form-select" required>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#trainingTypeTable').DataTable();
+        });
+
+        function loadEditModal(id, name, description, status) {
+            $('#editTrainingTypeId').val(id);
+            $('#editTrainingTypeName').val(name);
+            $('#editDescription').val(description);
+            $('#editStatus').val(status);
+        }
+    </script>
+}
