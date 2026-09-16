@@ -56,6 +56,7 @@
 	  <Folder Include="Views\NewFolder\" />
 	  <Folder Include="wwwroot\Logo\" />
 	  <Folder Include="wwwroot\File\" />
+	  <Folder Include="wwwroot\TaskFile\" />
 	  <Folder Include="wwwroot\Profile\" />
 	</ItemGroup>
 

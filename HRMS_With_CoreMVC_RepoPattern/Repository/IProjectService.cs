@@ -15,6 +15,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Repository
 
         public void DeleteProject(int id);
 
-        //public void UpdateProject(Projects )
+        public Projects GetById(int id);
+        public void UpdateProject(Projects pro, IFormFile logo, IFormFile file, int[] Users);
     }
 }

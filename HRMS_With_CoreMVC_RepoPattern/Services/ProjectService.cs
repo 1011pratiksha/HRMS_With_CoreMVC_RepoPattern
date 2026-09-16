@@ -50,6 +50,12 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
             data.SaveChanges();
         }
 
+        public Projects GetById(int id)
+        {
+            return data.AllProjects.Include(x => x.Users).FirstOrDefault(x => x.ProjectId == id);
+ 
+        }
+
         public List<User> GetManagers()
         {
             return data.User.Where(x => x.Role.RoleName == "Manager").ToList();
@@ -57,12 +63,54 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
 
         public List<Projects> GetProjects()
         {
-            return data.AllProjects.Include(x => x.Users).ToList();
+            return data.AllProjects.Include(x => x.Users).Include(x => x.Task).ToList();
         }
 
         public List<User> getUser()
         {
             return data.User.ToList();
+        }
+
+        public void UpdateProject(Projects pro, IFormFile logo, IFormFile file, int[] Users)
+        {
+            var oldData = data.AllProjects.Include(x => x.Users).FirstOrDefault(x => x.ProjectId == pro.ProjectId);
+
+            if (oldData != null)
+            {
+                oldData.ProjectName = pro.ProjectName;
+                oldData.ClientName = pro.ClientName;
+                oldData.Description = pro.Description;
+                oldData.StartDate = pro.StartDate;
+                oldData.EndDate = pro.EndDate;
+                oldData.Priority = pro.Priority;
+                oldData.ProjectValue = pro.ProjectValue;
+                oldData.PriceType = pro.PriceType;
+                oldData.Status = pro.Status;
+                oldData.ManagerName = pro.ManagerName;
+
+            }
+
+            if (logo != null)
+            {
+                string path = "wwwroot/Logo/" + logo.FileName;
+
+                logo.CopyTo(new FileStream(path, FileMode.Create));
+
+                oldData.LogoPath = "/Logo/" + logo.FileName;
+            }
+
+            if (file != null)
+            {
+                string path = "wwwroot/File/" + file.FileName;
+
+                file.CopyTo(new FileStream(path, FileMode.Create));
+
+                oldData.FilePath = "/File/" + file.FileName;
+            }
+
+            oldData.Users = data.User.Where(x => Users.Contains(x.UserId)).ToList();
+
+            data.SaveChanges();
         }
     }
 }

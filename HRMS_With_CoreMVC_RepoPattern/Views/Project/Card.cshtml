@@ -1,0 +1,139 @@
+﻿@model List<Projects>
+
+
+     <div class="row">
+    <div class="col">
+        <h2>Projects</h2>
+
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a>
+                    <i class="bi bi-house"></i>
+                </a>
+            </li>
+            <li class="breadcrumb-item">Projects</li>
+            <li class="breadcrumb-item active">Employee</li>
+             <li class="breadcrumb-item active">Projects Grid</li>
+        </ol>
+    </div>
+
+   <div class="col-auto">
+
+             
+        <a asp-controller="Project"
+           asp-action="Index"
+           class="btn btn-warning" >
+            <i class="bi bi-list"></i>
+        </a>
+         
+       
+        <a asp-controller="Project"
+           asp-action="Card"
+           class="btn btn-warning">
+            <i class="bi bi-grid"></i>
+        </a>
+
+
+    <a asp-controller="Project"
+       asp-action="AddProject"
+       class="btn btn-warning">
+        Add Project
+    </a>
+</div>
+</div>
+
+
+
+<div class="card">
+
+        <div class="card-header d-flex justify-content-between align-items-center">
+        <h5>Project Gird</h5>
+
+         <div class="d-flex align-items-center gap-3">
+
+            <select class="form-select" style="width:110px;" name="Status"  onchange="location.href='/Project/Card?Status=' + this.value">
+                <option value="All">All</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+            </select>
+
+            <div class="d-flex align-items-center gap-2">
+
+                <span>Sort By:</span>
+
+                <select class="form-select" style="width:170px;" name="sort"  onchange="location.href='/Project/Card?sort=' + this.value">
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
+                </select>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="card-body">
+
+    <div class="row">
+
+        @foreach (var card in Model)
+        {
+            <div class="col-md-3">
+
+                <div class="card">
+
+                    <div class="card-body">
+
+                        <div class="d-flex justify-content-between">
+
+                            <h5>@card.ProjectName</h5>
+
+                            <i class="bi bi-three-dots-vertical"></i>
+
+                        </div>
+
+                        <p>@card.ClientName</p>
+
+                        <hr />
+
+                        <div class="d-flex justify-content-between">
+
+                            <div>
+                                <p>@card.ManagerName</p>
+                                <small>Project Leader</small>
+                            </div>
+
+                            <div>
+                                <small>Deadline</small>
+                                <p>@card.EndDate.ToString("yyyy MM dd")</p>
+                            </div>
+
+                        </div>
+
+                        <hr />
+
+                        <div class="d-flex justify-content-between">
+
+                            <span>Task : @card.Task.Count()</span>
+
+                            <div>
+                                @foreach (var img in card.Users)
+                                {
+                                    <img src="@img.ProfilePicture"
+                                         width="35"
+                                         height="35" />
+                                }
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+
+</div>
