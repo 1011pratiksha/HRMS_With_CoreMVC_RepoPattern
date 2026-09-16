@@ -1,0 +1,74 @@
+﻿@model Tasks
+
+<div class="card">
+    <div class="card-body">
+
+        <h3>Add New Task</h3>
+
+        <form method="post" enctype="multipart/form-data">
+
+            <div class="mb-3">
+                <label>Title</label>
+                <input asp-for="Title" class="form-control" />
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+                    <label>Due Date</label>
+                    <input asp-for="Deadline" type="date" class="form-control" />
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label>Select Project</label>
+                    <select asp-for="ProjectId" class="form-select">
+                        <option value="">Select Project</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label>Team Members</label>
+                    <select name="Users" class="form-select" multiple>
+                        <option value="">Select Team Members</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label>Status</label>
+                    <select asp-for="Status" class="form-select">
+                        <option value="">Select Status</option>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label>Priority</label>
+                    <select asp-for="Priority" class="form-select">
+                        <option value="">Select Priority</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="mb-3">
+                <label>Description</label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label>Upload Attachment</label>
+                <input type="file" name="file" class="form-control" />
+            </div>
+
+            <button type="submit" class="btn btn-warning">
+                Add New Task
+            </button>
+
+        </form>
+
+    </div>
+</div>

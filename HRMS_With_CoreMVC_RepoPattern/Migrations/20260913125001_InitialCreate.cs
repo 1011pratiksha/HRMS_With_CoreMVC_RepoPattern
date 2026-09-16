@@ -9,7 +9,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
     public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
-<<<<<<< HEAD:HRMS_With_CoreMVC_RepoPattern/Migrations/20260913125054_InitialCreate.cs
         //protected override void Up(MigrationBuilder migrationBuilder)
         //{
         //    migrationBuilder.CreateTable(
@@ -1013,7 +1012,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
         //        name: "IX_Training_TrainingTypeId",
         //        table: "Training",
         //        column: "TrainingTypeId");
-=======
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -1948,143 +1947,136 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                 name: "IX_Training_TrainingTypeId",
                 table: "Training",
                 column: "TrainingTypeId");
->>>>>>> d796f6815f91bc2b634af1ce6abf7dba4ccc9136:HRMS_With_CoreMVC_RepoPattern/Migrations/20260913125001_InitialCreate.cs
 
-        //    migrationBuilder.CreateIndex(
-        //        name: "IX_Training_UserId",
-        //        table: "Training",
-        //        column: "UserId");
+            //    migrationBuilder.CreateIndex(
+            //        name: "IX_Training_UserId",
+            //        table: "Training",
+            //        column: "UserId");
 
-        //    migrationBuilder.CreateIndex(
-        //        name: "IX_User_DepartmentId",
-        //        table: "User",
-        //        column: "DepartmentId");
+            //    migrationBuilder.CreateIndex(
+            //        name: "IX_User_DepartmentId",
+            //        table: "User",
+            //        column: "DepartmentId");
 
-        //    migrationBuilder.CreateIndex(
-        //        name: "IX_User_DesignationtId",
-        //        table: "User",
-        //        column: "DesignationtId");
+            //    migrationBuilder.CreateIndex(
+            //        name: "IX_User_DesignationtId",
+            //        table: "User",
+            //        column: "DesignationtId");
 
-        //    migrationBuilder.CreateIndex(
-        //        name: "IX_User_RoleId",
-        //        table: "User",
-        //        column: "RoleId");
-        //}
+            //    migrationBuilder.CreateIndex(
+            //        name: "IX_User_RoleId",
+            //        table: "User",
+            //        column: "RoleId");
+            //}
 
-        ///// <inheritdoc />
-        //protected override void Down(MigrationBuilder migrationBuilder)
-        //{
-        //    migrationBuilder.DropTable(
-        //        name: "addAdminDocNames");
+            ///// <inheritdoc />
+            //protected override void Down(MigrationBuilder migrationBuilder)
+            //{
+            //    migrationBuilder.DropTable(
+            //        name: "addAdminDocNames");
 
-        //    migrationBuilder.DropTable(
-        //        name: "addEmployeeDocNames");
+            //    migrationBuilder.DropTable(
+            //        name: "addEmployeeDocNames");
 
-        //    migrationBuilder.DropTable(
-        //        name: "AdminDocuments");
+            //    migrationBuilder.DropTable(
+            //        name: "AdminDocuments");
 
-        //    migrationBuilder.DropTable(
-        //        name: "Deduction");
+            //    migrationBuilder.DropTable(
+            //        name: "Deduction");
 
-        //    migrationBuilder.DropTable(
-        //        name: "Earning");
+            //    migrationBuilder.DropTable(
+            //        name: "Earning");
 
-        //    migrationBuilder.DropTable(
-        //        name: "EducationDetails");
+            //    migrationBuilder.DropTable(
+            //        name: "EducationDetails");
 
-        //    migrationBuilder.DropTable(
-        //        name: "EmployeeBankDetails");
+            //    migrationBuilder.DropTable(
+            //        name: "EmployeeBankDetails");
 
-        //    migrationBuilder.DropTable(
-        //        name: "EmployeeFamilyDetails");
+            //    migrationBuilder.DropTable(
+            //        name: "EmployeeFamilyDetails");
 
-        //    migrationBuilder.DropTable(
-        //        name: "EmployeePerformances");
+            //    migrationBuilder.DropTable(
+            //        name: "EmployeePerformances");
 
-        //    migrationBuilder.DropTable(
-        //        name: "Events");
+            //    migrationBuilder.DropTable(
+            //        name: "Events");
 
-<<<<<<< HEAD:HRMS_With_CoreMVC_RepoPattern/Migrations/20260913125054_InitialCreate.cs
-        //    migrationBuilder.DropTable(
-        //        name: "FileUpload");
+            //    migrationBuilder.DropTable(
+            //        name: "FileUpload");
 
-        //    migrationBuilder.DropTable(
-        //        name: "LeaveBalance");
-=======
+            //    migrationBuilder.DropTable(
+            //        name: "LeaveBalance");
+
             migrationBuilder.DropTable(
                 name: "LeaveBalance");
->>>>>>> d796f6815f91bc2b634af1ce6abf7dba4ccc9136:HRMS_With_CoreMVC_RepoPattern/Migrations/20260913125001_InitialCreate.cs
 
-        //    migrationBuilder.DropTable(
-        //        name: "LeaveRequest");
+            //    migrationBuilder.DropTable(
+            //        name: "LeaveRequest");
 
-        //    migrationBuilder.DropTable(
-        //        name: "ProjectsUser");
+            //    migrationBuilder.DropTable(
+            //        name: "ProjectsUser");
 
-        //    migrationBuilder.DropTable(
-        //        name: "Promotion");
+            //    migrationBuilder.DropTable(
+            //        name: "Promotion");
 
-        //    migrationBuilder.DropTable(
-        //        name: "Resignation");
+            //    migrationBuilder.DropTable(
+            //        name: "Resignation");
 
-        //    migrationBuilder.DropTable(
-        //        name: "TaskBoards");
+            //    migrationBuilder.DropTable(
+            //        name: "TaskBoards");
 
-        //    migrationBuilder.DropTable(
-        //        name: "Taskmember");
+            //    migrationBuilder.DropTable(
+            //        name: "Taskmember");
 
-        //    migrationBuilder.DropTable(
-        //        name: "Termination");
+            //    migrationBuilder.DropTable(
+            //        name: "Termination");
 
-<<<<<<< HEAD:HRMS_With_CoreMVC_RepoPattern/Migrations/20260913125054_InitialCreate.cs
-        //    migrationBuilder.DropTable(
-        //        name: "Timesheet");
+            //    migrationBuilder.DropTable(
+            //        name: "Timesheet");
 
-        //    migrationBuilder.DropTable(
-        //        name: "Training");
-=======
-            migrationBuilder.DropTable(
-                name: "Training");
->>>>>>> d796f6815f91bc2b634af1ce6abf7dba4ccc9136:HRMS_With_CoreMVC_RepoPattern/Migrations/20260913125001_InitialCreate.cs
+            //    migrationBuilder.DropTable(
+            //        name: "Training");
 
-        //    migrationBuilder.DropTable(
-        //        name: "DeductionType");
+            //    migrationBuilder.DropTable(
+            //        name: "DeductionType");
 
-        //    migrationBuilder.DropTable(
-        //        name: "EarningType");
+            //    migrationBuilder.DropTable(
+            //        name: "EarningType");
 
-        //    migrationBuilder.DropTable(
-        //        name: "EventTypes");
+            //    migrationBuilder.DropTable(
+            //        name: "EventTypes");
 
-        //    migrationBuilder.DropTable(
-        //        name: "DepartmentLeaves");
+            //    migrationBuilder.DropTable(
+            //        name: "DepartmentLeaves");
 
-        //    migrationBuilder.DropTable(
-        //        name: "Task");
+            //    migrationBuilder.DropTable(
+            //        name: "Task");
 
-        //    migrationBuilder.DropTable(
-        //        name: "Trainer");
+            //    migrationBuilder.DropTable(
+            //        name: "Trainer");
 
-        //    migrationBuilder.DropTable(
-        //        name: "TrainingType");
+            //    migrationBuilder.DropTable(
+            //        name: "TrainingType");
 
-        //    migrationBuilder.DropTable(
-        //        name: "User");
+            //    migrationBuilder.DropTable(
+            //        name: "User");
 
-        //    migrationBuilder.DropTable(
-        //        name: "MasterLeaveType");
+            //    migrationBuilder.DropTable(
+            //        name: "MasterLeaveType");
 
-        //    migrationBuilder.DropTable(
-        //        name: "AllProjects");
+            //    migrationBuilder.DropTable(
+            //        name: "AllProjects");
 
-        //    migrationBuilder.DropTable(
-        //        name: "Designations");
+            //    migrationBuilder.DropTable(
+            //        name: "Designations");
 
-        //    migrationBuilder.DropTable(
-        //        name: "Role");
+            //    migrationBuilder.DropTable(
+            //        name: "Role");
 
-        //    migrationBuilder.DropTable(
-        //        name: "Departments");
-        //}
+            //    migrationBuilder.DropTable(
+            //        name: "Departments");
+            //}
+        }
     }
 }

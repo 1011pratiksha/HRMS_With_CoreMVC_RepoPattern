@@ -2,8 +2,6 @@ using HRMS_With_CoreMVC_RepoPattern.Data;
 using HRMS_With_CoreMVC_RepoPattern.Repository;
 using HRMS_With_CoreMVC_RepoPattern.Services;
 using Microsoft.EntityFrameworkCore;
-using HRMS_With_CoreMVC_RepoPattern.Repository;
-using HRMS_With_CoreMVC_RepoPattern.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IEventTypeService, EventTypeService>();
 builder.Services.AddScoped<IEventService,  EventService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -47,15 +46,8 @@ app.UseStaticFiles();
 
 app.MapControllerRoute(
     name: "default",
-<<<<<<< HEAD
 
-    pattern: "{controller=Project}/{action=Index}/{id?}")
-=======
-    pattern: "{controller=Auth}/{action=SignIn}/{id?}")
-
-    //pattern: "{controller=Resignation}/{action=Index}/{id?}")
-
->>>>>>> d796f6815f91bc2b634af1ce6abf7dba4ccc9136
+    pattern: "{controller=Task}/{action=Index}/{id?}")
     .WithStaticAssets();
 
 

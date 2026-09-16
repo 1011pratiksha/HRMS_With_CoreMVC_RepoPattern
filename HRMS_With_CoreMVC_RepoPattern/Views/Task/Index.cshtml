@@ -1,0 +1,27 @@
+﻿
+
+@model List<Tasks>
+
+
+<div class="row">
+    <div class="col">
+        <h2>Tasks</h2>
+
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a>
+                    <i class="bi bi-house"></i>
+                </a>
+            </li>
+            <li class="breadcrumb-item">Employee</li>
+            <li class="breadcrumb-item active">Tasks</li>
+        </ol>
+    </div>
+
+   <div class="col-auto">
+
+    <a asp-controller="Task" asp-action="AddTask" class="btn btn-warning">
+        Add Task
+    </a>
+</div>
+</div>

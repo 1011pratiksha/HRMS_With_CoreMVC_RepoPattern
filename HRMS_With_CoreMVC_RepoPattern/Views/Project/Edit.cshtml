@@ -1,0 +1,92 @@
+﻿
+@model Projects
+
+<form method="post"
+      asp-controller="Project"
+      asp-action="upProject" 
+      enctype="multipart/form-data">
+
+      <input type="hidden" name="ProjectId" value="@Model.ProjectId"/>
+
+    <label>Project Name</label>
+    <input type="text" name="ProjectName" value="@Model.ProjectName" class="form-control" />
+
+    <label>Client Name</label>
+    <input type="text" name="ClientName" value=@Model.ClientName class="form-control" />
+
+    <label>Description</label>
+    <textarea name="Description" class="form-control">@Model.Description</textarea>
+
+    <label>Start Date</label>
+    <input type="date" name="StartDate" value="@Model.StartDate.ToString("yyyy-MM-dd")" class="form-control" />
+
+    <label>End Date</label>
+    <input type="date" name="EndDate" value="@Model.EndDate.ToString("yyyy-MM-dd")" class="form-control" />
+
+    <label>Priority</label>
+    <select name="Priority" class="form-control">
+        <option value="">Select Priority</option>
+        <option value="High" selected="@(Model.Priority == "High")">High</option>
+        <option value="Medium" selected="@(Model.Priority == "Medium")">Medium</option>
+        <option value="Low" selected="@(Model.Priority == "Low")">Low</option>
+    </select>
+
+    <label>Project Value</label>
+    <input type="number" name="ProjectValue" value="@Model.ProjectValue" class="form-control" />
+
+    <label>Price Type</label>
+    <select name="PriceType" class="form-control">
+        <option value="">Select Currency Type</option>
+        <option value="INR" selected="@(Model.PriceType == "INR")">Indian Rupee (₹)</option>
+        <option value="USD" selected="@(Model.PriceType == "USD")">US Dollar ($)</option>
+        <option value="EUR" selected="@(Model.PriceType == "EUR")">Euro (€)</option>
+        <option value="GBP" selected="@(Model.PriceType == "GBP")">British Pound (£)</option>
+        <option value="AUD" selected="@(Model.PriceType == "AUD")">Australian Dollar (A$)</option>
+        <option value="CAD" selected="@(Model.PriceType == "CAD")">Canadian Dollar (C$)</option>
+        <option value="JPY" selected="@(Model.PriceType == "JPY")">Japanese Yen (¥)</option>
+    </select>
+
+    <label>Status</label>
+    <select name="Status" class="form-control">
+        <option value="">Select Status</option>
+        <option value="Active" selected="@(Model.Status == "Active")">Active</option>
+        <option value="Inactive" selected="@(Model.Status == "Inactive")">Inactive</option>
+    </select>
+
+    <label>Team Members</label>
+
+    @foreach (var user in ViewBag.GetUsers)
+    {
+        <div>
+            <input type="checkbox"
+                   name="Users"
+                   value="@user.UserId" />
+
+            @user.FirstName
+        </div>
+    }
+
+    <label>Manager Name</label>
+
+    <select name="ManagerName" class="form-control">
+        <option value="">Select Manager</option>
+
+        @foreach (var manager in ViewBag.Managername)
+        {
+            <option value="@manager.FirstName">
+                @manager.FirstName
+            </option>
+        }
+    </select>
+
+    <label>Upload Project Logo</label>
+    <input type="file" name="Logo" class="form-control" />
+
+    <label>Upload File</label>
+    <input type="file" name="File" class="form-control" />
+
+    <button type="submit" class="btn btn-Primary">
+        Update Project
+    </button>
+
+</form>
