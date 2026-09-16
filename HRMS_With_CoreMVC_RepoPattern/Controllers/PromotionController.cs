@@ -13,36 +13,36 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
             _service = service;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var p = _service.FetchGetAll();
+            var p = await _service.FetchGetAll();
 
-            ViewBag.User = _service.FetchAllUsers();
-            ViewBag.Designation = _service.FetchAllDesignations();
+            ViewBag.User = await _service.FetchAllUsers();
+            ViewBag.Designation = await _service.FetchAllDesignations();
 
             return View(p);
         }
 
         [HttpPost]
-        public IActionResult Add(Promotion model)
+        public async Task<IActionResult> Add(Promotion model)
         {
-            string message = _service.Add(model);
+            string message = await _service.Add(model);
             TempData["Message"] = message;
             return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public IActionResult Edit(Promotion model)
+        public async Task<IActionResult> Update(Promotion model)
         {
-            string message = _service.Update(model);
+            string message = await _service.Update(model);
             TempData["Message"] = message;
             return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            string message = _service.Delete(id);
+            string message = await _service.Delete(id);
             TempData["Message"] = message;
             return RedirectToAction("Index");
         }

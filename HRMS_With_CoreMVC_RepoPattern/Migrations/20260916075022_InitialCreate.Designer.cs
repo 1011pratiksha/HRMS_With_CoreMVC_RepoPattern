@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HRMS_With_CoreMVC_RepoPattern.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260913125737_FixTaskMembersUserRelationship2")]
-    partial class FixTaskMembersUserRelationship2
+    [Migration("20260916075022_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -82,6 +82,62 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     b.HasKey("AdminDocId");
 
                     b.ToTable("AdminDocuments");
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.Attendance", b =>
+                {
+                    b.Property<int>("AttendanceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AttendanceId"));
+
+                    b.Property<decimal>("BreakHours")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("CheckIn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("CheckOut")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Late")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("LunchIn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("LunchOut")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("OvertimeHours")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("ProductionHours")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("WorkingHours")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("AttendanceId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Attendance");
                 });
 
             modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.Deduction", b =>
@@ -273,6 +329,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("EarningsPercentage")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("EarntypeId")
@@ -378,6 +435,68 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     b.ToTable("EmployeeBankDetails");
                 });
 
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.EmployeeDeductions", b =>
+                {
+                    b.Property<int>("EmployeeDeductionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmployeeDeductionId"));
+
+                    b.Property<decimal>("DeductionAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("DeductionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SalaryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EmployeeDeductionId");
+
+                    b.HasIndex("DeductionId");
+
+                    b.HasIndex("SalaryId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("EmployeeDeductions");
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.EmployeeEarnings", b =>
+                {
+                    b.Property<int>("EmployeeEarningId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmployeeEarningId"));
+
+                    b.Property<decimal>("EarningAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("EarningId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SalaryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EmployeeEarningId");
+
+                    b.HasIndex("EarningId");
+
+                    b.HasIndex("SalaryId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("EmployeeEarnings");
+                });
+
             modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.EmployeeFamilyDetail", b =>
                 {
                     b.Property<int>("FamilyDetailId")
@@ -445,9 +564,11 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("Percentage_Achieved_RO")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal?>("Percentage_Achieved_Self")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Points_Scored_RO")
@@ -481,6 +602,36 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("EmployeePerformances");
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.EmployeeSalaries", b =>
+                {
+                    b.Property<int>("SalaryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SalaryId"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("NetSalary")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("TotalSalary")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("SalaryId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("EmployeeSalaries");
                 });
 
             modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.EventModel", b =>
@@ -533,6 +684,32 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     b.ToTable("EventTypes");
                 });
 
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.FileUpload", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("FileUpload");
+                });
+
             modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.LeaveBalance", b =>
                 {
                     b.Property<int>("LeaveBalanceId")
@@ -564,7 +741,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("LeaveBalance");
+                    b.ToTable("LeaveBalance", (string)null);
                 });
 
             modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.LeaveRequest", b =>
@@ -612,7 +789,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("LeaveRequest");
+                    b.ToTable("LeaveRequest", (string)null);
                 });
 
             modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.MasterLeaveType", b =>
@@ -627,9 +804,45 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("LeaveTypeId");
 
-                    b.ToTable("MasterLeaveType");
+                    b.ToTable("MasterLeaveType", (string)null);
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.Payslips", b =>
+                {
+                    b.Property<int>("PayslipId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PayslipId"));
+
+                    b.Property<DateTime>("GeneratedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Month")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PayslipPath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
+
+                    b.HasKey("PayslipId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Payslips");
                 });
 
             modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.Projects", b =>
@@ -749,14 +962,14 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     b.Property<DateTime>("ResignDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserID")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("ResignationId");
 
                     b.HasIndex("DepartmentId");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Resignation");
                 });
@@ -837,11 +1050,16 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("UserId1")
+                        .HasColumnType("int");
+
                     b.HasKey("AssignedId");
 
                     b.HasIndex("TaskId");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("UserId1");
 
                     b.ToTable("Taskmember");
                 });
@@ -911,14 +1129,65 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserID")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("TerminationId");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Termination");
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.Timesheet", b =>
+                {
+                    b.Property<int>("TimesheetId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TimesheetId"));
+
+                    b.Property<DateTime?>("ApprovedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ApprovedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UserId1")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WorkHours")
+                        .HasColumnType("int");
+
+                    b.HasKey("TimesheetId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("UserId1");
+
+                    b.ToTable("Timesheet");
                 });
 
             modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.Trainer", b =>
@@ -1050,11 +1319,9 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
                     b.Property<string>("AboutEmployee")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("CreatedAt")
@@ -1063,10 +1330,10 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("DateOfBirth")
+                    b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateOfJoining")
+                    b.Property<DateTime?>("DateOfJoining")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("DepartmentId")
@@ -1084,7 +1351,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Gender")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
@@ -1106,17 +1372,15 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProfilePicture")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReportingManager")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoleId")
+                    b.Property<int?>("RoleId")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId");
@@ -1143,6 +1407,17 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     b.HasIndex("UsersUserId");
 
                     b.ToTable("ProjectsUser");
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.Attendance", b =>
+                {
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.Deduction", b =>
@@ -1249,6 +1524,56 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.EmployeeDeductions", b =>
+                {
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.Deduction", "Deduction")
+                        .WithMany()
+                        .HasForeignKey("DeductionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.EmployeeSalaries", "EmployeeSalaries")
+                        .WithMany("EmployeeDeductions")
+                        .HasForeignKey("SalaryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Deduction");
+
+                    b.Navigation("EmployeeSalaries");
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.EmployeeEarnings", b =>
+                {
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.Earning", "Earning")
+                        .WithMany()
+                        .HasForeignKey("EarningId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.EmployeeSalaries", "EmployeeSalaries")
+                        .WithMany("EmployeeEarnings")
+                        .HasForeignKey("SalaryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Earning");
+
+                    b.Navigation("EmployeeSalaries");
+                });
+
             modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.EmployeeFamilyDetail", b =>
                 {
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
@@ -1260,15 +1585,37 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.EmployeeSalaries", b =>
+                {
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.EventModel", b =>
                 {
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.EventTypes", "EventType")
-                        .WithMany("Event")
+                        .WithMany("Events")
                         .HasForeignKey("EventTypeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("EventType");
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.FileUpload", b =>
+                {
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
+                        .WithMany("FileUploads")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.LeaveBalance", b =>
@@ -1286,7 +1633,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                         .IsRequired();
 
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
-                        .WithMany()
+                        .WithMany("LeaveBalances")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1307,12 +1654,23 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                         .IsRequired();
 
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
-                        .WithMany()
+                        .WithMany("LeaveRequests")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("MasterLeaveType");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.Payslips", b =>
+                {
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -1338,7 +1696,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
 
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserID")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1352,13 +1710,13 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.Projects", "Project")
                         .WithMany("TaskBoard")
                         .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.Tasks", "Task")
                         .WithMany("TaskBoard")
                         .HasForeignKey("TaskId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Project");
@@ -1375,10 +1733,14 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                         .IsRequired();
 
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
-                        .WithMany("Task")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", null)
+                        .WithMany("TaskMembers")
+                        .HasForeignKey("UserId1");
 
                     b.Navigation("Task");
 
@@ -1400,9 +1762,32 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                 {
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserID")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.Timesheet", b =>
+                {
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.Projects", "Projects")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", null)
+                        .WithMany("Timesheets")
+                        .HasForeignKey("UserId1");
+
+                    b.Navigation("Projects");
 
                     b.Navigation("User");
                 });
@@ -1446,9 +1831,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
 
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.Role", "Role")
                         .WithMany("Users")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RoleId");
 
                     b.Navigation("Department");
 
@@ -1500,9 +1883,16 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     b.Navigation("Earnings");
                 });
 
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.EmployeeSalaries", b =>
+                {
+                    b.Navigation("EmployeeDeductions");
+
+                    b.Navigation("EmployeeEarnings");
+                });
+
             modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.EventTypes", b =>
                 {
-                    b.Navigation("Event");
+                    b.Navigation("Events");
                 });
 
             modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.MasterLeaveType", b =>
@@ -1535,7 +1925,15 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
 
             modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.User", b =>
                 {
-                    b.Navigation("Task");
+                    b.Navigation("FileUploads");
+
+                    b.Navigation("LeaveBalances");
+
+                    b.Navigation("LeaveRequests");
+
+                    b.Navigation("TaskMembers");
+
+                    b.Navigation("Timesheets");
                 });
 #pragma warning restore 612, 618
         }
