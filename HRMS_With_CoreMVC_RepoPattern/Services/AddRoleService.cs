@@ -1,7 +1,7 @@
 ﻿using HRMS_With_CoreMVC_RepoPattern.Data;
 using HRMS_With_CoreMVC_RepoPattern.Models;
 using HRMS_With_CoreMVC_RepoPattern.Repository;
-
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace HRMS_With_CoreMVC_RepoPattern.Services
@@ -23,7 +23,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
 
         public async Task<Role> DeleteRole(int id)
         {
-            var role = db.Role.Find(id);
+            var role = db.Role.FirstOrDefault(x => x.RoleId == id);
             if (role != null)
             {
                 db.Role.Remove(role);
@@ -42,7 +42,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
             return await db.Role.FindAsync(id);
         }
 
-        public async Task<Role> UpdateRole(Role role)
+        public async Task<Role> EditRole(Role role)
         {
             var existingRole = await db.Role.FindAsync(role.RoleId);
             if (existingRole != null)

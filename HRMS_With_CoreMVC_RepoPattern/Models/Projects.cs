@@ -1,10 +1,8 @@
-<<<<<<< HEAD
 
 ﻿using HRMS_With_CoreMVC_RepoPattern.Models;
 
-=======
+
 ﻿using HRMS_With_CoreMVC_RepoPattern.Models;
->>>>>>> 9a7585b1d63852ff8f75ae6f4d6a9fd8ac0cfae0
 using System.ComponentModel.DataAnnotations;
 
 namespace HRMS_With_CoreMVC_RepoPattern.Models

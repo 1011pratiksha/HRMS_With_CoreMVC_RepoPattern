@@ -1,13 +1,14 @@
 ﻿using HRMS_With_CoreMVC_RepoPattern.Models;
 using HRMS_With_CoreMVC_RepoPattern.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HRMS_With_CoreMVC_RepoPattern.Controllers
 {
     public class EmployeeController : Controller
     {
-        private readonly IAddRoleService roleService;
-        public EmployeeController(IAddRoleService roleService)
+        private readonly IEmployeeService roleService;
+        public EmployeeController(IEmployeeService roleService)
         {
             this.roleService = roleService;
         }
@@ -17,9 +18,10 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
         }
         // for add role  aal the role related functionality will be here
         [HttpGet]
-        public IActionResult AddRole()
+        public async Task<IActionResult> AddRole()
         {
-            return View();
+            var roles = await roleService.GetAllRoles();
+            return View(roles);
         }
 
         //----For fetching all roles
@@ -47,8 +49,9 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
             if (ModelState.IsValid)
             {
                 role.CreatedBy = "Admin";
+                role.CreatedAt = DateTime.Now;
                 var addedRole = await roleService.AddRole(role);
-                return Json(new { success = true, message = "Role added successfully.", data = addedRole });
+               return RedirectToAction("AddRole");
             }
             else
             {
@@ -66,7 +69,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
             {
                 return NotFound();
             }
-            return View(role);
+            return RedirectToAction("AddRole");
         }
 
         [HttpPost]
@@ -74,9 +77,10 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
         {
             if (ModelState.IsValid)
             {
-                role.ModifiedBy = "Admin"; 
-                var updatedRole = await roleService.UpdateRole(role);
-                return Json(new { success = true, message = "Role updated successfully.", data = updatedRole });
+                role.CreatedAt = DateTime.Now;
+                role.CreatedBy = "Admin"; 
+                var updatedRole = await roleService.EditRole(role);
+                return RedirectToAction("AddRole");  // Redirect to the AddRole view after successful edit
             }
             else
             {
@@ -86,17 +90,16 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
         }
 
         //---for deleting a role
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> DeleteRole(int id)
         {
-            var deletedRole = await roleService.DeleteRole(id);
-            if (deletedRole == null)
+            var role = await roleService.GetRoleById(id);
+            if (role != null)
             {
-                return Json(new { success = false, message = "Role not found." });
+                await roleService.DeleteRole(id);
             }
-            return Json(new { success = true, message = "Role deleted successfully.", data = deletedRole });
+            return RedirectToAction("AddRole");
         }
-
 
         //for employee list all the employee related functionality will be here
         public IActionResult EmployeeList()

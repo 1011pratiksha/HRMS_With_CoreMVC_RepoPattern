@@ -146,8 +146,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Data
         public DbSet<TaskMembers> Taskmember { get; set; }
         public DbSet<Timesheet> Timesheet { get; set; }
         public DbSet<EmployeePerformance> EmployeePerformances { get; set; }
-<<<<<<< HEAD
-=======
         public DbSet<Attendance> Attendance { get; set; }
         public DbSet<Deduction> Deduction { get; set; }
         public DbSet<DeductionType> DeductionType { get; set; }
@@ -161,6 +159,5 @@ namespace HRMS_With_CoreMVC_RepoPattern.Data
         public DbSet<LeaveRequest> LeaveRequests { get; set; }
         public DbSet<MasterLeaveType> MasterLeaveTypes { get; set; }
         public DbSet<Payslips> Payslips { get; set; }
->>>>>>> 9a7585b1d63852ff8f75ae6f4d6a9fd8ac0cfae0
     }
 }
