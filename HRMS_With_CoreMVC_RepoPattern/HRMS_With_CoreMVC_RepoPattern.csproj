@@ -7,6 +7,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Services\AddRoleService.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Include="wwwroot\uploads\40c33cb6-b2e8-47e7-98ff-8326fde41b93.jpeg" />
 	  <None Include="wwwroot\uploads\510e8f86-c443-446f-adff-d0f66892b2ec.jpeg" />
 	  <None Include="wwwroot\uploads\5879339-middle.png" />
