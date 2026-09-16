@@ -59,11 +59,11 @@ app.MapControllerRoute(
     name: "default",
 
 
-    pattern: "{controller=Task}/{action=Index}/{id?}")
-    .WithStaticAssets();
+  //  pattern: "{controller=Task}/{action=Index}/{id?}")
+   
 //pattern: "{controller=Auth}/{action=SignIn}/{id?}");
-//  pattern: "{controller=Auth}/{action=SignIn}/{id?}");
-
+  pattern: "{controller=Auth}/{action=SignIn}/{id?}")
+    .WithStaticAssets();
 //  pattern: "{controller=Project}/{action=Index}/{id?}")
 //  pattern: "{controller=Auth}/{action=SignIn}/{id?}")
 
