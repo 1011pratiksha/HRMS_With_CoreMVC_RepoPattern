@@ -5,66 +5,123 @@
 
         <h3>Add New Task</h3>
 
-        <form method="post" enctype="multipart/form-data">
+     
+        <div class="mb-3">
+            <label>Select Project</label>
+
+            <select name="projectId"
+                    class="form-select"
+                    onchange="location.href='/Task/AddTask?projectId=' + this.value">
+
+                <option value="">Select Project</option>
+
+                @foreach (var project in ViewBag.GetProject)
+                {
+                    <option value="@project.ProjectId" 
+                    selected="@(project.ProjectId == ViewBag.ProjectId)">
+                        @project.ProjectName
+                    </option>
+                }
+
+                
+            </select>
+        </div>
+
+        <form method="post"
+              asp-controller="Task"
+              asp-action="AddProjectForm"
+              enctype="multipart/form-data">
+
+          
+            <input type="hidden"
+                   name="ProjectId"
+                   value="@ViewBag.ProjectId" />
+
 
             <div class="mb-3">
                 <label>Title</label>
                 <input asp-for="Title" class="form-control" />
             </div>
 
-            <div class="row">
 
-                <div class="col-md-6 mb-3">
-                    <label>Due Date</label>
-                    <input asp-for="Deadline" type="date" class="form-control" />
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <label>Select Project</label>
-                    <select asp-for="ProjectId" class="form-select">
-                        <option value="">Select Project</option>
-                    </select>
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <label>Team Members</label>
-                    <select name="Users" class="form-select" multiple>
-                        <option value="">Select Team Members</option>
-                    </select>
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <label>Status</label>
-                    <select asp-for="Status" class="form-select">
-                        <option value="">Select Status</option>
-                        <option value="Active">Active</option>
-                        <option value="Inactive">Inactive</option>
-                    </select>
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <label>Priority</label>
-                    <select asp-for="Priority" class="form-select">
-                        <option value="">Select Priority</option>
-                        <option value="High">High</option>
-                        <option value="Medium">Medium</option>
-                        <option value="Low">Low</option>
-                    </select>
-                </div>
-
+            <div class="mb-3">
+                <label>Due Date</label>
+                <input asp-for="Deadline"
+                       type="date"
+                       class="form-control" />
             </div>
+
+
+            <div class="mb-3">
+                <label>Team Members</label>
+
+                @foreach (var user in ViewBag.GetUser)
+                {
+                    <div>
+                        <input type="checkbox"
+                               name="Users"
+                               value="@user.UserId" />
+
+                        @user.FirstName
+                    </div>
+                }
+            </div>
+
+
+            <div class="mb-3">
+                <label>Status</label>
+
+                <select asp-for="Status" class="form-control">
+                    <option value="Pending">Pending</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                    <option value="On Hold">On Hold</option>
+                </select>
+            </div>
+
+
+            <div class="mb-3">
+                <label>Priority</label>
+
+                <select asp-for="Priority" class="form-select">
+
+                    <option value="">Select Priority</option>
+
+                    <option value="High">
+                        High
+                    </option>
+
+                    <option value="Medium">
+                        Medium
+                    </option>
+
+                    <option value="Low">
+                        Low
+                    </option>
+
+                </select>
+            </div>
+
 
             <div class="mb-3">
                 <label>Description</label>
-                <textarea asp-for="Description" class="form-control"></textarea>
+
+                <textarea asp-for="Description"
+                          class="form-control"></textarea>
             </div>
+
 
             <div class="mb-3">
                 <label>Upload Attachment</label>
-                <input type="file" name="file" class="form-control" />
+
+                <input type="file"
+                       name="file"
+                       class="form-control" />
             </div>
 
-            <button type="submit" class="btn btn-warning">
+
+            <button type="submit"
+                    class="btn btn-warning">
                 Add New Task
             </button>
 
