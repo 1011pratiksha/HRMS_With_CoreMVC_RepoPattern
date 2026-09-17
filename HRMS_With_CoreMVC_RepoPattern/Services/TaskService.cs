@@ -1,6 +1,7 @@
 ﻿using HRMS_With_CoreMVC_RepoPattern.Data;
 using HRMS_With_CoreMVC_RepoPattern.Models;
 using HRMS_With_CoreMVC_RepoPattern.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace HRMS_With_CoreMVC_RepoPattern.Services
 {
@@ -12,26 +13,55 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
             data=context;
         }
 
-        public List<Tasks> AddTask(Tasks tk, IFormFile file, int[] Users)
+        public void AddTask(Tasks tk, IFormFile file, int[] Users)
         {
 
-            //if (file != null)
-            //{
-            //    string path = "wwwroot/TaskFile/" + file.FileName;
+            if (file != null)
+            {
+                string path = "wwwroot/TaskFile/" + file.FileName;
 
-            //    file.CopyTo(new FileStream(path, FileMode.Create));
+                file.CopyTo(new FileStream(path, FileMode.Create));
 
-            //    pro.LogoPath = "/TaskFile/" + file.FileName;
-            //}
+                tk.FilePath = "/TaskFile/" + file.FileName;
+            }
 
-            //file.Users = data.Users.Where(x => Users.Contains(x.UserId)).ToList();
+            data.Task.Add(tk);
+            data.SaveChanges();
 
-            //      pro.Users = data.User.Where(x => Users.Contains(x.UserId)).ToList();
+            foreach (var userId in Users)
+            {
+                TaskMembers member = new TaskMembers();
 
+                member.TaskId = tk.TaskId;
+                member.UserId = userId;
 
-            //data.Task.Add(tk, file, Users);
-            //data.SaveChanges();
+                data.Taskmember.Add(member);
+            }
 
+            data.SaveChanges();
+
+        }
+
+        public List<Projects> GetProject()
+        {
+            return data.AllProjects.ToList();
+        }
+
+        public List<Tasks> GetTask()
+        {
+            return data.Task.Include(x => x.Project).ToList();
+        }
+
+        public List<User> GetUsers(int projectId)
+        {
+            var project = data.AllProjects.Include(x => x.Users).FirstOrDefault(x => x.ProjectId == projectId);
+
+            if (project == null)
+            {
+                return new List<User>();
+            }
+
+            return project.Users;
         }
     }
 }

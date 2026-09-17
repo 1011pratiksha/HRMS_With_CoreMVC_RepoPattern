@@ -2,14 +2,6 @@ using HRMS_With_CoreMVC_RepoPattern.Data;
 using HRMS_With_CoreMVC_RepoPattern.Repository;
 using HRMS_With_CoreMVC_RepoPattern.Services;
 using Microsoft.EntityFrameworkCore;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> 668d3cd1817e19232b070041a9b192651c7f798f
-=======
-
->>>>>>> 668d3cd1817e19232b070041a9b192651c7f798f
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,13 +31,8 @@ builder.Services.AddScoped<IEmployeeReportRepository,EmployeeReportServices>();
 builder.Services.AddScoped<IAttendanceReportRepository, AttendanceReportServices>();
 builder.Services.AddScoped<IResignationRepository, ResignationService>();
 builder.Services.AddScoped<ITerminationRepository, TerminationService>();
-<<<<<<< HEAD
 builder.Services.AddScoped<ILeaveReportRepository, LeaveReportServices>();
 builder.Services.AddScoped<IPayslipReportRepository, PayslipReportServices>();
-=======
-builder.Services.AddScoped<ITrainingRepository, TrainingService>();
-
->>>>>>> e618cb39753e048ebd3afe5d910cea000cc17dc9
 builder.Services.AddScoped<ILeaveService, LeaveService>();
 
 var app = builder.Build();
@@ -67,30 +54,16 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-<<<<<<< HEAD
-<<<<<<< HEAD
 
     pattern: "{controller=Task}/{action=Index}/{id?}")
-=======
-<<<<<<< HEAD
-    pattern: "{controller=Auth}/{action=SignIn}/{id?}");
-=======
-=======
-    pattern: "{controller=Auth}/{action=SignIn}/{id?}");
-=======
->>>>>>> 668d3cd1817e19232b070041a9b192651c7f798f
 
   //  pattern: "{controller=Project}/{action=Index}/{id?}")
-    pattern: "{controller=Auth}/{action=SignIn}/{id?}")
+   ?
 
     //pattern: "{controller=Resignation}/{action=Index}/{id?}")
 
-<<<<<<< HEAD
->>>>>>> 668d3cd1817e19232b070041a9b192651c7f798f
-=======
->>>>>>> 668d3cd1817e19232b070041a9b192651c7f798f
+
     .WithStaticAssets();
 
->>>>>>> e618cb39753e048ebd3afe5d910cea000cc17dc9
 
 app.Run();
