@@ -170,7 +170,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
             if (ModelState.IsValid)
             {
                 await EmployeeServices.EditDepartment(department);
-
                 return RedirectToAction("AddDepartment");
             }
 
@@ -181,9 +180,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
 
             return Json(new
             {
-                success = false,
-                message = "Validation failed.",
-                errors
+                success = false,message = "Validation failed.",errors
             });
         }
 
@@ -197,24 +194,111 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
             return RedirectToAction("AddDepartment");
         }
 
-        //for employee list all the employee related functionality will be here
+       
 
-        public IActionResult EmployeeList()
-        {
-            return View();
-        }
-        public IActionResult AddDesignation()
-        {
-            return View();
-        }
-        public IActionResult EmployeeGrid()
-        {
-            return View();
-        }
-        public IActionResult EmployeeDetails()
-        {
-            return View();
-        }
+        //---- all the add designation page related operations are here 
+        //public async Task<IActionResult> AddDesignation()
+        //{
+        //    var designations = await EmployeeServices.GetAllDesignations();
+        //    return View(designations);
+        //}
+
+    //    public async Task<IActionResult> GetAllDesignations()
+    //    {
+    //        var designations = await EmployeeServices.GetAllDesignations();
+    //        var data = designations.Select(d => new
+    //        {
+    //            d.DesignationId,
+    //            d.Name,
+    //            d.NoOfEmployee,
+    //            d.status,
+    //            CreatedAt = d.CreatedAt?.ToString("yyyy-MM-dd HH:mm:ss"),
+    //            d.CreatedBy,
+    //            d.ModifiedBy,
+    //            ModifiedAt = d.ModifiedAt?.ToString("yyyy-MM-dd HH:mm:ss")
+    //        }).ToList();
+    //        return View(data);
+    //    }
+
+    //    public async Task<IActionResult> GetDesignationById(int id)
+    //    {
+    //        var designation = await EmployeeServices.GetDesignationById(id);
+    //        if (designation == null)
+    //        {
+    //            return NotFound();
+    //        }
+    //        return View(designation);
+    //    }
+
+    //    public async Task<IActionResult> AddDesignation(Designation designation)
+    //    {
+    //        if (ModelState.IsValid)
+    //        {
+    //            designation.CreatedBy = "Admin";
+    //            designation.CreatedAt = DateTime.Now;
+    //            var addedDesignation = await EmployeeServices.AddDesignation(designation);
+    //            return RedirectToAction("AddDesignation");
+    //        }
+    //        else
+    //        {
+    //            var errors = ModelState.Values
+    //                .SelectMany(v => v.Errors)
+    //                .Select(e => e.ErrorMessage)
+    //                .ToList();
+    //            return Json(new
+    //            {
+    //                success = false,
+    //                message = "Validation failed.",
+    //                errors
+    //            });
+    //        }
+    //    }
+
+    //    public async Task<IActionResult> EditDesignation(Designation designation)
+    //    {
+    //        if (ModelState.IsValid)
+    //        {
+    //            await EmployeeServices.EditDesignation(designation);
+    //            return RedirectToAction("AddDesignation");
+    //        }
+    //        var errors = ModelState.Values
+    //            .SelectMany(v => v.Errors)
+    //            .Select(e => e.ErrorMessage)
+    //            .ToList();
+    //        return Json(new
+    //        {
+    //            success = false,
+    //            message = "Validation failed.",
+    //            errors
+    //        });
+    //    }
+
+    //    public async Task<IActionResult> DeleteDesignation(int id)
+    //    {
+    //        var designation = await EmployeeServices.GetDesignationById(id);
+    //        if (designation != null)
+    //        {
+    //            await EmployeeServices.DeleteDesignation(id);
+    //        }
+    //        return RedirectToAction("AddDesignation");
+    //    }
+
+
+
+    //    //for employee list all the employee related functionality will be here
+
+    //    public IActionResult EmployeeList()
+    //    {
+    //        return View();
+    //    }
+    //    public IActionResult EmployeeGrid()
+    //    {
+    //        return View();
+    //    }
+    //    public IActionResult EmployeeDetails()
+    //    {
+    //        return View();
+    //    }
 
     }
 }

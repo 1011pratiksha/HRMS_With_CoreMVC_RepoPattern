@@ -60,7 +60,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
         public async Task<List<Department>> GetAllDepartments()
         {
             var departments = await db.Departments.ToListAsync();
-            foreach(var department in departments)
+            foreach (var department in departments)
             {
                 department.NoOfEmployee = await db.User.CountAsync(u => u.DepartmentId == department.DepartmentId);
             }
@@ -104,10 +104,60 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
             }
             return department;
         }
-        
 
-       
 
-        
+        ///---- all add designation page related operational services 
+        //public async Task<List<Designation>> GetAllDesignations()
+        //{
+        //    var designations = await db.Designations.ToListAsync();
+        //    foreach (var designation in designations)
+        //    {
+        //        designation.NoOfEmployee = await db.User.CountAsync(u => u.DesignationtId == designation.DesignationtId);
+        //    }
+        //    return designations;
+        //}
+
+
+
+
+        public async Task<Designation> GetDesignationById(int id)
+        {
+            return await db.Designations.FindAsync(id);
+        }
+
+        //public async Task<Designation> AddDesignation(Designation designation)
+        //{
+        //    designation.CreatedAt = DateTime.Now;
+        //    db.Designations.Add(designation);
+        //    await db.SaveChangesAsync();
+        //    return designation;
+        //}
+
+        //public async Task<Designation> EditDesignation(Designation designation)
+        //{
+        //    var existingDesignation = await db.Designations.FindAsync(designation.DesignationId);
+        //    if (existingDesignation != null)
+        //    {
+        //        existingDesignation.Name = designation.Name;
+        //        existingDesignation.Status = designation.Status;
+        //        existingDesignation.ModifiedBy = "Admin";
+        //        existingDesignation.ModifiedAt = DateTime.Now;
+        //        await db.SaveChangesAsync();
+        //    }
+        //    return existingDesignation;
+        //}
+
+        //public async Task<Designation> DeleteDesignation(int id)
+        //{
+        //    var designation = await db.Designations.FindAsync(id);
+        //    if (designation != null)
+        //    {
+        //        db.Designations.Remove(designation);
+        //        await db.SaveChangesAsync();
+        //    }
+        //    return designation;
+        //}
     }
 }
+
+

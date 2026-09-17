@@ -8,18 +8,16 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
     public class TaskService : ITaskService
     {
         private readonly ApplicationDbContext data;
-        public TaskService(ApplicationDbContext context) 
+        public TaskService(ApplicationDbContext context)
         {
-            data=context;
+            data = context;
         }
 
-<<<<<<< HEAD
+
         public void AddTask(Tasks tk, IFormFile file, int[] Users)
         {
-=======
-        //public List<Tasks> AddTask(Tasks tk, IFormFile file, int[] Users)
-        //{
->>>>>>> 4cfbfb85ef9635a9fd4c29e05d3c9ca793fe0308
+
+
 
             if (file != null)
             {
@@ -43,7 +41,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
                 data.Taskmember.Add(member);
             }
 
-<<<<<<< HEAD
             data.SaveChanges();
 
         }
@@ -69,8 +66,5 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
 
             return project.Users;
         }
-=======
-        //}
->>>>>>> 4cfbfb85ef9635a9fd4c29e05d3c9ca793fe0308
     }
 }
