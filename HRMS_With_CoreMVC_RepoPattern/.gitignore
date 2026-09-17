@@ -4,4 +4,4 @@ obj/
 *.user
 *.suo
 *.logMigrations/
-Migrations/
+/Migrations/
