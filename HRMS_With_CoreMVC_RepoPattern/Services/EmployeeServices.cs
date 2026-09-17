@@ -59,7 +59,12 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
         ///---- all add deparment page related operational services 
         public async Task<List<Department>> GetAllDepartments()
         {
-            return await db.Departments.ToListAsync();
+            var departments = await db.Departments.ToListAsync();
+            foreach(var department in departments)
+            {
+                department.NoOfEmployee = await db.User.CountAsync(u => u.DepartmentId == department.DepartmentId);
+            }
+            return departments;
         }
 
         public async Task<Department> GetDepartmentById(int id)
@@ -80,8 +85,10 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
             var existingDepartment = await db.Departments.FindAsync(department.DepartmentId);
             if (existingDepartment != null)
             {
-                // Update properties of existingDepartment with values from department
-                db.Entry(existingDepartment).CurrentValues.SetValues(department);
+                existingDepartment.Name = department.Name;
+                existingDepartment.Status = department.Status;
+                existingDepartment.ModifiedBy = "Admin";
+                existingDepartment.ModifiedAt = DateTime.Now;
                 await db.SaveChangesAsync();
             }
             return existingDepartment;

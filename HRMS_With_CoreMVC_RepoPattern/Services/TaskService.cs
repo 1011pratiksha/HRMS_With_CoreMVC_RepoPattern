@@ -12,8 +12,8 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
             data=context;
         }
 
-        public List<Tasks> AddTask(Tasks tk, IFormFile file, int[] Users)
-        {
+        //public List<Tasks> AddTask(Tasks tk, IFormFile file, int[] Users)
+        //{
 
             //if (file != null)
             //{
@@ -32,6 +32,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
             //data.Task.Add(tk, file, Users);
             //data.SaveChanges();
 
-        }
+        //}
     }
 }
