@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace HRMS_With_CoreMVC_RepoPattern.Models
 {
@@ -14,6 +15,8 @@ namespace HRMS_With_CoreMVC_RepoPattern.Models
         public string? CreatedBy { get; set; }
         public string? ModifiedBy { get; set; }
         public DateTime? ModifiedAt { get; set; }
+        [ValidateNever]
         public List<User> Users { get; set; }
+       
     }
 }

@@ -6,168 +6,245 @@
 @model List<HRMS_With_CoreMVC_RepoPattern.Models.Promotion>
 
 @{
-    ViewData["Title"] = "Promotions";
+    ViewData["Title"] = "Promotion";
 }
 
-<h2>Promotion Management</h2>
+<div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
+    <div class="my-auto mb-2">
+        <h2 class="mb-1">Promotion</h2>
+        <nav>
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="#"><i class="ti ti-smart-home"></i></a></li>
+                <li class="breadcrumb-item">Performance</li>
+                <li class="breadcrumb-item active" aria-current="page">Promotion</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
+        <div class="mb-2">
+            <a href="#" class="btn btn-warning d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#addModal">
+                <i class="ti ti-circle-plus me-2"></i>Add Promotion
+            </a>
+        </div>
+    </div>
+</div>
 
 @if (TempData["Message"] != null)
 {
     <div class="alert alert-success">@TempData["Message"]</div>
 }
 
-<button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addModal">
-    Add Promotion
-</button>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
+                <h5 class="d-flex align-items-center">Promotion List</h5>
+                <div class="d-flex align-items-center flex-wrap row-gap-3">
+                    <div class="me-2">
+                        <select class="form-select">
+                            <option>Sort By: Ascending</option>
+                            <option>Sort By: Descending</option>
+                        </select>
+                    </div>
+                    <div>
+                        <select class="form-select">
+                            <option>Filter By Date: All Records</option>
+                            <option>Today</option>
+                            <option>Last 7 Days</option>
+                            <option>Last Month</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="custom-datatable-filter table-responsive">
+                    <table id="promotionTable" class="table datatable">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Employee Name</th>
+                                <th>Designation From</th>
+                                <th>Designation To</th>
+                                <th>Promotion Date</th>
+                                <th class="no-sort">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.User.FirstName @item.User.LastName</td>
+                                    <td>@item.DesignationFrom</td>
+                                    <td>@item.DesignationTo</td>
+                                    <td>@item.Date.ToString("dd/MM/yyyy")</td>
+                                    <td>
+                                        <div class="action-icon d-inline-flex">
+                                            <a href="javascript:void(0);" class="me-2"
+                                               data-bs-toggle="modal"
+                                               data-bs-target="#editModal"
+                                               onclick="loadEditModal(@item.PromotionId, @item.UserID, '@item.DesignationFrom', '@item.DesignationTo', '@item.Date.ToString("yyyy-MM-dd")')">
+                                                <i class="ti ti-edit"></i>
+                                            </a>
+                                            <form asp-action="Delete" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this promotion?');">
+                                                <input type="hidden" name="id" value="@item.PromotionId" />
+                                                <button type="submit" class="btn btn-link p-0 border-0">
+                                                    <i class="ti ti-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<table id="promotionTable" class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>User ID</th>
-            <th>From</th>
-            <th>To</th>
-            <th>Date</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.UserID</td>
-                <td>@item.DesignationFrom</td>
-                <td>@item.DesignationTo</td>
-                <td>@item.Date.ToString("dd-MMM-yyyy")</td>
-                <td>
-                    <button class="btn btn-sm btn-warning"
-                            data-bs-toggle="modal"
-                            data-bs-target="#editModal"
-                            onclick="loadEditModal(@item.PromotionId, @item.UserID, '@item.DesignationFrom', '@item.DesignationTo', '@item.Date.ToString("yyyy-MM-dd")')">
-                        Edit
-                    </button>
-                    <form asp-action="Delete" method="post" style="display:inline;" onsubmit="return confirm('Delete this promotion?');">
-                        <input type="hidden" name="id" value="@item.PromotionId" />
-                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                    </form>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-<!-- Add Modal -->
-<div class="modal fade" id="addModal" tabindex="-1">
-    <div class="modal-dialog">
+<!-- Add Promotion -->
+<div class="modal fade" id="addModal">
+    <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Promotion</h4>
+                <button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="ti ti-x"></i>
+                </button>
+            </div>
             <form asp-action="Add" method="post">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add Promotion</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label>Employee</label>
-                        <select name="UserID" class="form-select" required>
-                            <option value="">Select Employee</option>
-                            @foreach (var user in ViewBag.User as List<HRMS_With_CoreMVC_RepoPattern.Models.User>)
-                            {
-                                <option value="@user.UserId">@user.FirstName</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label>Designation From</label>
-                        <select name="DesignationFrom" class="form-select" required>
-                            <option value="">Select Designation</option>
-                            @foreach (var d in ViewBag.Designation as List<HRMS_With_CoreMVC_RepoPattern.Models.Designation>)
-                            {
-                                <option value="@d.Name">@d.Name</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label>Designation To</label>
-                        <select name="DesignationTo" class="form-select" required>
-                            <option value="">Select Designation</option>
-                            @foreach (var d in ViewBag.Designation as List<HRMS_With_CoreMVC_RepoPattern.Models.Designation>)
-                            {
-                                <option value="@d.Name">@d.Name</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label>Date</label>
-                        <input type="date" name="Date" class="form-control" required />
+                <div class="modal-body pb-0">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label class="form-label">Employee</label>
+                                <select name="UserID" class="form-select" required>
+                                    <option value="">Select</option>
+                                    @foreach (var user in ViewBag.User as List<HRMS_With_CoreMVC_RepoPattern.Models.User>)
+                                    {
+                                        <option value="@user.UserId">@user.FirstName @user.LastName</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label class="form-label">Designation From</label>
+                                <select name="DesignationFrom" class="form-select" required>
+                                    <option value="">Select</option>
+                                    @foreach (var d in ViewBag.Designation as List<HRMS_With_CoreMVC_RepoPattern.Models.Designation>)
+                                    {
+                                        <option value="@d.Name">@d.Name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label class="form-label">Designation To</label>
+                                <select name="DesignationTo" class="form-select" required>
+                                    <option value="">Select</option>
+                                    @foreach (var d in ViewBag.Designation as List<HRMS_With_CoreMVC_RepoPattern.Models.Designation>)
+                                    {
+                                        <option value="@d.Name">@d.Name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label class="form-label">Promotion Date</label>
+                                <input type="date" name="Date" class="form-control" required />
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-success">Save</button>
+                    <button type="button" class="btn btn-white border me-2" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-warning">Add</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-<!-- Edit Modal -->
-<div class="modal fade" id="editModal" tabindex="-1">
-    <div class="modal-dialog">
+<!-- /Add Promotion -->
+<!-- Edit Promotion -->
+<div class="modal fade" id="editModal">
+    <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit Promotion</h4>
+                <button type="button" class="btn-close custom-btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="ti ti-x"></i>
+                </button>
+            </div>
             <form asp-action="Edit" method="post">
-                <div class="modal-header">
-                    <h5 class="modal-title">Edit Promotion</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
+                <div class="modal-body pb-0">
                     <input type="hidden" name="PromotionId" id="editPromotionId" />
-                    <div class="mb-3">
-                        <label>Employee</label>
-                        <select name="UserID" id="editUserID" class="form-select" required>
-                            <option value="">Select Employee</option>
-                            @foreach (var user in ViewBag.User as List<HRMS_With_CoreMVC_RepoPattern.Models.User>)
-                            {
-                                <option value="@user.UserId">@user.FirstName</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label>Designation From</label>
-                        <select name="DesignationFrom" id="editDesignationFrom" class="form-select" required>
-                            <option value="">Select Designation</option>
-                            @foreach (var d in ViewBag.Designation as List<HRMS_With_CoreMVC_RepoPattern.Models.Designation>)
-                            {
-                                <option value="@d.Name">@d.Name</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label>Designation To</label>
-                        <select name="DesignationTo" id="editDesignationTo" class="form-select" required>
-                            <option value="">Select Designation</option>
-                            @foreach (var d in ViewBag.Designation as List<HRMS_With_CoreMVC_RepoPattern.Models.Designation>)
-                            {
-                                <option value="@d.Name">@d.Name</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label>Date</label>
-                        <input type="date" name="Date" id="editDate" class="form-control" required />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label class="form-label">Employee</label>
+                                <select name="UserID" id="editUserID" class="form-select" required>
+                                    <option value="">Select</option>
+                                    @foreach (var user in ViewBag.User as List<HRMS_With_CoreMVC_RepoPattern.Models.User>)
+                                    {
+                                        <option value="@user.UserId">@user.FirstName @user.LastName</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label class="form-label">Designation From</label>
+                                <select name="DesignationFrom" id="editDesignationFrom" class="form-select" required>
+                                    <option value="">Select</option>
+                                    @foreach (var d in ViewBag.Designation as List<HRMS_With_CoreMVC_RepoPattern.Models.Designation>)
+                                    {
+                                        <option value="@d.Name">@d.Name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label class="form-label">Designation To</label>
+                                <select name="DesignationTo" id="editDesignationTo" class="form-select" required>
+                                    <option value="">Select</option>
+                                    @foreach (var d in ViewBag.Designation as List<HRMS_With_CoreMVC_RepoPattern.Models.Designation>)
+                                    {
+                                        <option value="@d.Name">@d.Name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label class="form-label">Promotion Date</label>
+                                <input type="date" name="Date" id="editDate" class="form-control" required />
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-success">Update</button>
+                    <button type="button" class="btn btn-white border me-2" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-warning">Save Changes</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
+<!-- /Edit Promotion -->
 @section Scripts {
     <script>
         $(document).ready(function() {
-            $('#promotionTable').DataTable();
+            if ($.fn.DataTable.isDataTable('#promotionTable')) {
+                $('#promotionTable').DataTable().destroy();
+            }
+            $('#promotionTable').DataTable({
+                "info": false, "searching": true, "ordering": true, "order": [],
+                "paging": true, "pageLength": 10, "lengthChange": false
+            });
         });
 
         function loadEditModal(id, userId, from, to, date) {

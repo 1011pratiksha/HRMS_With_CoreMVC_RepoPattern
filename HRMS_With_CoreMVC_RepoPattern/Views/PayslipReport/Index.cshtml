@@ -1,0 +1,277 @@
+﻿@model IEnumerable<HRMS_With_CoreMVC_RepoPattern.Models.PayslipReport>
+
+@{
+    ViewData["Title"] = "Payslip Report";
+}
+
+<div class="container-fluid">
+
+    <!-- Page Header -->
+    <div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
+
+        <div class="my-auto mb-2">
+            <h2 class="mb-1">Payslip Report</h2>
+
+            <nav>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="/">HR</a>
+                    </li>
+
+                    <li class="breadcrumb-item active">
+                        Payslip Report
+                    </li>
+                </ol>
+            </nav>
+        </div>
+
+    </div>
+
+
+    <!-- Summary Cards -->
+    <div class="row">
+
+        <!-- Total Payroll -->
+        <div class="col-xl-3 col-md-6 mb-4">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <h6 class="text-muted">
+                        Total Payroll
+                    </h6>
+
+                    <h3 class="mb-0">
+                        ₹@Convert.ToDecimal(ViewBag.TotalPayroll).ToString("N2")
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Total Net Pay -->
+        <div class="col-xl-3 col-md-6 mb-4">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <h6 class="text-muted">
+                        Net Pay
+                    </h6>
+
+                    <h3 class="mb-0">
+                        ₹@Convert.ToDecimal(ViewBag.TotalNetPay).ToString("N2")
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Total Payslips -->
+        <div class="col-xl-3 col-md-6 mb-4">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <h6 class="text-muted">
+                        Total Payslips
+                    </h6>
+
+                    <h3 class="mb-0">
+                        @ViewBag.TotalPayslips
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Average Net Pay -->
+        <div class="col-xl-3 col-md-6 mb-4">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <h6 class="text-muted">
+                        Average Net Pay
+                    </h6>
+
+                    <h3 class="mb-0">
+
+                        @{
+                            decimal totalNetPay =
+                                Convert.ToDecimal(ViewBag.TotalNetPay);
+
+                            int totalPayslips =
+                                Convert.ToInt32(ViewBag.TotalPayslips);
+
+                            decimal averageNetPay =
+                                totalPayslips > 0
+                                ? totalNetPay / totalPayslips
+                                : 0;
+                        }
+
+                        ₹@averageNetPay.ToString("N2")
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Payslip List -->
+
+    <div class="card shadow-sm">
+
+        <div class="card-body">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+
+                <h4 class="mb-0">
+                    Payslip List
+                </h4>
+
+            </div>
+
+
+            <div class="table-responsive">
+
+                <table id="payslipReportTable"
+                       class="table table-hover align-middle">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>#</th>
+
+                            <th>Employee</th>
+
+                            <th>Designation</th>
+
+                            <th>Paid Amount</th>
+
+                            <th>Paid Month</th>
+
+                            <th>Paid Year</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    @item.PayslipId
+                                </td>
+
+
+                                <td>
+
+                                    <div class="d-flex align-items-center">
+
+                                        @if (!string.IsNullOrEmpty(item.ProfilePicture))
+                                        {
+                                            <img src="@item.ProfilePicture"
+                                                 alt="Profile"
+                                                 class="rounded-circle me-2"
+                                                 style="width:40px;height:40px;object-fit:cover;" />
+                                        }
+                                        else
+                                        {
+                                            <div class="rounded-circle bg-light me-2 d-flex align-items-center justify-content-center"
+                                                 style="width:40px;height:40px;">
+                                                <i class="fa fa-user"></i>
+                                            </div>
+                                        }
+
+                                        <span>
+                                            @item.UserName
+                                        </span>
+
+                                    </div>
+
+                                </td>
+
+
+                                <td>
+                                    @item.Designation
+                                </td>
+
+
+                                <td>
+                                    ₹@item.PaidAmount.ToString("N2")
+                                </td>
+
+
+                                <td>
+                                    @item.PaidMonth
+                                </td>
+
+
+                                <td>
+                                    @item.PaidYear
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts
+{
+    <script>
+
+        $(document).ready(function() {
+
+            $('#payslipReportTable').DataTable({
+
+                pageLength: 10,
+
+                lengthMenu: [5, 10, 25, 50, 100],
+
+                ordering: true,
+
+                searching: true,
+
+                responsive: true
+
+            });
+
+        });
+
+    </script>
+}

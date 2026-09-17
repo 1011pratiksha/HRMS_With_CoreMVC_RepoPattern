@@ -17,6 +17,24 @@
     </div>
 
    <div class="col-auto">
+
+             
+        <a asp-controller="Project"
+           asp-action="Index"
+           class="btn btn-warning">
+            <i class="bi bi-list"></i>
+        </a>
+
+
+        <a asp-controller="Project"
+           asp-action="Card"
+           class="btn btn-warning">
+            <i class="bi bi-grid"></i>
+        </a>
+
+        <button type="button" class="btn btn-info">Export</button>
+
+
     <a asp-controller="Project"
        asp-action="AddProject"
        class="btn btn-warning">
@@ -28,8 +46,32 @@
 
 
 <div class="card">
-    <div class="card-header">
+
+        <div class="card-header d-flex justify-content-between align-items-center">
         <h5>Project List</h5>
+
+         <div class="d-flex align-items-center gap-3">
+
+            <select class="form-select" style="width:110px;" name="Status"  onchange="location.href='/Project/Index?Status=' + this.value">
+                <option value="All">All</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+            </select>
+
+            <div class="d-flex align-items-center gap-2">
+
+                <span>Sort By:</span>
+
+                <select class="form-select" style="width:170px;" name="sort"  onchange="location.href='/Project/Index?sort=' + this.value">
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
+                </select>
+
+            </div>
+
+        </div>
+    </div>
+
     </div>
 
     <div class="card-body">
@@ -80,7 +122,9 @@
 
                         </td>
                         <td>
-                            <a >
+                            <a asp-controller="Project"
+                                asp-action="Edit"
+                                asp-route-id="@item.ProjectId">
                                 <i class="bi bi-pencil"></i>
                             </a>
                             <a asp-controller="Project"
@@ -104,8 +148,12 @@
 {
     <script>
         $(document).ready(function () {
-            $('#projectTable').DataTable();
-        });
+
+    $('#projectTable').DataTable({
+        "ordering": false
+    });
+
+});
     </script>
 
 }

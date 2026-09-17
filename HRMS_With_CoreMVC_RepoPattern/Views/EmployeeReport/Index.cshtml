@@ -1,0 +1,126 @@
+﻿@model IEnumerable<HRMS_With_CoreMVC_RepoPattern.Models.EmployeeReport>
+
+@{
+    ViewData["Title"] = "Employee Report";
+}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2>Employee Report</h2>
+            <p class="text-muted">Employee details and information</p>
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+
+        <div class="col-md-3">
+            <div class="report-card">
+                <h6>Total Employees</h6>
+                <h3>@ViewBag.TotalEmployees</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="report-card">
+                <h6>Active Employees</h6>
+                <h3>@ViewBag.ActiveEmployees</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="report-card">
+                <h6>Inactive Employees</h6>
+                <h3>@ViewBag.InactiveEmployees</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="report-card">
+                <h6>Total Departments</h6>
+                <h3>@ViewBag.TotalDepartments</h3>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Employee Table -->
+    <div class="card">
+
+        <div class="card-header">
+            <h5>Employee List</h5>
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-hover">
+
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Employee Name</th>
+                            <th>Email</th>
+                            <th>Department</th>
+                            <th>Phone Number</th>
+                            <th>Date Of Joining</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @{
+                            int i = 1;
+                        }
+
+                        @foreach (var employee in Model)
+                        {
+                            <tr>
+
+                                <td>@i</td>
+
+                                <td>
+                                    @employee.Name
+                                </td>
+
+                                <td>
+                                    @employee.Email
+                                </td>
+
+                                <td>
+                                    @employee.Department
+                                </td>
+
+                                <td>
+                                    @employee.PhoneNumber
+                                </td>
+
+                                <td>
+                                    @employee.DateOfJoining?.ToString("dd/MM/yyyy")
+                                </td>
+
+                                <td>
+                                    @employee.Status
+                                </td>
+
+                            </tr>
+
+                            i++;
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

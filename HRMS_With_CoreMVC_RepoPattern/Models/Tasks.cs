@@ -34,7 +34,8 @@ namespace HRMS_With_CoreMVC_RepoPattern.Models
 
         public string FilePath { get; set; }
 
-        public ICollection<TaskMembers> Taskmember { get; set; }
+        public List<TaskMembers> Taskmember { get; set; }
         public List<TaskBoards> TaskBoard { get; set; }
+
     }
 }
