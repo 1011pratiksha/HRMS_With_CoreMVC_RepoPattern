@@ -32,8 +32,11 @@ builder.Services.AddScoped<IProjectRepository, ProjectRepositoryServices>();
 builder.Services.AddScoped<IResignationRepository, ResignationService>();
 builder.Services.AddScoped<ITerminationRepository, TerminationService>();
 builder.Services.AddScoped<ITrainingRepository, TrainingService>();
+builder.Services.AddScoped<IFileUploadRepository, FileUploadService>();
 
 builder.Services.AddScoped<ILeaveService, LeaveService>();
+
+builder.Services.AddSession();
 
 var app = builder.Build();
 
@@ -51,6 +54,7 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.UseStaticFiles();
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",

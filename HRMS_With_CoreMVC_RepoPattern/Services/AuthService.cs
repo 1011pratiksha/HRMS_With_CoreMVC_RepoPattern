@@ -66,6 +66,13 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
 
             return null;
         }
+
+        public async Task<User> GetUserByEmail(string email)
+        {
+            return await db.User
+                .Where(x => x.Email.Equals(email))
+                .SingleOrDefaultAsync();
+        }
     }
 }
 
