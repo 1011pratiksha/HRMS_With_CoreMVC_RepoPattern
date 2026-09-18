@@ -1,0 +1,83 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@{
+    ViewData["Title"] = "File Upload";
+    var user = ViewBag.CurrentUser as HRMS_With_CoreMVC_RepoPattern.Models.User;
+}
+
+<div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
+    <div class="my-auto mb-2">
+        <h2 class="mb-1">File Upload</h2>
+        <nav>
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item">Employee</li>
+                <li class="breadcrumb-item active" aria-current="page">File Upload</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">File Upload</h5>
+    </div>
+    <div class="card-body">
+        <form asp-action="EmployeeAdd" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label class="form-label">User</label>
+                <input type="text" class="form-control" value="@user.Email" readonly />
+            </div>
+
+            <div id="rowsContainer">
+                <div class="row mb-2 doc-row">
+                    <div class="col-md-5">
+                        <select name="DocName" class="form-select" required>
+                            <option value="">Select Document</option>
+                            @foreach (var d in ViewBag.DocNames as List<HRMS_With_CoreMVC_RepoPattern.Models.AddEmployeeDocName>)
+                            {
+                                <option value="@d.DocName">@d.DocName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-5">
+                        <input type="file" name="Files" class="form-control" />
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-warning" onclick="addRow()"><i class="bi bi-plus-lg"></i></button>
+                        <button type="button" class="btn btn-danger" onclick="removeRow(this)"><i class="bi bi-trash"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-warning mt-2">Save</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function addRow() {
+            var container = document.getElementById("rowsContainer");
+            var firstRow = container.querySelector(".doc-row");
+            var newRow = firstRow.cloneNode(true);
+            newRow.querySelectorAll("input, select").forEach(el => el.value = "");
+            container.appendChild(newRow);
+        }
+
+        function removeRow(button) {
+            var rows = document.querySelectorAll(".doc-row");
+            if (rows.length > 1) {
+                button.closest(".doc-row").remove();
+            }
+        }
+    </script>
+}

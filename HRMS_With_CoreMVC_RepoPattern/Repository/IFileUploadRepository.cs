@@ -10,6 +10,8 @@ namespace HRMS_With_CoreMVC_RepoPattern.Repository
         Task<string> Delete(int id);
 
         Task<List<User>> FetchAllUser();
+        Task<User> FetchUserById(int id);
         Task<List<AddAdminDocName>> FetchAllDocNames();
+        Task<List<AddEmployeeDocName>> FetchAllEmployeeDocNames();
     }
 }

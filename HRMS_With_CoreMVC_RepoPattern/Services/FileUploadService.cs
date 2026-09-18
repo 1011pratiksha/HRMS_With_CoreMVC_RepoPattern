@@ -53,6 +53,16 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
             return await _context.User.ToListAsync();
         }
 
+        public async Task<User> FetchUserById(int id)
+        {
+            return await _context.User.FindAsync(id);
+        }
+
+        public async Task<List<AddEmployeeDocName>> FetchAllEmployeeDocNames()
+        {
+            return await _context.addEmployeeDocNames.ToListAsync();
+        }
+
         public async Task<FileUpload> FetchById(int id)
         {
             return await _context.FileUpload.FindAsync(id);
