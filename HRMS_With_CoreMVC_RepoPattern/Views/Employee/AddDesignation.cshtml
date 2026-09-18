@@ -39,7 +39,7 @@
     </div>
 
     <div class="col-auto">
-        <button type="button"class="btn" style="background-color:#f5820d;color:#fff;" data-bs-toggle="modal" data-bs-target="#addDepartmentModal">
+        <button type="button"class="btn" style="background-color:#f5820d;color:#fff;" data-bs-toggle="modal" data-bs-target="#addDesignationModal">
             + Add Designation
         </button>
     </div>
@@ -63,7 +63,7 @@
             </div>
 
             <div class="modal-body">
-                <form method="post"asp-controller="Employee"asp-action="AddDesignation">                   
+                <form method="post" asp-controller="Employee" asp-action="AddDesignation">                   
  <label>Designation Name</label>
                    <input type="text" name="Name" class="form-control" required />
                     <br />
@@ -79,7 +79,7 @@
                     <br />
                     <br />
 <label>Status</label>
-                    <select name="Status" class="form-control" required>
+                    <select name="status" class="form-control" required>
                     <option value=""> Select Status</option>
                         <option value="Active"> Active</option>
                         <option value="Inactive">Inactive</option>
@@ -214,9 +214,10 @@
                         @foreach (var dept in ViewBag.Departments)
                         {
                             <option value="@dept.DepartmentId">@dept.Name</option>
-                        }   
+                        }
+                        </select>
                     <label>Status</label>
-                    <select name="Status" id="editStatus" class="form-control" required>
+                    <select name="status" id="editStatus" class="form-control" required>
                         <option value="">Select Status</option>
                         <option value="Active">Active</option>
                         <option value="Inactive">Inactive</option>
@@ -243,15 +244,14 @@
 {
     <script>
 
-        function editDesignation(id, Name, status,modifiedBy) {
+        function editDesignation(id, Name, status) {
 
-            document.getElementById("editDesignationId").value = id;
+    document.getElementById("editDesignationId").value = id;
 
-            document.getElementById("editDesignationName").value = Name;
+    document.getElementById("editDesignationName").value = Name;
 
-            document.getElementById("editStatus").value = status;
-
-        }
+    document.getElementById("editStatus").value = status;
+}
 
 
         $(document).ready(function () {

@@ -2,10 +2,6 @@ using HRMS_With_CoreMVC_RepoPattern.Data;
 using HRMS_With_CoreMVC_RepoPattern.Repository;
 using HRMS_With_CoreMVC_RepoPattern.Services;
 using Microsoft.EntityFrameworkCore;
-<<<<<<< HEAD
-
-=======
->>>>>>> b274353028313cf6dd09ac9bf83b61081b1ffd39
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,11 +54,11 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseSession();
 app.UseAuthorization();
 
 app.UseStaticFiles();
-app.UseSession();
+
 
 app.MapControllerRoute(
     name: "default",
