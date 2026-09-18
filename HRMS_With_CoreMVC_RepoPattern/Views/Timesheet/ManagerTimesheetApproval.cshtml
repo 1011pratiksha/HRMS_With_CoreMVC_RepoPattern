@@ -1,0 +1,266 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model List<HRMS_With_CoreMVC_RepoPattern.Models.Timesheet>
+@{
+    ViewData["Title"] = "Timesheet Approval";
+}
+<div class="container mt-4">
+    <h1 class="mb-2">Timesheet Approval</h1>
+    <p class="text-muted">/ Manager / Timesheet Approval</p>
+
+    @if (TempData["success"] != null)
+    {
+        <div class="alert alert-success">@TempData["success"]</div>
+    }
+    @if (TempData["error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["error"]</div>
+    }
+
+    <form asp-controller="ManagerTimesheet" asp-action="UpdateStatus" method="post">
+        <div class="mb-4">
+            <button type="submit" name="status" value="Approved" class="btn btn-success me-2">
+                <i class="bi bi-check-circle"></i> Approve Selected
+            </button>
+            <button type="submit" name="status" value="Rejected" class="btn btn-danger">
+                <i class="bi bi-x-circle"></i> Reject Selected
+            </button>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="row align-items-center">
+                    <div class="col-md-5">
+                        <h4 class="mb-0">Timesheet</h4>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="row g-2">
+                            <div class="col-md-6">
+                                <input type="text" id="searchProject" class="form-control" placeholder="Search by Project" />
+                            </div>
+                            <div class="col-md-6">
+                                <select id="statusFilter" class="form-select">
+                                    <option value="All">All Status</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Approved">Approved</option>
+                                    <option value="Rejected">Rejected</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="mb-3">
+                    <span>Show</span>
+                    <select id="rowsPerPage" class="form-select d-inline-block ms-2" style="width:90px;">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                    </select>
+                    <span class="ms-2">entries</span>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table" id="managerTimesheetTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th><input type="checkbox" id="selectAll" /></th>
+                                <th>Employee</th>
+                                <th>Created At</th>
+                                <th>Project</th>
+                                <th>Worked Hours</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Any())
+                            {
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td><input type="checkbox" name="timesheetIds" value="@item.TimesheetId" class="timesheet-checkbox" /></td>
+                                        <td>@item.User?.FirstName @item.User?.LastName</td>
+                                        <td>@item.CreatedAt.ToString("dd-MM-yyyy")</td>
+                                        <td class="project-name">@item.Projects?.ProjectName</td>
+                                        <td>@item.WorkHours</td>
+                                        <td class="status">
+                                            @if (item.Status == "Approved")
+                                            {
+                                                <span class="badge bg-success">Approved</span>
+                                            }
+                                            else if (item.Status == "Rejected")
+                                            {
+                                                <span class="badge bg-danger">Rejected</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-warning text-dark">Pending</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <div id="pageInfo"></div>
+                    <nav>
+                        <ul class="pagination mb-0" id="pagination"></ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    var currentPage = 1;
+    var rowsPerPage = 5;
+
+    function getRows() {
+        return Array.from(document.querySelectorAll("#managerTimesheetTable tbody tr"));
+    }
+
+    function filterRows() {
+        var search = document.getElementById("searchProject").value.toLowerCase();
+        var status = document.getElementById("statusFilter").value.toLowerCase();
+        var rows = getRows();
+
+        rows.forEach(function(row) {
+            var project = row.querySelector(".project-name").innerText.toLowerCase();
+            var rowStatus = row.querySelector(".status").innerText.toLowerCase();
+            var projectMatch = project.includes(search);
+            var statusMatch = status === "all" || rowStatus === status;
+            row.dataset.visible = projectMatch && statusMatch ? "true" : "false";
+        });
+
+        currentPage = 1;
+        showPage();
+    }
+
+    function showPage() {
+        var rows = getRows();
+        var visibleRows = rows.filter(function(row) {
+            return row.dataset.visible !== "false";
+        });
+        var totalPages = Math.ceil(visibleRows.length / rowsPerPage);
+
+        rows.forEach(function(row) {
+            row.style.display = "none";
+        });
+
+        var start = (currentPage - 1) * rowsPerPage;
+        var end = start + rowsPerPage;
+
+        visibleRows.slice(start, end).forEach(function(row) {
+            row.style.display = "";
+        });
+
+        createPagination(totalPages);
+
+        if (visibleRows.length === 0) {
+            document.getElementById("pageInfo").innerText = "Showing 0 entries";
+        }
+        else {
+            var first = start + 1;
+            var last = Math.min(end, visibleRows.length);
+            document.getElementById("pageInfo").innerText = "Showing " + first + " to " + last + " of " + visibleRows.length + " entries";
+        }
+    }
+
+    function createPagination(totalPages) {
+        var pagination = document.getElementById("pagination");
+        pagination.innerHTML = "";
+
+        if (totalPages <= 1) {
+            return;
+        }
+
+        var previous = document.createElement("li");
+        previous.className = "page-item";
+
+        if (currentPage === 1) {
+            previous.classList.add("disabled");
+        }
+
+        previous.innerHTML = '<a class="page-link" href="#">«</a>';
+        previous.onclick = function(event) {
+            event.preventDefault();
+            if (currentPage > 1) {
+                currentPage--;
+                showPage();
+            }
+        };
+        pagination.appendChild(previous);
+
+        for (var i = 1; i <= totalPages; i++) {
+            var page = document.createElement("li");
+            page.className = "page-item";
+
+            if (i === currentPage) {
+                page.classList.add("active");
+            }
+
+            page.innerHTML = '<a class="page-link" href="#">' + i + '</a>';
+            page.onclick = function(pageNumber) {
+                return function(event) {
+                    event.preventDefault();
+                    currentPage = pageNumber;
+                    showPage();
+                };
+            }(i);
+
+            pagination.appendChild(page);
+        }
+
+        var next = document.createElement("li");
+        next.className = "page-item";
+
+        if (currentPage === totalPages) {
+            next.classList.add("disabled");
+        }
+
+        next.innerHTML = '<a class="page-link" href="#">»</a>';
+        next.onclick = function(event) {
+            event.preventDefault();
+            if (currentPage < totalPages) {
+                currentPage++;
+                showPage();
+            }
+        };
+        pagination.appendChild(next);
+    }
+
+    document.getElementById("rowsPerPage").addEventListener("change", function() {
+        rowsPerPage = parseInt(this.value);
+        currentPage = 1;
+        showPage();
+    });
+
+    document.getElementById("searchProject").addEventListener("keyup", filterRows);
+    document.getElementById("statusFilter").addEventListener("change", filterRows);
+
+    document.getElementById("selectAll").addEventListener("change", function() {
+        var checked = this.checked;
+        getRows().filter(function(row) {
+            return row.style.display !== "none";
+        }).forEach(function(row) {
+            row.querySelector(".timesheet-checkbox").checked = checked;
+        });
+    });
+
+    getRows().forEach(function(row) {
+        row.dataset.visible = "true";
+    });
+
+    showPage();
+</script>

@@ -1,56 +1,51 @@
-using HRMS_With_CoreMVC_RepoPattern.Data;
-using HRMS_With_CoreMVC_RepoPattern.Repository;
-using HRMS_With_CoreMVC_RepoPattern.Services;
-using Microsoft.EntityFrameworkCore;
-using HRMS_With_CoreMVC_RepoPattern.Repository;
-using HRMS_With_CoreMVC_RepoPattern.Services;
+    using HRMS_With_CoreMVC_RepoPattern.Data;
+    using HRMS_With_CoreMVC_RepoPattern.Repository;
+    using HRMS_With_CoreMVC_RepoPattern.Services;
+    using Microsoft.EntityFrameworkCore;
 
-var builder = WebApplication.CreateBuilder(args);
+    var builder = WebApplication.CreateBuilder(args);
 
 
-// Add services to the container.
-builder.Services.AddScoped<IEventTypeService, EventTypeService>();
-builder.Services.AddScoped<IEventService,  EventService>();
-builder.Services.AddControllersWithViews();
+    // Add services to the container.
+    builder.Services.AddScoped<IEventTypeService, EventTypeService>();
+    builder.Services.AddScoped<IEventService, EventService>();
+    builder.Services.AddControllersWithViews();
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("dbconn")
-    ));
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IPromotionRepository, PromotionService>();
-builder.Services.AddScoped<ITrainerRepository, TrainerService>();
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseSqlServer(
+            builder.Configuration.GetConnectionString("dbconn")
+        ));
 
+    builder.Services.AddScoped<IAuthService, AuthService>();
+    builder.Services.AddScoped<IPromotionRepository, PromotionService>();
+    builder.Services.AddScoped<ITrainerRepository, TrainerService>();
 
-builder.Services.AddScoped<IResignationRepository, ResignationService>();
-builder.Services.AddScoped<ITerminationRepository, TerminationService>();
+    builder.Services.AddScoped<IResignationRepository, ResignationService>();
+    builder.Services.AddScoped<ITerminationRepository, TerminationService>();
 
-builder.Services.AddScoped<ILeaveService, LeaveService>();
+    builder.Services.AddScoped<ILeaveService, LeaveService>();
+    builder.Services.AddScoped<ITimesheetRepository, TimesheetService>();
+    builder.Services.AddScoped<IAttendanceRepository, AttendanceService>();
 
-var app = builder.Build();
+    var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
+    // Configure the HTTP request pipeline.
+    if (!app.Environment.IsDevelopment())
+    {
+        app.UseExceptionHandler("/Home/Error");
+        app.UseHsts();
+    }
 
-app.UseHttpsRedirection();
-app.UseRouting();
+    app.UseHttpsRedirection();
+    app.UseRouting();
 
-app.UseAuthorization();
+    app.UseAuthorization();
 
-app.UseStaticFiles();
+    app.UseStaticFiles();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Auth}/{action=SignIn}/{id?}")
+    app.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Auth}/{action=SignIn}/{id?}")
+        .WithStaticAssets();
 
-    //pattern: "{controller=Resignation}/{action=Index}/{id?}")
-
-    .WithStaticAssets();
-
-
-app.Run();
+    app.Run();
