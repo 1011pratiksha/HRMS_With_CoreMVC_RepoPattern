@@ -1,51 +1,59 @@
-    using HRMS_With_CoreMVC_RepoPattern.Data;
-    using HRMS_With_CoreMVC_RepoPattern.Repository;
-    using HRMS_With_CoreMVC_RepoPattern.Services;
-    using Microsoft.EntityFrameworkCore;
+using HRMS_With_CoreMVC_RepoPattern.Data;
+using HRMS_With_CoreMVC_RepoPattern.Repository;
+using HRMS_With_CoreMVC_RepoPattern.Services;
+using Microsoft.EntityFrameworkCore;
 
-    var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddScoped<IEmployeeService, EmployeeServices>();
+builder.Services.AddScoped<IEventTypeService, EventTypeService>();
+builder.Services.AddScoped<IEventService, EventService>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<ITaskService, TaskService>();
+builder.Services.AddControllersWithViews();
 
-    // Add services to the container.
-    builder.Services.AddScoped<IEventTypeService, EventTypeService>();
-    builder.Services.AddScoped<IEventService, EventService>();
-    builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("dbconn")
+    ));
 
-    builder.Services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseSqlServer(
-            builder.Configuration.GetConnectionString("dbconn")
-        ));
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IPromotionRepository, PromotionService>();
+builder.Services.AddScoped<ITrainerRepository, TrainerService>();
+builder.Services.AddScoped<ITrainingTypeRepository, TrainingTypeService>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepositoryServices>();
+builder.Services.AddScoped<IEmployeeReportRepository, EmployeeReportServices>();
+builder.Services.AddScoped<IAttendanceReportRepository, AttendanceReportServices>();
+builder.Services.AddScoped<IResignationRepository, ResignationService>();
+builder.Services.AddScoped<ITerminationRepository, TerminationService>();
+builder.Services.AddScoped<ILeaveReportRepository, LeaveReportServices>();
+builder.Services.AddScoped<IPayslipReportRepository, PayslipReportServices>();
+builder.Services.AddScoped<ITrainingRepository, TrainingService>();
+builder.Services.AddScoped<IFileUploadRepository, FileUploadService>();
 
-    builder.Services.AddScoped<IAuthService, AuthService>();
-    builder.Services.AddScoped<IPromotionRepository, PromotionService>();
-    builder.Services.AddScoped<ITrainerRepository, TrainerService>();
+builder.Services.AddScoped<ILeaveService, LeaveService>();
+builder.Services.AddScoped<ITimesheetRepository, TimesheetService>();
+builder.Services.AddScoped<IAttendanceRepository, AttendanceService>();
 
-    builder.Services.AddScoped<IResignationRepository, ResignationService>();
-    builder.Services.AddScoped<ITerminationRepository, TerminationService>();
+builder.Services.AddSession();
 
-    builder.Services.AddScoped<ILeaveService, LeaveService>();
-    builder.Services.AddScoped<ITimesheetRepository, TimesheetService>();
-    builder.Services.AddScoped<IAttendanceRepository, AttendanceService>();
+var app = builder.Build();
 
-    var app = builder.Build();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
+}
 
-    // Configure the HTTP request pipeline.
-    if (!app.Environment.IsDevelopment())
-    {
-        app.UseExceptionHandler("/Home/Error");
-        app.UseHsts();
-    }
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
+app.UseSession();
+app.UseAuthorization();
 
-    app.UseHttpsRedirection();
-    app.UseRouting();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Auth}/{action=SignIn}/{id?}")
+    .WithStaticAssets();
 
-    app.UseAuthorization();
-
-    app.UseStaticFiles();
-
-    app.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Auth}/{action=SignIn}/{id?}")
-        .WithStaticAssets();
-
-    app.Run();
+app.Run();

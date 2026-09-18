@@ -51,6 +51,12 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
         {
             var role = await authService.SignIn(Email, Password);
 
+            if (role == "Admin" || role == "Manager" || role == "Employee")
+            {
+                var user = await authService.GetUserByEmail(Email);
+                HttpContext.Session.SetInt32("UserId", user.UserId);
+            }
+
             if (role == "Admin")
             {
                 return RedirectToAction("AdminDashboard", "Dashboard");

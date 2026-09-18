@@ -1,0 +1,159 @@
+﻿@model List<Projects>
+
+
+     <div class="row">
+    <div class="col">
+        <h2>Projects</h2>
+
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a>
+                    <i class="bi bi-house"></i>
+                </a>
+            </li>
+            <li class="breadcrumb-item">Employee</li>
+            <li class="breadcrumb-item active">Projects List</li>
+        </ol>
+    </div>
+
+   <div class="col-auto">
+
+             
+        <a asp-controller="Project"
+           asp-action="Index"
+           class="btn btn-warning">
+            <i class="bi bi-list"></i>
+        </a>
+
+
+        <a asp-controller="Project"
+           asp-action="Card"
+           class="btn btn-warning">
+            <i class="bi bi-grid"></i>
+        </a>
+
+        <button type="button" class="btn btn-info">Export</button>
+
+
+    <a asp-controller="Project"
+       asp-action="AddProject"
+       class="btn btn-warning">
+        Add Project
+    </a>
+</div>
+</div>
+
+
+
+<div class="card">
+
+        <div class="card-header d-flex justify-content-between align-items-center">
+        <h5>Project List</h5>
+
+         <div class="d-flex align-items-center gap-3">
+
+            <select class="form-select" style="width:110px;" name="Status"  onchange="location.href='/Project/Index?Status=' + this.value">
+                <option value="All">All</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+            </select>
+
+            <div class="d-flex align-items-center gap-2">
+
+                <span>Sort By:</span>
+
+                <select class="form-select" style="width:170px;" name="sort"  onchange="location.href='/Project/Index?sort=' + this.value">
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
+                </select>
+
+            </div>
+
+        </div>
+    </div>
+
+    </div>
+
+    <div class="card-body">
+
+        <table id="projectTable" class="table table-bordered">
+
+            <thead>
+                <tr>
+                    <th>Project Id</th>
+                    <th>Project Name</th>
+                    <th>Team Members</th>
+                    <th>Deadline</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.ProjectId</td>
+                        <td>@item.ProjectName</td>
+                        <td>
+                            @foreach (var profile in item.Users)
+                            {
+                                <img src="@profile.ProfilePicture"
+                                                 width="35" 
+                                                 height="35"
+                                                 style="border-radius:50%; object-fit:cover;" />
+                            }
+                        </td>
+                        <td>@item.EndDate.ToString("dd MMM yyyy")</td>
+
+                        <td>@item.Priority</td>
+
+                        <td>
+
+                            @if (@item.Status == "Active")
+                            {
+                                <span class="badge bg-success">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Inactive</span>
+                            }
+
+                        </td>
+                        <td>
+                            <a asp-controller="Project"
+                                asp-action="Edit"
+                                asp-route-id="@item.ProjectId">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a asp-controller="Project"
+                               asp-action="delete"
+                               asp-route-id="@item.ProjectId">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+
+
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+
+    $('#projectTable').DataTable({
+        "ordering": false
+    });
+
+});
+    </script>
+
+}

@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HRMS_With_CoreMVC_RepoPattern.Models
@@ -7,13 +7,10 @@ namespace HRMS_With_CoreMVC_RepoPattern.Models
     {
         [Key]
         public int AttendanceId { get; set; }
-
         [ForeignKey("User")]
         public int UserId { get; set; }
-
         [Required]
         public DateTime Date { get; set; }
-
         public DateTime? CheckIn { get; set; }
         public DateTime? CheckOut { get; set; }
         public DateTime? LunchIn { get; set; }

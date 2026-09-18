@@ -28,7 +28,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Models
 
 
         [ForeignKey("Designation")]
-        public int? DesignationtId { get; set; }
+        public int? DesignationId { get; set; }
         public Designation? Designation { get; set; }
 
 

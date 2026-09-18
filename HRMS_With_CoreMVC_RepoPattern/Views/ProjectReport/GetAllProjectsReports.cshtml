@@ -1,0 +1,269 @@
+﻿@model IEnumerable<HRMS_With_CoreMVC_RepoPattern.Models.ProjectReport>
+
+@{
+    ViewData["Title"] = "Project Report";
+}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Project Report</h2>
+
+
+    <!-- Project Summary -->
+
+    <div class="row mb-4">
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <h5 class="card-title">
+                        Total Projects
+                    </h5>
+
+                    <h3>
+                        @ViewBag.allprojects
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <h5 class="card-title">
+                        On Hold Projects
+                    </h5>
+
+                    <h3>
+                        @ViewBag.onholdprojects
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <h5 class="card-title">
+                        Overdue Projects
+                    </h5>
+
+                    <h3>
+                        @ViewBag.overdueprojects
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Filter Section -->
+
+    <form method="get"
+          asp-action="GetAllProjectsReports"
+          class="row mb-4">
+
+        <!-- Priority -->
+
+        <div class="col-md-3">
+
+            <label class="form-label">
+                Priority
+            </label>
+
+            <select name="priorityType"
+                    class="form-select">
+
+                <option value="">
+                    All
+                </option>
+
+                <option value="High">
+                    High
+                </option>
+
+                <option value="Medium">
+                    Medium
+                </option>
+
+                <option value="Low">
+                    Low
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- Status -->
+
+        <div class="col-md-3">
+
+            <label class="form-label">
+                Status
+            </label>
+
+            <select name="statusType"
+                    class="form-select">
+
+                <option value="">
+                    All
+                </option>
+
+                <option value="Active">
+                    Active
+                </option>
+
+                <option value="Inactive">
+                    Inactive
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- Sort -->
+
+        <div class="col-md-3">
+
+            <label class="form-label">
+                Sort By End Date
+            </label>
+
+            <select name="sortType"
+                    class="form-select">
+
+                <option value="">
+                    Default
+                </option>
+
+                <option value="Ascending">
+                    Ascending
+                </option>
+
+                <option value="Descending">
+                    Descending
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- Button -->
+
+        <div class="col-md-3 d-flex align-items-end">
+
+            <button type="submit"
+                    class="btn btn-primary">
+
+                Apply Filter
+
+            </button>
+
+        </div>
+
+    </form>
+
+
+    <!-- Project Report Table -->
+
+    <div class="table-responsive">
+
+        <table class="table table-bordered table-hover">
+
+            <thead class="table-dark">
+
+                <tr>
+
+                    <th>
+                        Project ID
+                    </th>
+
+                    <th>
+                        Project Name
+                    </th>
+
+                    <th>
+                        Manager Name
+                    </th>
+
+                    <th>
+                        End Date
+                    </th>
+
+                    <th>
+                        Priority
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                @foreach (var project in Model)
+                {
+                    <tr>
+
+                        <td>
+                            @project.ProjectId
+                        </td>
+
+                        <td>
+                            @project.ProjectName
+                        </td>
+
+                        <td>
+                            @project.ManagerName
+                        </td>
+
+                        <td>
+                            @project.EndDate.ToString("dd/MM/yyyy")
+                        </td>
+
+                        <td>
+                            @project.Priority
+                        </td>
+
+                        <td>
+                            @project.Status
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>

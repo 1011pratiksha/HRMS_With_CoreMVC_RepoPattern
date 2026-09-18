@@ -17,12 +17,12 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
 
         
 
-        public Trainer GetById(int id)
+        public async Task<Trainer> FetchById(int id)
         {
             return _context.Trainer.Find(id);
         }
 
-        public string Add(Trainer t)
+        public async Task<string> Add(Trainer t)
         {
             if (t.imagename != null)
             {
@@ -35,7 +35,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
             return "Trainer added successfully!";
         }
 
-        public string Update(Trainer t)
+        public async Task<string> Update(Trainer t)
         {
             var existing = _context.Trainer.Find(t.TrainerId);
             if (existing == null)
@@ -61,7 +61,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
             return "Trainer updated successfully!";
         }
 
-        public string Delete(int id)
+        public async Task<string> Delete(int id)
         {
             var trainer = _context.Trainer.Find(id);
             if (trainer == null)
@@ -95,12 +95,12 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
             return "/uploads/" + fileName;
         }
 
-        public List<Trainer> FetchAll()
+        public async Task<List<Trainer>> FetchAll()
         {
             return _context.Trainer.ToList();
         }
 
-        public List<Role> FetchAllRoles()
+        public async Task<List<Role>> FetchAllRoles()
         {
             return _context.Role.ToList();
         }
