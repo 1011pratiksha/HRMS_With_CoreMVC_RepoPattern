@@ -13,6 +13,21 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
             data = context;
         }
 
+        //public List<Tasks> AddTask(Tasks tk, IFormFile file, int[] Users)
+        //{
+
+        //    //if (file != null)
+            //{
+            //    string path = "wwwroot/TaskFile/" + file.FileName;
+
+            //    file.CopyTo(new FileStream(path, FileMode.Create));
+
+            //    pro.LogoPath = "/TaskFile/" + file.FileName;
+            //}
+
+            //file.Users = data.Users.Where(x => Users.Contains(x.UserId)).ToList();
+
+            //      pro.Users = data.User.Where(x => Users.Contains(x.UserId)).ToList();
 
         public void AddTask(Tasks tk, IFormFile file, int[] Users)
         {
@@ -23,7 +38,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
             {
                 string path = "wwwroot/TaskFile/" + file.FileName;
 
-                file.CopyTo(new FileStream(path, FileMode.Create));
+       file.CopyTo(new FileStream(path, FileMode.Create));
 
                 tk.FilePath = "/TaskFile/" + file.FileName;
             }

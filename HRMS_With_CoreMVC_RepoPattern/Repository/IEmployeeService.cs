@@ -19,12 +19,18 @@ namespace HRMS_With_CoreMVC_RepoPattern.Repository
         Task<Department> EditDepartment(Department department);
         Task<Department> DeleteDepartment(int id);
 
-        //for add designation
-        //Task<List<Designation>> GetAllDesignations();
-        //Task<Designation> GetDesignationById(int id);
-        //Task<Designation> AddDesignation(Designation designation);
-        //Task<Designation> EditDesignation(Designation designation);
-        //Task<Designation> DeleteDesignation(int id);
+        //-----for add designation
+        Task < List < Designation >> GetAllDesignations();
+        Task<Designation> GetDesignationById(int id);
+        Task<Designation> AddDesignation(Designation designation);
+        Task<Designation> EditDesignation(Designation designation);
+        Task<Designation> DeleteDesignation(int id);
 
+        ///---- for employee list
+        Task<List<User>> GetAllEmployees();
+        Task<User> GetEmployeeById( int id);
+        Task<User> AddEmployee(User user);
+        Task<User> EditEmployee(User user);
+        Task<bool> DeleteEmployeeById(int id);
     }
 }

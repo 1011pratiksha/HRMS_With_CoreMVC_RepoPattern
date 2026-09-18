@@ -55,5 +55,13 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Auth}/{action=SignIn}/{id?}")
     .WithStaticAssets();
+//  pattern: "{controller=Project}/{action=Index}/{id?}")
+//  pattern: "{controller=Auth}/{action=SignIn}/{id?}")
+
+//pattern: "{controller=Resignation}/{action=Index}/{id?}")
+
+
+
+
 
 app.Run();
