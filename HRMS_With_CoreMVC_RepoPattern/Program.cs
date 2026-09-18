@@ -54,17 +54,30 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseSession();
 app.UseAuthorization();
 
 app.UseStaticFiles();
-app.UseSession();
+
 
 app.MapControllerRoute(
     name: "default",
 
-    pattern: "{controller=Task}/{action=Index}/{id?}")
+
+  //  pattern: "{controller=Task}/{action=Index}/{id?}")
+   
+//pattern: "{controller=Auth}/{action=SignIn}/{id?}");
+  pattern: "{controller=Auth}/{action=SignIn}/{id?}")
+
     .WithStaticAssets();
+//  pattern: "{controller=Project}/{action=Index}/{id?}")
+//  pattern: "{controller=Auth}/{action=SignIn}/{id?}")
+
+//pattern: "{controller=Resignation}/{action=Index}/{id?}")
+
+
+
+
 
 //  pattern: "{controller=Project}/{action=Index}/{id?}")
 
