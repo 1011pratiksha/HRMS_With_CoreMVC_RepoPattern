@@ -1,0 +1,54 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model HRMS_With_CoreMVC_RepoPattern.Models.Attendance
+@{
+    ViewData["Title"] = "Edit Attendance";
+}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="text-center mb-4">Edit Attendance</h2>
+            <form method="post" asp-action="EditAttendance">
+                <input type="hidden" asp-for="AttendanceId" />
+                <input type="hidden" asp-for="UserId" />
+                <div class="mb-3">
+                    <label>Date</label>
+                    <input asp-for="Date" type="date" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label>Check In</label>
+                    <input asp-for="CheckIn" type="datetime-local" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label>Check Out</label>
+                    <input asp-for="CheckOut" type="datetime-local" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label>Break</label>
+                    <input asp-for="BreakHours" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label>Late</label>
+                    <input asp-for="Late" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label>Production Hours</label>
+                    <input asp-for="ProductionHours" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label>Status</label>
+                    <select asp-for="Status" class="form-control">
+                        <option value="Present">Present</option>
+                        <option value="Absent">Absent</option>
+                        <option value="Half Day">Half Day</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-warning w-100">Save</button>
+            </form>
+        </div>
+    </div>
+</div>
