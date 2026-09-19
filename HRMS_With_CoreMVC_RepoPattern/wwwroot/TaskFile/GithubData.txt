@@ -1,0 +1,9 @@
+1. Repository Clone केली
+2. kusum branch तयार केली
+3. Courses code copy केला
+4. git add .
+5. git commit
+6. git push
+7. Pull Request तयार केली
+8. Sanika ने PR merge केली
+9. Code main branch मध्ये आला
