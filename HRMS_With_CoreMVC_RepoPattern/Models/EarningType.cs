@@ -7,7 +7,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Models
         [Key]
         public int EarntypeId { get; set; }
         public string EarningName { get; set; }
-
         public List<Earning> Earnings { get; set; }
     }
 }

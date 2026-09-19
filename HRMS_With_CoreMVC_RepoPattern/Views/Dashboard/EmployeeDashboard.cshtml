@@ -42,13 +42,19 @@
                 </a>
 
                 <div class="nested-submenu">
-                    <a href="">Apply Leave</a>
-                    <a href="">Leave Details</a>
+                    <a href="/Leave/ApplyLeave">Apply Leave</a>
+                    <a href="/Leave/ViewMyLeaveRequests">Leave Details</a>
                 </div>
             </div>
 
-            <a href="">Attendance (Employee)</a>
-            <a href="">TimeSheet</a>
+            <a asp-controller="EmpAttendance"
+               asp-action="Index">
+                Attendance (Employee)
+            </a>
+
+            <a href="/Timesheet/Index">
+                TimeSheet
+            </a>
 
         </div>
     </div>

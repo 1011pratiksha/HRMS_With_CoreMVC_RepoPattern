@@ -20,7 +20,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Models
         [Required(ErrorMessage = "Year is required.")]
         [Range(2000, 2100, ErrorMessage = "Year must be between 2000 and 2100.")]
         public int Year { get; set; }
-
+        
         [Required(ErrorMessage = "Payslip path is required.")]
         public string PayslipPath { get; set; }
 

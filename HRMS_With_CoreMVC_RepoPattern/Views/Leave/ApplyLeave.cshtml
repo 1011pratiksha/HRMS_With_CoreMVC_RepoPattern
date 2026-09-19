@@ -1,0 +1,112 @@
+﻿@* For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860 *@ 
+@{
+}
+
+@model List<HRMS_With_CoreMVC_RepoPattern.Models.LeaveBalance>
+@{
+    ViewBag.Title = "Apply Leave";
+}
+@if (TempData["success"] != null)
+{
+    <div class="alert alert-success">@TempData["success"]</div>
+}
+@if (TempData["error"] != null)
+{
+    <div class="alert alert-danger">@TempData["error"]</div>
+}
+<div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
+    <div class="my-auto mb-2">
+        <h2 class="mb-1">Leaves</h2>
+        <nav>
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="#"><i class="ti ti-smart-home"></i></a></li>
+                <li class="breadcrumb-item">Employee</li>
+                <li class="breadcrumb-item active" aria-current="page">Apply Leave</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
+        <div class="head-icons ms-2">
+            <a href="javascript:void(0);" id="collapse-header"><i class="ti ti-chevrons-up"></i></a>
+        </div>
+    </div>
+</div>
+<br />
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-blue-le">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="text-start">
+                            <p class="mb-1">@item.MasterLeaveType.LeaveType</p>
+                            <h4>@item.TotalLeaves</h4>
+                        </div>
+                        <div class="d-flex">
+                            <div class="flex-shrink-0 me-2">
+                                <span class="avatar avatar-md d-flex">
+                                    <i class="ti ti-calendar-event fs-32"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="badge bg-info-transparent">
+                        Remaining Leaves : @(item.TotalLeaves - item.UsedLeaves)
+                    </span>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<br />
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Apply Leave</h3>
+    </div>
+    <div class="card-body">
+        <form method="post" asp-action="ApplyLeave" asp-controller="Leave">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label class="control-label">Leave Type</label>
+                        <div class="input-group">
+                            <select class="form-control" name="LeaveTypeId" required>
+                                <option value="">Select Leave Type</option>
+                                @foreach (var item in Model)
+                                {
+                                    <option value="@item.LeaveTypeId">@item.MasterLeaveType.LeaveType</option>
+                                }
+                            </select>
+                            <span class="input-group-text"><i class="ti ti-calendar-event"></i></span>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="control-label">Start Date</label>
+                        <div class="input-group">
+                            <input type="date" class="form-control" name="StartDate" required />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label class="control-label">End Date</label>
+                        <div class="input-group">
+                            <input type="date" class="form-control" name="EndDate" required />
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="control-label">Reason</label>
+                        <div class="input-group">
+                            <textarea class="form-control" name="Reason" rows="3" required></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group mt-3">
+                <button type="submit" class="btn btn-primary">Apply</button>
+                <a asp-action="ViewMyLeaveRequests" asp-controller="Leave" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>

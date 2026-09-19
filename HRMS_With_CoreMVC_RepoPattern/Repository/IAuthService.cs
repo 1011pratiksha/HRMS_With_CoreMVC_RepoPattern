@@ -7,5 +7,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
         Task SignUp(User us);
 
         Task<string?> SignIn(string Email, string Password);
+        Task<User> GetUserByEmail(string email);
     }
 }

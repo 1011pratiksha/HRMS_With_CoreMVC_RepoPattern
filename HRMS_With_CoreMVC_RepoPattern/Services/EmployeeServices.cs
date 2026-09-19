@@ -60,7 +60,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
         public async Task<List<Department>> GetAllDepartments()
         {
             var departments = await db.Departments.ToListAsync();
-            foreach(var department in departments)
+            foreach (var department in departments)
             {
                 department.NoOfEmployee = await db.User.CountAsync(u => u.DepartmentId == department.DepartmentId);
             }
@@ -104,10 +104,118 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
             }
             return department;
         }
-        
 
-       
+
+        ///---- all add designation page related operational services 
+        public async Task<List<Designation>> GetAllDesignations()
+        {
+            var designations = await db.Designations.ToListAsync();
+            foreach (var designation in designations)
+            {
+                designation.NoOfEmployee = await db.User.CountAsync(u => u.DesignationId == designation.DesignationId);
+            }
+            return designations;
+        }
+
+
+
+
+        public async Task<Designation> GetDesignationById(int id)
+        {
+            return await db.Designations.FindAsync(id);
+        }
+
+        public async Task<Designation> AddDesignation(Designation designation)
+        {
+            designation.CreatedAt = DateTime.Now;
+            db.Designations.Add(designation);
+            await db.SaveChangesAsync();
+            return designation;
+        }
+
+        public async Task<Designation> EditDesignation(Designation designation)
+        {
+            var existingDesignation = await db.Designations.FindAsync(designation.DesignationId);
+            if (existingDesignation != null)
+            {
+                existingDesignation.Name = designation.Name;
+                existingDesignation.status = designation.status;
+                existingDesignation.ModifiedBy = "Admin";
+                existingDesignation.ModifiedAt = DateTime.Now;
+                await db.SaveChangesAsync();
+            }
+            return existingDesignation;
+        }
+
+        public async Task<Designation> DeleteDesignation(int id)
+        {
+            var designation = await db.Designations.FindAsync(id);
+            if (designation != null)
+            {
+                db.Designations.Remove(designation);
+                await db.SaveChangesAsync();
+            }
+            return designation;
+        }
+
 
         
+        //----Employee list related operations are here
+
+        public async Task<List<User>> GetAllEmployees()
+        {
+            var employees = await db.User
+                .Include(x => x.Role)
+                .Include(x => x.Designation)
+                .Include(x => x.Department)
+                .ToListAsync();
+
+            return employees;
+        }
+
+        public async Task<User> GetEmployeeById(int id)
+        {
+            var emp = await db.User
+                .Include(x => x.Role)
+                .Include(x => x.Designation)
+                .Include(x => x.Department)
+                .SingleOrDefaultAsync(x => x.UserId == id);
+
+            return emp;
+        }
+
+        public async Task<User> AddEmployee(User user)
+        {
+            await db.User.AddAsync(user);
+            await db.SaveChangesAsync();
+
+            return user;
+        }
+
+        public async Task<User> EditEmployee(User user)
+        {
+            db.User.Update(user);
+            await db.SaveChangesAsync();
+
+            return user;
+        }
+
+        public async Task<bool> DeleteEmployeeById(int id)
+        {
+            var data = await db.User
+                .SingleOrDefaultAsync(x => x.UserId == id);
+
+            if (data == null)
+            {
+                return false;
+            }
+
+            db.User.Remove(data);
+            await db.SaveChangesAsync();
+
+            return true;
+        }
     }
 }
+
+
