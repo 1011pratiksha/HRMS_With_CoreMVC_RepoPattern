@@ -13,6 +13,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Models
         public string phone { get; set; }
         [ForeignKey("User")]
         public int UserId { get; set; }
-        public User User { get; set; }
+        public User? User { get; set; }
     }
 }

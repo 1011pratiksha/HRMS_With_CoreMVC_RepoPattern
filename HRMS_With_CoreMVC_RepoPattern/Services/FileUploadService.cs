@@ -53,9 +53,91 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
             return await _context.User.ToListAsync();
         }
 
+        public async Task<User> FetchUserById(int id)
+        {
+            return await _context.User.FindAsync(id);
+        }
+
+        public async Task<List<AddEmployeeDocName>> FetchAllEmployeeDocNames()
+        {
+            return await _context.addEmployeeDocNames.ToListAsync();
+        }
+
+        public async Task<AddAdminDocName> FetchAdminDocNameById(int id)
+        {
+            return await _context.addAdminDocNames.FindAsync(id);
+        }
+
+        public async Task<string> UpdateAdminDocName(AddAdminDocName a)
+        {
+            var existing = await _context.addAdminDocNames.FindAsync(a.Id);
+            if (existing == null)
+            {
+                return "Document not found";
+            }
+            existing.DocName = a.DocName;
+            await _context.SaveChangesAsync();
+            return "Document updated successfully!";
+        }
+
+        public async Task<AddEmployeeDocName> FetchEmployeeDocNameById(int id)
+        {
+            return await _context.addEmployeeDocNames.FindAsync(id);
+        }
+
+        public async Task<string> UpdateEmployeeDocName(AddEmployeeDocName a)
+        {
+            var existing = await _context.addEmployeeDocNames.FindAsync(a.Id);
+            if (existing == null)
+            {
+                return "Document not found";
+            }
+            existing.DocName = a.DocName;
+            await _context.SaveChangesAsync();
+            return "Document updated successfully!";
+        }
+
         public async Task<FileUpload> FetchById(int id)
         {
             return await _context.FileUpload.FindAsync(id);
+        }
+
+        public async Task<string> AddAdminDocName(AddAdminDocName a)
+        {
+            await _context.addAdminDocNames.AddAsync(a);
+            await _context.SaveChangesAsync();
+            return "Document name added successfully!";
+        }
+
+        public async Task<string> AddEmployeeDocName(AddEmployeeDocName a)
+        {
+            await _context.addEmployeeDocNames.AddAsync(a);
+            await _context.SaveChangesAsync();
+            return "Document name added successfully!";
+        }
+
+        public async Task<string> DeleteAdminDocName(int id)
+        {
+            var doc = await _context.addAdminDocNames.FindAsync(id);
+            if (doc == null)
+            {
+                return "Document not found";
+            }
+            _context.addAdminDocNames.Remove(doc);
+            await _context.SaveChangesAsync();
+            return "Document deleted successfully!";
+        }
+
+        public async Task<string> DeleteEmployeeDocName(int id)
+        {
+            var doc = await _context.addEmployeeDocNames.FindAsync(id);
+            if (doc == null)
+            {
+                return "Document not found";
+            }
+            _context.addEmployeeDocNames.Remove(doc);
+            await _context.SaveChangesAsync();
+            return "Document deleted successfully!";
         }
 
         private string SaveFile(IFormFile file)

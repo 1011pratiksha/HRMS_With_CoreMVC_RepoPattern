@@ -1,5 +1,1719 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿
+@model HRMS_With_CoreMVC_RepoPattern.Models.User
+
 @{
+    ViewData["Title"] = "Employee Details";
+
+    var bankDetails = ViewBag.BankDetails as HRMS_With_CoreMVC_RepoPattern.Models.EmployeeBankDetails;
+    var familyDetails = ViewBag.FamilyDetails as List<HRMS_With_CoreMVC_RepoPattern.Models.EmployeeFamilyDetail>;
+    var educationDetails = ViewBag.EducationDetails as List<HRMS_With_CoreMVC_RepoPattern.Models.EducationDetails>;
+    var experienceDetails = ViewBag.Experiences as List<HRMS_With_CoreMVC_RepoPattern.Models.Experience>;
 }
+
+<div class="container-fluid mt-4">
+
+    <div class="row">
+
+        <!-- LEFT SIDE - EMPLOYEE PROFILE -->
+        <div class="col-md-5">
+
+            <div class="card shadow-sm mb-4">
+
+                <!-- Profile Header -->
+                <div class="p-4 text-white"
+                     style="background: linear-gradient(135deg, #ff8c42, #ff6b35);">
+
+                    <div class="text-center">
+
+                        @if (!string.IsNullOrEmpty(Model.ProfilePicture))
+                        {
+                            <img src="@Model.ProfilePicture"
+                                 class="rounded-circle mb-3"
+                                 style="width:120px;height:120px;object-fit:cover;"
+                                 alt="Profile Picture" />
+                        }
+                        else
+                        {
+                            <div class="rounded-circle bg-white text-dark d-flex align-items-center justify-content-center mx-auto mb-3"
+                                 style="width:120px;height:120px;font-size:45px;">
+                                <i class="bi bi-person"></i>
+                            </div>
+                        }
+
+                        <h4 class="mb-1">
+                            @Model.FirstName @Model.LastName
+                        </h4>
+
+                        <p class="mb-0">
+                            @(Model.Designation?.Name ?? "Not Assigned")
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!-- Employee Basic Details -->
+                <div class="card-body">
+
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <small class="text-muted">Employee ID</small>
+                            <div class="fw-semibold">
+                                @Model.UserId
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <small class="text-muted">Department</small>
+                            <div class="fw-semibold">
+                                @(Model.Department?.Name ?? "Not Assigned")
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <small class="text-muted">Date of Joining</small>
+                            <div class="fw-semibold">
+                                @(Model.DateOfJoining?.ToString("dd-MM-yyyy") ?? "Not Available")
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <small class="text-muted">Reporting Manager</small>
+                            <div class="fw-semibold">
+                                @(Model.ReportingManager ?? "Not Assigned")
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+
+                        <h5 class="mb-0">Basic Information</h5>
+
+                        <button type="button"
+                                class="btn btn-sm btn-outline-primary"
+                                data-bs-toggle="modal"
+                                data-bs-target="#editEmployeeProfileModal"
+                                title="Edit Employee Information">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+
+                    </div>
+
+                    <div class="mb-3">
+                        <small class="text-muted">Phone</small>
+                        <div>
+                            @(Model.PhoneNumber ?? "Not Available")
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <small class="text-muted">Email</small>
+                        <div>
+                            @(Model.Email ?? "Not Available")
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <small class="text-muted">Gender</small>
+                            <div>
+                                @(Model.Gender ?? "Not Available")
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <small class="text-muted">Birthday</small>
+                            <div>
+                                @(Model.DateOfBirth?.ToString("dd-MM-yyyy") ?? "Not Available")
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <small class="text-muted">Address</small>
+                        <div>
+                            @(Model.Address ?? "Not Available")
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT SIDE -->
+        <div class="col-md-7">
+
+
+            <!-- ABOUT EMPLOYEE -->
+            <div class="card shadow-sm mb-4">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+
+                        <h5 class="mb-0">About Employee</h5>
+
+                        <div>
+
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-primary me-1"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#editEmployeeProfileModal"
+                                    title="Edit">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-secondary"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#aboutEmployeeDetails"
+                                    aria-expanded="true"
+                                    title="Show/Hide">
+                                <i class="bi bi-chevron-down"></i>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <div id="aboutEmployeeDetails" class="collapse show">
+
+                        <p class="text-muted">
+                            @(Model.AboutEmployee ?? "No information available.")
+                        </p>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!-- BANK INFORMATION -->
+            <div class="card shadow-sm mb-4">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+
+                        <h5 class="mb-0">Bank Information</h5>
+
+                        <div>
+
+                            @if (bankDetails == null)
+                            {
+                                <button type="button"
+                                        class="btn btn-sm btn-primary me-1"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#addBankModal"
+                                        title="Add Bank Details">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            }
+                            else
+                            {
+                                <button type="button"
+                                        class="btn btn-sm btn-warning me-1"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#editBankModal"
+                                        title="Edit Bank Details">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                            }
+
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-secondary"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#bankDetails"
+                                    aria-expanded="true"
+                                    title="Show/Hide">
+                                <i class="bi bi-chevron-down"></i>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <div id="bankDetails" class="collapse show">
+
+                        @if (bankDetails != null)
+                        {
+                            <div class="row">
+
+                                <div class="col-md-6 mb-3">
+                                    <small class="text-muted">Bank Name</small>
+                                    <div class="fw-semibold">
+                                        @bankDetails.BankName
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <small class="text-muted">Account Number</small>
+                                    <div class="fw-semibold">
+                                        @bankDetails.AccountNumber
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <small class="text-muted">IFSC Code</small>
+                                    <div class="fw-semibold">
+                                        @bankDetails.IFSCCode
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <small class="text-muted">Branch Name</small>
+                                    <div class="fw-semibold">
+                                        @bankDetails.BranchName
+                                    </div>
+                                </div>
+
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted mb-0">
+                                No bank details available.
+                            </p>
+                        }
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!-- FAMILY INFORMATION -->
+            <div class="card shadow-sm mb-4">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+
+                        <h5 class="mb-0">Family Information</h5>
+
+                        <div>
+
+                            <button type="button"
+                                    class="btn btn-sm btn-primary me-1"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#addFamilyModal"
+                                    title="Add Family Member">
+                                <i class="bi bi-plus"></i>
+                            </button>
+
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-secondary"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#familyDetails"
+                                    aria-expanded="true"
+                                    title="Show/Hide">
+                                <i class="bi bi-chevron-down"></i>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <div id="familyDetails" class="collapse show">
+
+                        @if (familyDetails != null && familyDetails.Any())
+                        {
+                            @foreach (var family in familyDetails)
+                            {
+                                <div class="border rounded p-3 mb-3">
+
+                                    <div class="d-flex justify-content-between align-items-start">
+
+                                        <div class="row flex-grow-1">
+
+                                            <div class="col-md-6 mb-2">
+                                                <small class="text-muted">Name</small>
+                                                <div class="fw-semibold">
+                                                    @family.Name
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6 mb-2">
+                                                <small class="text-muted">Relation</small>
+                                                <div class="fw-semibold">
+                                                    @family.Relation
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6 mb-2">
+                                                <small class="text-muted">Date of Birth</small>
+                                                <div class="fw-semibold">
+                                                    @family.DateOfBirth.ToString("dd-MM-yyyy")
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6 mb-2">
+                                                <small class="text-muted">Phone</small>
+                                                <div class="fw-semibold">
+                                                    @family.phone
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <button type="button"
+                                                class="btn btn-sm btn-warning ms-2"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#editFamilyModal_@family.FamilyDetailId"
+                                                title="Edit">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- EDIT FAMILY MODAL -->
+                                <div class="modal fade"
+                                     id="editFamilyModal_@family.FamilyDetailId"
+                                     tabindex="-1"
+                                     aria-hidden="true">
+
+                                    <div class="modal-dialog">
+
+                                        <div class="modal-content">
+
+                                            <div class="modal-header">
+
+                                                <h5 class="modal-title">
+                                                    Edit Family Information
+                                                </h5>
+
+                                                <button type="button"
+                                                        class="btn-close"
+                                                        data-bs-dismiss="modal">
+                                                </button>
+
+                                            </div>
+
+                                            <form asp-action="EditFamilyDetails"
+                                                  asp-controller="Employee"
+                                                  method="post">
+
+                                                <div class="modal-body">
+
+                                                    <input type="hidden"
+                                                           name="FamilyDetailId"
+                                                           value="@family.FamilyDetailId" />
+
+                                                    <input type="hidden"
+                                                           name="UserId"
+                                                           value="@Model.UserId" />
+
+                                                    <div class="mb-3">
+
+                                                        <label class="form-label">
+                                                            Name
+                                                        </label>
+
+                                                        <input type="text"
+                                                               name="Name"
+                                                               class="form-control"
+                                                               value="@family.Name"
+                                                               required />
+
+                                                    </div>
+
+                                                    <div class="mb-3">
+
+                                                        <label class="form-label">
+                                                            Relation
+                                                        </label>
+
+                                                        <input type="text"
+                                                               name="Relation"
+                                                               class="form-control"
+                                                               value="@family.Relation"
+                                                               required />
+
+                                                    </div>
+
+                                                    <div class="mb-3">
+
+                                                        <label class="form-label">
+                                                            Date of Birth
+                                                        </label>
+
+                                                        <input type="date"
+                                                               name="DateOfBirth"
+                                                               class="form-control"
+                                                               value="@family.DateOfBirth.ToString("yyyy-MM-dd")"
+                                                               required />
+
+                                                    </div>
+
+                                                    <div class="mb-3">
+
+                                                        <label class="form-label">
+                                                            Phone
+                                                        </label>
+
+                                                        <input type="text"
+                                                               name="phone"
+                                                               class="form-control"
+                                                               value="@family.phone"
+                                                               required />
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="modal-footer">
+
+                                                    <button type="button"
+                                                            class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">
+                                                        Cancel
+                                                    </button>
+
+                                                    <button type="submit"
+                                                            class="btn btn-primary">
+                                                        Update
+                                                    </button>
+
+                                                </div>
+
+                                            </form>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <p class="text-muted mb-0">
+                                No family details available.
+                            </p>
+                        }
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!-- EDUCATION DETAILS -->
+            <div class="card shadow-sm mb-4">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+
+                        <h5 class="mb-0">Education Details</h5>
+
+                        <div>
+
+                            <button type="button"
+                                    class="btn btn-sm btn-primary me-1"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#addEducationModal"
+                                    title="Add Education">
+                                <i class="bi bi-plus"></i>
+                            </button>
+
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-secondary"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#educationDetails"
+                                    aria-expanded="true"
+                                    title="Show/Hide">
+                                <i class="bi bi-chevron-down"></i>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <div id="educationDetails" class="collapse show">
+
+                        @if (educationDetails != null && educationDetails.Any())
+                        {
+                            @foreach (var education in educationDetails)
+                            {
+                                <div class="border rounded p-3 mb-3">
+
+                                    <div class="d-flex justify-content-between align-items-start">
+
+                                        <div class="row flex-grow-1">
+
+                                            <div class="col-md-6 mb-2">
+                                                <small class="text-muted">Education Type</small>
+                                                <div class="fw-semibold">
+                                                    @education.EducationType
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6 mb-2">
+                                                <small class="text-muted">University</small>
+                                                <div class="fw-semibold">
+                                                    @education.UniversityName
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6 mb-2">
+                                                <small class="text-muted">Start Date</small>
+                                                <div class="fw-semibold">
+                                                    @(education.startdate?.ToString("dd-MM-yyyy") ?? "Not Available")
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6 mb-2">
+                                                <small class="text-muted">End Date</small>
+                                                <div class="fw-semibold">
+                                                    @(education.enddate?.ToString("dd-MM-yyyy") ?? "Not Available")
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <button type="button"
+                                                class="btn btn-sm btn-warning ms-2"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#editEducationModal_@education.EducationDetailsId"
+                                                title="Edit">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- EDIT EDUCATION MODAL -->
+                                <div class="modal fade"
+                                     id="editEducationModal_@education.EducationDetailsId"
+                                     tabindex="-1"
+                                     aria-hidden="true">
+
+                                    <div class="modal-dialog">
+
+                                        <div class="modal-content">
+
+                                            <div class="modal-header">
+
+                                                <h5 class="modal-title">
+                                                    Edit Education Details
+                                                </h5>
+
+                                                <button type="button"
+                                                        class="btn-close"
+                                                        data-bs-dismiss="modal">
+                                                </button>
+
+                                            </div>
+
+                                            <form asp-action="EditEducationDetails"
+                                                  asp-controller="Employee"
+                                                  method="post">
+
+                                                <div class="modal-body">
+
+                                                    <input type="hidden"
+                                                           name="EducationDetailsId"
+                                                           value="@education.EducationDetailsId" />
+
+                                                    <input type="hidden"
+                                                           name="UserId"
+                                                           value="@Model.UserId" />
+
+                                                    <div class="mb-3">
+
+                                                        <label class="form-label">
+                                                            Education Type
+                                                        </label>
+
+                                                        <input type="text"
+                                                               name="EducationType"
+                                                               class="form-control"
+                                                               value="@education.EducationType"
+                                                               required />
+
+                                                    </div>
+
+                                                    <div class="mb-3">
+
+                                                        <label class="form-label">
+                                                            University Name
+                                                        </label>
+
+                                                        <input type="text"
+                                                               name="UniversityName"
+                                                               class="form-control"
+                                                               value="@education.UniversityName"
+                                                               required />
+
+                                                    </div>
+
+                                                    <div class="mb-3">
+
+                                                        <label class="form-label">
+                                                            Start Date
+                                                        </label>
+
+                                                        <input type="date"
+                                                               name="startdate"
+                                                               class="form-control"
+                                                               value="@(education.startdate?.ToString("yyyy-MM-dd"))" />
+
+                                                    </div>
+
+                                                    <div class="mb-3">
+
+                                                        <label class="form-label">
+                                                            End Date
+                                                        </label>
+
+                                                        <input type="date"
+                                                               name="enddate"
+                                                               class="form-control"
+                                                               value="@(education.enddate?.ToString("yyyy-MM-dd"))" />
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="modal-footer">
+
+                                                    <button type="button"
+                                                            class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">
+                                                        Cancel
+                                                    </button>
+
+                                                    <button type="submit"
+                                                            class="btn btn-primary">
+                                                        Update
+                                                    </button>
+
+                                                </div>
+
+                                            </form>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <p class="text-muted mb-0">
+                                No education details available.
+                            </p>
+                        }
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!-- EXPERIENCE -->
+            <div class="card shadow-sm mb-4">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+
+                        <h5 class="mb-0">Experience</h5>
+
+                        <div>
+
+                            <button type="button"
+                                    class="btn btn-sm btn-primary me-1"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#addExperienceModal"
+                                    title="Add Experience">
+                                <i class="bi bi-plus"></i>
+                            </button>
+
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-secondary"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#experienceDetails"
+                                    aria-expanded="true"
+                                    title="Show/Hide">
+                                <i class="bi bi-chevron-down"></i>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <div id="experienceDetails" class="collapse show">
+
+                        @if (experienceDetails != null && experienceDetails.Any())
+                        {
+                            @foreach (var experience in experienceDetails)
+                            {
+                                <div class="border rounded p-3 mb-3">
+
+                                    <div class="d-flex justify-content-between align-items-start">
+
+                                        <div class="row flex-grow-1">
+
+                                            <div class="col-md-6 mb-2">
+                                                <small class="text-muted">Company Name</small>
+                                                <div class="fw-semibold">
+                                                    @experience.CompanyName
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6 mb-2">
+                                                <small class="text-muted">Designation</small>
+                                                <div class="fw-semibold">
+                                                    @experience.DesignationName
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6 mb-2">
+                                                <small class="text-muted">From Date</small>
+                                                <div class="fw-semibold">
+                                                    @experience.FromDate.ToString("dd-MM-yyyy")
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6 mb-2">
+                                                <small class="text-muted">To Date</small>
+                                                <div class="fw-semibold">
+                                                    @experience.ToDate.ToString("dd-MM-yyyy")
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <button type="button"
+                                                class="btn btn-sm btn-warning ms-2"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#editExperienceModal_@experience.ExperienceId"
+                                                title="Edit">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- EDIT EXPERIENCE MODAL -->
+                                <div class="modal fade"
+                                     id="editExperienceModal_@experience.ExperienceId"
+                                     tabindex="-1"
+                                     aria-hidden="true">
+
+                                    <div class="modal-dialog">
+
+                                        <div class="modal-content">
+
+                                            <div class="modal-header">
+
+                                                <h5 class="modal-title">
+                                                    Edit Experience
+                                                </h5>
+
+                                                <button type="button"
+                                                        class="btn-close"
+                                                        data-bs-dismiss="modal">
+                                                </button>
+
+                                            </div>
+
+                                            <form asp-action="EditExperience"
+                                                  asp-controller="Employee"
+                                                  method="post">
+
+                                                <div class="modal-body">
+
+                                                    <input type="hidden"
+                                                           name="ExperienceId"
+                                                           value="@experience.ExperienceId" />
+
+                                                    <input type="hidden"
+                                                           name="UserId"
+                                                           value="@Model.UserId" />
+
+                                                    <div class="mb-3">
+
+                                                        <label class="form-label">
+                                                            Company Name
+                                                        </label>
+
+                                                        <input type="text"
+                                                               name="CompanyName"
+                                                               class="form-control"
+                                                               value="@experience.CompanyName"
+                                                               required />
+
+                                                    </div>
+
+                                                    <div class="mb-3">
+
+                                                        <label class="form-label">
+                                                            Designation
+                                                        </label>
+
+                                                        <input type="text"
+                                                               name="DesignationName"
+                                                               class="form-control"
+                                                               value="@experience.DesignationName"
+                                                               required />
+
+                                                    </div>
+
+                                                    <div class="mb-3">
+
+                                                        <label class="form-label">
+                                                            From Date
+                                                        </label>
+
+                                                        <input type="date"
+                                                               name="FromDate"
+                                                               class="form-control"
+                                                               value="@experience.FromDate.ToString("yyyy-MM-dd")"
+                                                               required />
+
+                                                    </div>
+
+                                                    <div class="mb-3">
+
+                                                        <label class="form-label">
+                                                            To Date
+                                                        </label>
+
+                                                        <input type="date"
+                                                               name="ToDate"
+                                                               class="form-control"
+                                                               value="@experience.ToDate.ToString("yyyy-MM-dd")"
+                                                               required />
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="modal-footer">
+
+                                                    <button type="button"
+                                                            class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">
+                                                        Cancel
+                                                    </button>
+
+                                                    <button type="submit"
+                                                            class="btn btn-primary">
+                                                        Update
+                                                    </button>
+
+                                                </div>
+
+                                            </form>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <p class="text-muted mb-0">
+                                No experience details available.
+                            </p>
+                        }
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ========================================================= -->
+<!-- ADD BANK MODAL -->
+<!-- ========================================================= -->
+
+@if (bankDetails == null)
+{
+    <div class="modal fade"
+         id="addBankModal"
+         tabindex="-1"
+         aria-hidden="true">
+
+        <div class="modal-dialog">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title">
+                        Add Bank Information
+                    </h5>
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal">
+                    </button>
+
+                </div>
+
+                <form asp-action="AddBankDetails"
+                      asp-controller="Employee"
+                      method="post">
+
+                    <div class="modal-body">
+
+                        <input type="hidden"
+                               name="UserId"
+                               value="@Model.UserId" />
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Bank Name
+                            </label>
+
+                            <input type="text"
+                                   name="BankName"
+                                   class="form-control"
+                                   required />
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Account Number
+                            </label>
+
+                            <input type="text"
+                                   name="AccountNumber"
+                                   class="form-control"
+                                   required />
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                IFSC Code
+                            </label>
+
+                            <input type="text"
+                                   name="IFSCCode"
+                                   class="form-control"
+                                   required />
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Branch Name
+                            </label>
+
+                            <input type="text"
+                                   name="BranchName"
+                                   class="form-control"
+                                   required />
+
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+
+                        <button type="button"
+                                class="btn btn-secondary"
+                                data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+
+                        <button type="submit"
+                                class="btn btn-primary">
+                            Save
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+}
+
+
+<!-- ========================================================= -->
+<!-- EDIT BANK MODAL -->
+<!-- ========================================================= -->
+
+@if (bankDetails != null)
+{
+    <div class="modal fade"
+         id="editBankModal"
+         tabindex="-1"
+         aria-hidden="true">
+
+        <div class="modal-dialog">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title">
+                        Edit Bank Information
+                    </h5>
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal">
+                    </button>
+
+                </div>
+
+                <form asp-action="EditBankDetails"
+                      asp-controller="Employee"
+                      method="post">
+
+                    <div class="modal-body">
+
+                        <input type="hidden"
+                               name="BankDetailId"
+                               value="@bankDetails.BankDetailId" />
+
+                        <input type="hidden"
+                               name="UserId"
+                               value="@Model.UserId" />
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Bank Name
+                            </label>
+
+                            <input type="text"
+                                   name="BankName"
+                                   class="form-control"
+                                   value="@bankDetails.BankName"
+                                   required />
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Account Number
+                            </label>
+
+                            <input type="text"
+                                   name="AccountNumber"
+                                   class="form-control"
+                                   value="@bankDetails.AccountNumber"
+                                   required />
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                IFSC Code
+                            </label>
+
+                            <input type="text"
+                                   name="IFSCCode"
+                                   class="form-control"
+                                   value="@bankDetails.IFSCCode"
+                                   required />
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Branch Name
+                            </label>
+
+                            <input type="text"
+                                   name="BranchName"
+                                   class="form-control"
+                                   value="@bankDetails.BranchName"
+                                   required />
+
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+
+                        <button type="button"
+                                class="btn btn-secondary"
+                                data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+
+                        <button type="submit"
+                                class="btn btn-primary">
+                            Update
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+}
+
+
+<!-- ========================================================= -->
+<!-- ADD FAMILY MODAL -->
+<!-- ========================================================= -->
+
+<div class="modal fade"
+     id="addFamilyModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+                    Add Family Information
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <form asp-action="AddFamilyDetails"
+                  asp-controller="Employee"
+                  method="post">
+
+                <div class="modal-body">
+
+                    <input type="hidden"
+                           name="UserId"
+                           value="@Model.UserId" />
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Name
+                        </label>
+
+                        <input type="text"
+                               name="Name"
+                               class="form-control"
+                               required />
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Relation
+                        </label>
+
+                        <input type="text"
+                               name="Relation"
+                               class="form-control"
+                               required />
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Date of Birth
+                        </label>
+
+                        <input type="date"
+                               name="DateOfBirth"
+                               class="form-control"
+                               required />
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Phone
+                        </label>
+
+                        <input type="text"
+                               name="phone"
+                               class="form-control"
+                               required />
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Save
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ========================================================= -->
+<!-- ADD EDUCATION MODAL -->
+<!-- ========================================================= -->
+
+<div class="modal fade"
+     id="addEducationModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+                    Add Education Details
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <form asp-action="AddEducationDetails"
+                  asp-controller="Employee"
+                  method="post">
+
+                <div class="modal-body">
+
+                    <input type="hidden"
+                           name="UserId"
+                           value="@Model.UserId" />
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Education Type
+                        </label>
+
+                        <input type="text"
+                               name="EducationType"
+                               class="form-control"
+                               required />
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            University Name
+                        </label>
+
+                        <input type="text"
+                               name="UniversityName"
+                               class="form-control"
+                               required />
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Start Date
+                        </label>
+
+                        <input type="date"
+                               name="startdate"
+                               class="form-control" />
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            End Date
+                        </label>
+
+                        <input type="date"
+                               name="enddate"
+                               class="form-control" />
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Save
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ========================================================= -->
+<!-- ADD EXPERIENCE MODAL -->
+<!-- ========================================================= -->
+
+<div class="modal fade"
+     id="addExperienceModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+                    Add Experience
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <form asp-action="AddExperience"
+                  asp-controller="Employee"
+                  method="post">
+
+                <div class="modal-body">
+
+                    <input type="hidden"
+                           name="UserId"
+                           value="@Model.UserId" />
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Company Name
+                        </label>
+
+                        <input type="text"
+                               name="CompanyName"
+                               class="form-control"
+                               required />
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Designation
+                        </label>
+
+                        <input type="text"
+                               name="DesignationName"
+                               class="form-control"
+                               required />
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            From Date
+                        </label>
+
+                        <input type="date"
+                               name="FromDate"
+                               class="form-control"
+                               required />
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            To Date
+                        </label>
+
+                        <input type="date"
+                               name="ToDate"
+                               class="form-control"
+                               required />
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Save
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ========================================================= -->
+<!-- EDIT EMPLOYEE PROFILE MODAL -->
+<!-- ========================================================= -->
+
+<div class="modal fade"
+     id="editEmployeeProfileModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+                    Edit Employee Information
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <form asp-action="EditEmployeeProfile"
+                  asp-controller="Employee"
+                  method="post">
+
+                <div class="modal-body">
+
+                    <input type="hidden"
+                           name="UserId"
+                           value="@Model.UserId" />
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                First Name
+                            </label>
+
+                            <input type="text"
+                                   name="FirstName"
+                                   class="form-control"
+                                   value="@Model.FirstName"
+                                   required />
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                Last Name
+                            </label>
+
+                            <input type="text"
+                                   name="LastName"
+                                   class="form-control"
+                                   value="@Model.LastName"
+                                   required />
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                Phone Number
+                            </label>
+
+                            <input type="text"
+                                   name="PhoneNumber"
+                                   class="form-control"
+                                   value="@Model.PhoneNumber" />
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                Date of Joining
+                            </label>
+
+                            <input type="date"
+                                   name="DateOfJoining"
+                                   class="form-control"
+                                   value="@(Model.DateOfJoining?.ToString("yyyy-MM-dd"))" />
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                Date of Birth
+                            </label>
+
+                            <input type="date"
+                                   name="DateOfBirth"
+                                   class="form-control"
+                                   value="@(Model.DateOfBirth?.ToString("yyyy-MM-dd"))" />
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                Gender
+                            </label>
+
+                            <input type="text"
+                                   name="Gender"
+                                   class="form-control"
+                                   value="@Model.Gender" />
+
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+
+                            <label class="form-label">
+                                Address
+                            </label>
+
+                            <textarea name="Address"
+                                      class="form-control"
+                                      rows="2">@Model.Address</textarea>
+
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+
+                            <label class="form-label">
+                                About Employee
+                            </label>
+
+                            <textarea name="AboutEmployee"
+                                      class="form-control"
+                                      rows="4">@Model.AboutEmployee</textarea>
+
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+
+                            <label class="form-label">
+                                Reporting Manager
+                            </label>
+
+                            <input type="text"
+                                   name="ReportingManager"
+                                   class="form-control"
+                                   value="@Model.ReportingManager" />
+
+                        </div>
+
+                        <input type="hidden"
+                               name="ProfilePicture"
+                               value="@Model.ProfilePicture" />
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Update
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+</div>
+
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

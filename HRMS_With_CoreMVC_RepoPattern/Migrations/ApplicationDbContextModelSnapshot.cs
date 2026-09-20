@@ -1331,7 +1331,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("DesignationtId")
+                    b.Property<int?>("DesignationId")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
@@ -1379,7 +1379,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.HasIndex("DesignationtId");
+                    b.HasIndex("DesignationId");
 
                     b.HasIndex("RoleId");
 
@@ -1815,7 +1815,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
 
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.Designation", "Designation")
                         .WithMany()
-                        .HasForeignKey("DesignationtId");
+                        .HasForeignKey("DesignationId");
 
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.Role", "Role")
                         .WithMany("Users")

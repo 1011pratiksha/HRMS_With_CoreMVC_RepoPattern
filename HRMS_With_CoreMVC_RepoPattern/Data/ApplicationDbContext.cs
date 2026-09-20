@@ -113,6 +113,38 @@ namespace HRMS_With_CoreMVC_RepoPattern.Data
                     .HasForeignKey(x => x.ProjectId)
                     .OnDelete(DeleteBehavior.Restrict);
             });
+            builder.Entity<EmployeeBankDetails>(e =>
+            {
+                e.HasOne(x => x.User)
+                    .WithMany()
+                    .HasForeignKey(x => x.UserId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            builder.Entity<EmployeeFamilyDetail>(e =>
+            {
+                e.HasOne(x => x.User)
+                    .WithMany()
+                    .HasForeignKey(x => x.UserId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            builder.Entity<EducationDetails>(e =>
+            {
+                e.HasOne(x => x.User)
+                    .WithMany()
+                    .HasForeignKey(x => x.UserId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            builder.Entity<Experience>(e =>
+            {
+                e.HasOne(x => x.User)
+                    .WithMany()
+                    .HasForeignKey(x => x.UserId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
 
             builder.Entity<Payslips>(e =>
             {
@@ -134,6 +166,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Data
         public DbSet<EmployeeFamilyDetail> EmployeeFamilyDetails { get; set; }
         public DbSet<EmployeeBankDetails> EmployeeBankDetails { get; set; }
         public DbSet<EducationDetails> EducationDetails { get; set; }
+        public DbSet<Experience> Experiences { get; set; }
         public DbSet<EventModel> Events { get; set; }
         public DbSet<EventTypes> EventTypes { get; set; }
         public DbSet<Projects> AllProjects { get; set; }
