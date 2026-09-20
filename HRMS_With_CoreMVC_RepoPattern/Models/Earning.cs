@@ -25,7 +25,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Models
         [ForeignKey("Designation")]
         public int DesignationId { get; set; }
         public Designation Designation { get; set; }
-
         public string? CreatedBy { get; set; }
         public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
         public string? ModifiedBy { get; set; }

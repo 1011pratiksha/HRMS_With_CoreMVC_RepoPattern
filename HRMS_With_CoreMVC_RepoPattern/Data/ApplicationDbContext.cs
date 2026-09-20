@@ -93,12 +93,14 @@ namespace HRMS_With_CoreMVC_RepoPattern.Data
                 e.Property(x => x.OvertimeHours).HasPrecision(18, 2);
                 e.Property(x => x.BreakHours).HasPrecision(18, 2);
             });
+
             builder.Entity<Timesheet>(e =>
             {
                 e.HasOne(x => x.User)
-                    .WithMany()
+                    .WithMany(x => x.Timesheets)
                     .HasForeignKey(x => x.UserId)
                     .OnDelete(DeleteBehavior.Restrict);
+
                 e.HasOne(x => x.Projects)
                     .WithMany()
                     .HasForeignKey(x => x.ProjectId)
@@ -178,7 +180,8 @@ namespace HRMS_With_CoreMVC_RepoPattern.Data
         public DbSet<TaskBoards> TaskBoards { get; set; }
         public DbSet<Tasks> Task { get; set; }
         public DbSet<TaskMembers> Taskmember { get; set; }
-        public DbSet<Timesheet> Timesheet { get; set; }
+        public DbSet<Timesheet> Timesheets { get; set; }
+       
         public DbSet<EmployeePerformance> EmployeePerformances { get; set; }
         public DbSet<Attendance> Attendance { get; set; }
         public DbSet<Deduction> Deduction { get; set; }
