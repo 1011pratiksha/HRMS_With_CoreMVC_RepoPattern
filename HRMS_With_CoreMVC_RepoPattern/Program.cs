@@ -5,6 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddScoped<IEmployeeDashboardService, EmployeeDashboardService>();
+
+builder.Services.AddScoped<IManagerDashboardService, ManagerDashboardService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeServices>();
 builder.Services.AddScoped<IEventTypeService, EventTypeService>();
 builder.Services.AddScoped<IEventService, EventService>();
@@ -16,7 +19,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("dbconn")
     ));
-
+builder.Services.AddScoped<IAdminDashboardService, AdminDashboardService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IPromotionRepository, PromotionService>();
 builder.Services.AddScoped<ITrainerRepository, TrainerService>();

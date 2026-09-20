@@ -1,311 +1,623 @@
-﻿
+﻿@model HRMS_With_CoreMVC_RepoPattern.Models.AdminDashboardViewModel
+
 @{
-    ViewData["title"] = "Admin Dashboard";
+    ViewData["Title"] = "Admin Dashboard";
 }
-<link rel="stylesheet" href="~/css/Dashboard.css" asp-append-version="true" />
-<div class="sidebar">
 
-    <div class="menu-title">Main Menu</div>
+<div class="container-fluid py-3">
 
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Dashboard</span>
-            <span class="arrow">▼</span>
-        </a>
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="mb-1">Admin Dashboard</h3>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="/Dashboard/Index">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        Admin Dashboard
+                    </li>
+                </ol>
+            </nav>
+        </div>
 
-        <div class="submenu">
-            <a href="">Admin Dashboard</a>
-            <a href="">Organizational List</a>
+        <div class="d-flex gap-2">
+            <button type="button" class="btn btn-outline-secondary">
+                Export
+            </button>
+
+            <button type="button" class="btn btn-outline-secondary">
+                2026
+            </button>
         </div>
     </div>
 
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Employees</span>
-            <span class="arrow">▼</span>
-        </a>
 
-        <div class="submenu">
-            <a href="">Add Department</a>
-            <a href="">Add Role</a>
-            <a href="">Add Designation</a>
-            <a href="">Employee List</a>
-            <a href="">Employee Grid</a>
-            <a href="">Employee Details</a>
+    <!-- Welcome Card -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row align-items-center">
+
+                <div class="col-md-8">
+                    <h4>Welcome, Admin!</h4>
+
+                    <p class="text-muted mb-0">
+                        Here's what's happening with your organization today.
+                    </p>
+                </div>
+
+                <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                    <a href="#" class="btn btn-primary me-2">
+                        Add Project
+                    </a>
+
+                    <a href="#" class="btn btn-outline-primary">
+                        Add Request
+                    </a>
+                </div>
+
+            </div>
         </div>
     </div>
 
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Events</span>
-            <span class="arrow">▼</span>
-        </a>
 
-        <div class="submenu">
-            <a href="">Add Event</a>
-            <a href="">Add Master Event</a>
-            <a href="">Event List</a>
-        </div>
-    </div>
+    <!-- Statistics -->
+    <div class="row g-3 mb-4">
 
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Training</span>
-            <span class="arrow">▼</span>
-        </a>
-
-        <div class="submenu">
-            <a href="/Training/Index">Training List</a>
-            <a href="/Trainer/Index">Trainers</a>
-            <a href="/TrainingType/Index">Training Type</a>
-        </div>
-    </div>
-
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Performance & Goal</span>
-            <span class="arrow">▼</span>
-        </a>
-
-        <div class="submenu">
-
-            <div class="submenu-item">
-                <a href="javascript:void(0)" class="submenu-link" onclick="Dropdown(this)">
-                    <span>Performance</span>
-                    <span class="arrow">▼</span>
-                </a>
-
-                <div class="nested-submenu">
-                    <a href="">Performance Indicators</a>
-                    <a href="">Performance Appraisal</a>
-                    <a href="">Performance Review</a>
+        <!-- Employees -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-2">Total Employees</p>
+                    <h3 class="mb-0">@Model.TotalEmployees</h3>
                 </div>
             </div>
+        </div>
 
-            <div class="submenu-item">
-                <a href="javascript:void(0)" class="submenu-link" onclick="Dropdown(this)">
-                    <span>Goal</span>
-                    <span class="arrow">▼</span>
-                </a>
-
-                <div class="nested-submenu">
-                    <a href="">Goal Type</a>
-                    <a href="">Goal Tracking</a>
+        <!-- Departments -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-2">Total Departments</p>
+                    <h3 class="mb-0">@Model.TotalDepartments</h3>
                 </div>
+            </div>
+        </div>
+
+        <!-- Projects -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-2">Total Projects</p>
+                    <h3 class="mb-0">@Model.TotalProjects</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tasks -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-2">Total Tasks</p>
+                    <h3 class="mb-0">@Model.TotalTasks</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Clients -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-2">Total Clients</p>
+                    <h3 class="mb-0">@Model.TotalClients</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Earnings -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-2">Total Earnings</p>
+                    <h3 class="mb-0">
+                        @Model.TotalEarnings.ToString("C")
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- New Hires -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-2">New Hires</p>
+                    <h3 class="mb-0">@Model.NewHires</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Work Hours -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-2">Total Work Hours</p>
+                    <h3 class="mb-0">@Model.TotalWorkHours</h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Employees By Department + Employee Status -->
+    <div class="row g-3 mb-4">
+
+        <!-- Employees By Department -->
+        <div class="col-12 col-lg-7">
+            <div class="card h-100">
+
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Employees By Department</h5>
+                </div>
+
+                <div class="card-body">
+                    <canvas id="departmentChart"></canvas>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- Employee Status -->
+        <div class="col-12 col-lg-5">
+            <div class="card h-100">
+
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Employee Status</h5>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="row text-center">
+
+                        <div class="col-4">
+                            <h4>@Model.ActiveEmployees</h4>
+                            <small class="text-muted">Active</small>
+                        </div>
+
+                        <div class="col-4">
+                            <h4>@Model.InactiveEmployees</h4>
+                            <small class="text-muted">Inactive</small>
+                        </div>
+
+                        <div class="col-4">
+                            <h4>@Model.OnLeaveEmployees</h4>
+                            <small class="text-muted">On Leave</small>
+                        </div>
+
+                    </div>
+
+                    <hr />
+
+                    <p class="mb-1">
+                        Total Employees:
+                        <strong>@Model.TotalEmployees</strong>
+                    </p>
+
+                    <div class="progress">
+                        <div class="progress-bar bg-success"
+                             role="progressbar"
+                             style="width:@(
+                             Model.TotalEmployees > 0
+                             ? (Model.ActiveEmployees * 100 / Model.TotalEmployees)
+                             : 0
+                                                     )%">
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Attendance -->
+    <div class="row g-3 mb-4">
+
+        <!-- Attendance Summary -->
+        <div class="col-12 col-lg-5">
+            <div class="card h-100">
+
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Attendance Overview</h5>
+                </div>
+
+                <div class="card-body">
+
+                    <canvas id="attendanceChart"></canvas>
+
+                    <div class="row text-center mt-3">
+
+                        <div class="col-4">
+                            <h5>@Model.PresentEmployees</h5>
+                            <small class="text-muted">Present</small>
+                        </div>
+
+                        <div class="col-4">
+                            <h5>@Model.HalfDayEmployees</h5>
+                            <small class="text-muted">Half Day</small>
+                        </div>
+
+                        <div class="col-4">
+                            <h5>@Model.AbsentEmployees</h5>
+                            <small class="text-muted">Absent</small>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- Today's Attendance -->
+        <div class="col-12 col-lg-7">
+            <div class="card h-100">
+
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Today's Clock In / Out</h5>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="table-responsive">
+
+                        <table class="table table-hover align-middle">
+
+                            <thead>
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Check In</th>
+                                    <th>Check Out</th>
+                                    <th>Status</th>
+                                    <th>Late</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @if (Model.TodayAttendance.Any())
+                                {
+                                    foreach (var attendance in Model.TodayAttendance)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @attendance.EmployeeName
+                                            </td>
+
+                                            <td>
+                                                @(attendance.CheckIn?.ToString("hh:mm tt") ?? "-")
+                                            </td>
+
+                                            <td>
+                                                @(attendance.CheckOut?.ToString("hh:mm tt") ?? "-")
+                                            </td>
+
+                                            <td>
+                                                @attendance.Status
+                                            </td>
+
+                                            <td>
+                                                @attendance.Late
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="5"
+                                            class="text-center text-muted">
+                                            No attendance records found for today.
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Projects -->
+    <div class="card mb-4">
+
+        <div class="card-header bg-white">
+            <h5 class="mb-0">Projects</h5>
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Project</th>
+                            <th>Deadline</th>
+                            <th>Priority</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @if (Model.Projects.Any())
+                        {
+                            foreach (var project in Model.Projects)
+                            {
+                                <tr>
+
+                                    <td>
+                                        @project.ProjectId
+                                    </td>
+
+                                    <td>
+                                        @project.ProjectName
+                                    </td>
+
+                                    <td>
+                                        @project.EndDate.ToString("dd-MM-yyyy")
+                                    </td>
+
+                                    <td>
+                                        @project.Priority
+                                    </td>
+
+                                    <td>
+                                        @project.Status
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5"
+                                    class="text-center text-muted">
+                                    No projects found.
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
             </div>
 
         </div>
+
     </div>
 
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Master Documents</span>
-            <span class="arrow">▼</span>
-        </a>
 
-        <div class="submenu">
+    <!-- Task Statistics -->
+    <div class="row g-3 mb-4">
 
-            <div class="submenu-item">
-                <a href="javascript:void(0)" class="submenu-link" onclick="Dropdown(this)">
-                    <span>Add Master Document</span>
-                    <span class="arrow">▼</span>
-                </a>
+        <div class="col-12 col-lg-6">
 
-                <div class="nested-submenu">
-                    <a href="MasterDocumentName/AddDocNameAdmin">Add Document Name (Admin)</a>
-                    <a href="MasterDocumentName/AddDocNameEmployee">Add Document Name (Employee)</a>
+            <div class="card h-100">
+
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Task Statistics</h5>
                 </div>
-            </div>
 
-            <div class="submenu-item">
-                <a href="javascript:void(0)" class="submenu-link" onclick="Dropdown(this)">
-                    <span>Master Document List</span>
-                    <span class="arrow">▼</span>
-                </a>
+                <div class="card-body">
 
-                <div class="nested-submenu">
-                    <a href="/MasterDocumentName/FetchAdminDocName">Admin Document List</a>
-                    <a href="/MasterDocumentName/FetchEmployeeDocName">Employee Document List</a>
+                    <canvas id="taskChart"></canvas>
+
+                    <div class="row text-center mt-3">
+
+                        <div class="col-3">
+                            <strong>@Model.CompletedTasks</strong>
+                            <br />
+                            <small class="text-muted">Completed</small>
+                        </div>
+
+                        <div class="col-3">
+                            <strong>@Model.OnHoldTasks</strong>
+                            <br />
+                            <small class="text-muted">On Hold</small>
+                        </div>
+
+                        <div class="col-3">
+                            <strong>@Model.InProgressTasks</strong>
+                            <br />
+                            <small class="text-muted">In Progress</small>
+                        </div>
+
+                        <div class="col-3">
+                            <strong>@Model.PendingTasks</strong>
+                            <br />
+                            <small class="text-muted">Pending</small>
+                        </div>
+
+                    </div>
+
                 </div>
-            </div>
 
-        </div>
-    </div>
-
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Documents</span>
-            <span class="arrow">▼</span>
-        </a>
-
-        <div class="submenu">
-
-            <div class="submenu-item">
-                <a href="javascript:void(0)" class="submenu-link" onclick="Dropdown(this)">
-                    <span>Upload Documents</span>
-                    <span class="arrow">▼</span>
-                </a>
-
-                <div class="nested-submenu">
-                    <a href="/FileUpload/AdminFileUpload">Upload Document</a>
-                    <a href="/FileUpload/AdminDocumentList">Document List</a>
-                </div>
-            </div>
-
-            <div class="submenu-item">
-                <a href="javascript:void(0)" class="submenu-link" onclick="Dropdown(this)">
-                    <span>Generate Letter</span>
-                    <span class="arrow">▼</span>
-                </a>
-
-                <div class="nested-submenu">
-                    <a href="">Generate Offer Letter</a>
-                    <a href="">Generate Resignation Letter</a>
-                    <a href="">Generated Letters List</a>
-                </div>
             </div>
 
         </div>
-    </div>
 
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Projects</span>
-            <span class="arrow">▼</span>
-        </a>
 
-        <div class="submenu">
-            <a href="">Project</a>
-            <a href="">Task</a>
-            <a href="">TaskBoard</a>
-        </div>
-    </div>
+        <!-- Financial Summary -->
+        <div class="col-12 col-lg-6">
 
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Reports</span>
-            <span class="arrow">▼</span>
-        </a>
+            <div class="card h-100">
 
-        <div class="submenu">
-            <a href="https://localhost:7181/EmployeeReport/Index">Employee Report</a>
-            <a href="https://localhost:7181/AttendanceReport/Index">Attendance Report</a>
-            <a href="https://localhost:7181/LeaveReport/Index">Leave Report</a>
-            <a href="https://localhost:44325/PayslipReport/Index">Payslip Report</a>
-            <a href="https://localhost:7181/ProjectReport/GetAllProjectsReports">Project Report</a>
-            <a href="">Task Report</a>
-            <a href="">Daily Report</a>
-        </div>
-    </div>
-
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Attendance</span>
-            <span class="arrow">▼</span>
-        </a>
-
-        <div class="submenu">
-
-            <div class="submenu-item">
-                <a href="javascript:void(0)" class="submenu-link" onclick="Dropdown(this)">
-                    <span>Leaves</span>
-                    <span class="arrow">▼</span>
-                </a>
-
-                <div class="nested-submenu">
-                    <a href="/Leave/AddLeaveType">Add Leave Type</a>
-                    <a href="/Leave/AddLeaveDeptwise">Add Leave</a>
-                    <a href="/Leave/DepartmentLeaveDetails">Department Leave Details</a>
-                    <a href="/Leave/ManageLeaveSettings">Leave Setting</a>
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Financial Summary</h5>
                 </div>
+
+                <div class="card-body">
+
+                    <div class="row text-center">
+
+                        <div class="col-6">
+                            <p class="text-muted mb-1">
+                                Total Salary
+                            </p>
+
+                            <h4>
+                                @Model.TotalEarnings.ToString("C")
+                            </h4>
+                        </div>
+
+                        <div class="col-6">
+                            <p class="text-muted mb-1">
+                                Weekly Profit
+                            </p>
+
+                            <h4>
+                                @Model.WeeklyProfit.ToString("C")
+                            </h4>
+                        </div>
+
+                    </div>
+
+                    <hr />
+
+                    <p class="text-muted">
+                        Total Work Hours
+                    </p>
+
+                    <h4>
+                        @Model.TotalWorkHours hours
+                    </h4>
+
+                </div>
+
             </div>
 
-            <a href="/Attendance/AdminAttendanceList">
-                Attendance (Admin)
-            </a>
-            <a href="/AdminTimesheet/Index">
-                TimeSheet
-            </a>
-
         </div>
-    </div>
 
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Payroll</span>
-            <span class="arrow">▼</span>
-        </a>
-
-        <div class="submenu">
-            <a href="">Add Employee Salary</a>
-            <a href="">Master Payroll</a>
-            <a href="">Employee Salary List</a>
-            <a href="">Generate Payslips Monthly</a>
-            <a href="">Transaction History</a>
-        </div>
-    </div>
-
-    <div class="menu-item">
-        <a href="/Promotion/Index" class="menu-link">
-            <span>Promotion</span>
-        </a>
-    </div>
-
-    <div class="menu-item">
-        <a href="https://localhost:7181/Resignation/Index" class="menu-link">
-            <span>Resignation</span>
-        </a>
-    </div>''
-
-    <div class="menu-item">
-        <a href="https://localhost:7181/Termination/Index" class="menu-link">
-            <span>Termination</span>
-        </a>
-    </div>
-
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Help & Supports</span>
-            <span class="arrow">▼</span>
-        </a>
-
-        <div class="submenu">
-            <a href="">Knowledge Base</a>
-            <a href="">Activities</a>
-        </div>
-    </div>
-
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Tickets</span>
-            <span class="arrow">▼</span>
-        </a>
-
-        <div class="submenu">
-            <a href="">Tickets</a>
-            <a href="">Ticket Details</a>
-        </div>
-    </div>
-
-    <div class="menu-item">
-        <a href="" class="menu-link">
-            <span>Logout</span>
-        </a>
     </div>
 
 </div>
 
 
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
 
-    function Dropdown(element) {
+    // employees by department chart
 
-        var parent = element.parentElement;
+    const departmentLabels = @Html.Raw(
+                System.Text.Json.JsonSerializer.Serialize(
+                        Model.EmployeesByDepartment.Select(x => x.DepartmentName)
+                )
+        );
 
-        parent.classList.toggle("open");
+    const departmentValues = @Html.Raw(
+                System.Text.Json.JsonSerializer.Serialize(
+                        Model.EmployeesByDepartment.Select(x => x.EmployeeCount)
+                )
+        );
 
-    }
+    new Chart(document.getElementById('departmentChart'), {
+        type: 'bar',
+
+        data: {
+            labels: departmentLabels,
+
+            datasets: [{
+                label: 'Employees',
+                data: departmentValues
+            }]
+        },
+
+        options: {
+            responsive: true,
+
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+
+    // attendance chart
+
+    new Chart(document.getElementById('attendanceChart'), {
+        type: 'doughnut',
+
+        data: {
+            labels: [
+                'Present',
+                'Half Day',
+                'Absent'
+            ],
+
+            datasets: [{
+                data: [
+                    @Model.PresentEmployees,
+                    @Model.HalfDayEmployees,
+                    @Model.AbsentEmployees
+                ]
+            }]
+        },
+
+        options: {
+            responsive: true
+        }
+    });
+
+
+    // -- task statistics chart
+
+    new Chart(document.getElementById('taskChart'), {
+        type: 'doughnut',
+
+        data: {
+            labels: [
+                'Completed',
+                'On Hold',
+                'In Progress',
+                'Pending'
+            ],
+
+            datasets: [{
+                data: [
+                    @Model.CompletedTasks,
+                    @Model.OnHoldTasks,
+                    @Model.InProgressTasks,
+                    @Model.PendingTasks
+                ]
+            }]
+        },
+
+        options: {
+            responsive: true
+        }
+    });
 
 </script>
-

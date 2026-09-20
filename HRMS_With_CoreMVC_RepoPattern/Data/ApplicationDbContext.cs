@@ -13,6 +13,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Data
             builder.Entity<LeaveBalance>().ToTable("LeaveBalance");
             builder.Entity<LeaveRequest>().ToTable("LeaveRequest");
             builder.Entity<MasterLeaveType>().ToTable("MasterLeaveType");
+            builder.Entity<Timesheet>().ToTable("Timesheet");
             builder.Entity<EventModel>(e =>
             {
                 e.HasOne(x => x.EventType)

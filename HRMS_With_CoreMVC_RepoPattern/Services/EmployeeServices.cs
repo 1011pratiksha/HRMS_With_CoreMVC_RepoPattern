@@ -300,41 +300,34 @@ public async Task<List<EmployeeGridViewModel>> GetEmployeeGridData()
 
             foreach (var employee in employees)
             {
-                // Get tasks assigned to this employee
                 var taskMembers = await db.Taskmember
                     .Include(x => x.Task)
                     .Where(x => x.UserId == employee.UserId)
                     .ToListAsync();
 
-                // Total projects assigned through tasks
                 var totalProjects = taskMembers
                     .Where(x => x.Task != null)
                     .Select(x => x.Task.ProjectId)
                     .Distinct()
                     .Count();
 
-                // Completed tasks
                 var completedTasks = taskMembers
                     .Count(x => x.Task != null &&
                                 x.Task.Status == "Completed");
 
-                // In Progress tasks
                 var inProgressTasks = taskMembers
                     .Count(x => x.Task != null &&
                                 x.Task.Status == "In Progress");
 
-                // Pending tasks
                 var pendingTasks = taskMembers
                     .Count(x => x.Task != null &&
                                 x.Task.Status == "Pending");
 
-                // Get employee timesheets
-                var timesheets = await db.Timesheet
+                var timesheets = await db.Timesheets
                     .Where(x => x.UserId == employee.UserId)
                     .ToListAsync();
 
-                // Productivity
-                // 8 working hours per recorded day = 100%
+               
                 var totalWorkHours = timesheets.Sum(x => x.WorkHours);
 
                 var workingDays = timesheets
@@ -352,7 +345,7 @@ public async Task<List<EmployeeGridViewModel>> GetEmployeeGridData()
                         ((double)totalWorkHours / expectedHours) * 100
                     );
 
-                    // Do not show more than 100%
+                   
                     if (productivity > 100)
                     {
                         productivity = 100;
