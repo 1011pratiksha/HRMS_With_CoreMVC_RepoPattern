@@ -48,5 +48,68 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
             await attendanceService.UpdateAttendance(attendance);
             return RedirectToAction("AdminAttendanceList");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CheckIn()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+
+            if (userId == null)
+            {
+                return RedirectToAction("SignIn", "Auth");
+            }
+
+            await attendanceService.CheckIn(userId.Value);
+
+            return RedirectToAction("ManagerDashboard", "Dashboard");
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> LunchIn()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+
+            if (userId == null)
+            {
+                return RedirectToAction("SignIn", "Auth");
+            }
+
+            await attendanceService.LunchIn(userId.Value);
+
+            return RedirectToAction("ManagerDashboard", "Dashboard");
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> LunchOut()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+
+            if (userId == null)
+            {
+                return RedirectToAction("SignIn", "Auth");
+            }
+
+            await attendanceService.LunchOut(userId.Value);
+
+            return RedirectToAction("ManagerDashboard", "Dashboard");
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> CheckOut()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+
+            if (userId == null)
+            {
+                return RedirectToAction("SignIn", "Auth");
+            }
+
+            await attendanceService.CheckOut(userId.Value);
+
+            return RedirectToAction("ManagerDashboard", "Dashboard");
+        }
     }
 }

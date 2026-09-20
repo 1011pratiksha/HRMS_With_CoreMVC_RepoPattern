@@ -1,76 +1,465 @@
-﻿@{
+﻿@model HRMS_With_CoreMVC_RepoPattern.Models.AdminDashboardViewModel
+
+@{
     ViewData["Title"] = "Admin Dashboard";
 }
 
-<div class="container-fluid">
+<div class="container-fluid py-3">
 
-    <div class="d-flex align-items-center justify-content-between mb-4">
-
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-
-            <h2 class="mb-1">
-                Admin Dashboard
-            </h2>
-
-            <p class="text-muted mb-0">
-                Welcome to Admin Dashboard
-            </p>
-
+            <h3 class="mb-1">Admin Dashboard</h3>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="/Dashboard/Index">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        Admin Dashboard
+                    </li>
+                </ol>
+            </nav>
         </div>
 
-    </div>
+        <div class="d-flex gap-2">
+            <button type="button" class="btn btn-outline-secondary">
+                Export
+            </button>
 
-
-    <div class="row">
-
-
-<<<<<<< HEAD
-        <!-- Total Employees -->
-=======
-        <div class="submenu">
-            <a href="/Event/Index">Add Event</a>
-            <a href="">Add Master Event</a>
-            <a href="">Event List</a>
+            <button type="button" class="btn btn-outline-secondary">
+                2026
+            </button>
         </div>
     </div>
->>>>>>> ea107a6edb6852fac142fbbb64f3369548b2b2a6
 
-        <div class="col-md-3 mb-3">
 
-            <div class="card shadow-sm">
+    <!-- Welcome Card -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row align-items-center">
 
-                <div class="card-body">
+                <div class="col-md-8">
+                    <h4>Welcome, Admin!</h4>
 
-                    <h6 class="text-muted">
-                        Total Employees
-                    </h6>
+                    <p class="text-muted mb-0">
+                        Here's what's happening with your organization today.
+                    </p>
+                </div>
 
-                    <h3>
-                        0
-                    </h3>
+                <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                    <a href="#" class="btn btn-primary me-2">
+                        Add Project
+                    </a>
 
+                    <a href="#" class="btn btn-outline-primary">
+                        Add Request
+                    </a>
                 </div>
 
             </div>
-
+        <!-- Total Employees -->
         </div>
+    </div>
 
+
+
+    <!-- Statistics -->
+    <div class="row g-3 mb-4">
+
+        <!-- Employees -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-2">Total Employees</p>
+                    <h3 class="mb-0">@Model.TotalEmployees</h3>
+                </div>
+            </div>
+        </div>
 
         <!-- Departments -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-2">Total Departments</p>
+                    <h3 class="mb-0">@Model.TotalDepartments</h3>
+                </div>
+            </div>
+        </div>
 
-        <div class="col-md-3 mb-3">
+        <!-- Projects -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-2">Total Projects</p>
+                    <h3 class="mb-0">@Model.TotalProjects</h3>
+                </div>
+            </div>
+        </div>
 
-            <div class="card shadow-sm">
+        <!-- Tasks -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-2">Total Tasks</p>
+                    <h3 class="mb-0">@Model.TotalTasks</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Clients -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-2">Total Clients</p>
+                    <h3 class="mb-0">@Model.TotalClients</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Earnings -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-2">Total Earnings</p>
+                    <h3 class="mb-0">
+                        @Model.TotalEarnings.ToString("C")
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- New Hires -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-2">New Hires</p>
+                    <h3 class="mb-0">@Model.NewHires</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Work Hours -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-2">Total Work Hours</p>
+                    <h3 class="mb-0">@Model.TotalWorkHours</h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Employees By Department + Employee Status -->
+    <div class="row g-3 mb-4">
+
+        <!-- Employees By Department -->
+        <div class="col-12 col-lg-7">
+            <div class="card h-100">
+
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Employees By Department</h5>
+                </div>
+
+                <div class="card-body">
+                    <canvas id="departmentChart"></canvas>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- Employee Status -->
+        <div class="col-12 col-lg-5">
+            <div class="card h-100">
+
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Employee Status</h5>
+                </div>
 
                 <div class="card-body">
 
-                    <h6 class="text-muted">
-                        Departments
-                    </h6>
+                    <div class="row text-center">
 
-                    <h3>
-                        0
-                    </h3>
+                        <div class="col-4">
+                            <h4>@Model.ActiveEmployees</h4>
+                            <small class="text-muted">Active</small>
+                        </div>
+
+                        <div class="col-4">
+                            <h4>@Model.InactiveEmployees</h4>
+                            <small class="text-muted">Inactive</small>
+                        </div>
+
+                        <div class="col-4">
+                            <h4>@Model.OnLeaveEmployees</h4>
+                            <small class="text-muted">On Leave</small>
+                        </div>
+
+                    </div>
+
+                    <hr />
+
+                    <p class="mb-1">
+                        Total Employees:
+                        <strong>@Model.TotalEmployees</strong>
+                    </p>
+
+                    <div class="progress">
+                        <div class="progress-bar bg-success"
+                             role="progressbar"
+                             style="width:@(
+                             Model.TotalEmployees > 0
+                             ? (Model.ActiveEmployees * 100 / Model.TotalEmployees)
+                             : 0
+                                                     )%">
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Attendance -->
+    <div class="row g-3 mb-4">
+
+        <!-- Attendance Summary -->
+        <div class="col-12 col-lg-5">
+            <div class="card h-100">
+
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Attendance Overview</h5>
+                </div>
+
+                <div class="card-body">
+
+                    <canvas id="attendanceChart"></canvas>
+
+                    <div class="row text-center mt-3">
+
+                        <div class="col-4">
+                            <h5>@Model.PresentEmployees</h5>
+                            <small class="text-muted">Present</small>
+                        </div>
+
+                        <div class="col-4">
+                            <h5>@Model.HalfDayEmployees</h5>
+                            <small class="text-muted">Half Day</small>
+                        </div>
+
+                        <div class="col-4">
+                            <h5>@Model.AbsentEmployees</h5>
+                            <small class="text-muted">Absent</small>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- Today's Attendance -->
+        <div class="col-12 col-lg-7">
+            <div class="card h-100">
+
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Today's Clock In / Out</h5>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="table-responsive">
+
+                        <table class="table table-hover align-middle">
+
+                            <thead>
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Check In</th>
+                                    <th>Check Out</th>
+                                    <th>Status</th>
+                                    <th>Late</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @if (Model.TodayAttendance.Any())
+                                {
+                                    foreach (var attendance in Model.TodayAttendance)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @attendance.EmployeeName
+                                            </td>
+
+                                            <td>
+                                                @(attendance.CheckIn?.ToString("hh:mm tt") ?? "-")
+                                            </td>
+
+                                            <td>
+                                                @(attendance.CheckOut?.ToString("hh:mm tt") ?? "-")
+                                            </td>
+
+                                            <td>
+                                                @attendance.Status
+                                            </td>
+
+                                            <td>
+                                                @attendance.Late
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="5"
+                                            class="text-center text-muted">
+                                            No attendance records found for today.
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Projects -->
+    <div class="card mb-4">
+
+        <div class="card-header bg-white">
+            <h5 class="mb-0">Projects</h5>
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Project</th>
+                            <th>Deadline</th>
+                            <th>Priority</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @if (Model.Projects.Any())
+                        {
+                            foreach (var project in Model.Projects)
+                            {
+                                <tr>
+
+                                    <td>
+                                        @project.ProjectId
+                                    </td>
+
+                                    <td>
+                                        @project.ProjectName
+                                    </td>
+
+                                    <td>
+                                        @project.EndDate.ToString("dd-MM-yyyy")
+                                    </td>
+
+                                    <td>
+                                        @project.Priority
+                                    </td>
+
+                                    <td>
+                                        @project.Status
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5"
+                                    class="text-center text-muted">
+                                    No projects found.
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Task Statistics -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-12 col-lg-6">
+
+            <div class="card h-100">
+
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Task Statistics</h5>
+                </div>
+
+                <div class="card-body">
+
+                    <canvas id="taskChart"></canvas>
+
+                    <div class="row text-center mt-3">
+
+                        <div class="col-3">
+                            <strong>@Model.CompletedTasks</strong>
+                            <br />
+                            <small class="text-muted">Completed</small>
+                        </div>
+
+                        <div class="col-3">
+                            <strong>@Model.OnHoldTasks</strong>
+                            <br />
+                            <small class="text-muted">On Hold</small>
+                        </div>
+
+                        <div class="col-3">
+                            <strong>@Model.InProgressTasks</strong>
+                            <br />
+                            <small class="text-muted">In Progress</small>
+                        </div>
+
+                        <div class="col-3">
+                            <strong>@Model.PendingTasks</strong>
+                            <br />
+                            <small class="text-muted">Pending</small>
+                        </div>
+
+                    </div>
 
                 </div>
 
@@ -79,52 +468,158 @@
         </div>
 
 
-        <!-- Active Employees -->
+        <!-- Financial Summary -->
+        <div class="col-12 col-lg-6">
 
-        <div class="col-md-3 mb-3">
+            <div class="card h-100">
 
-            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Financial Summary</h5>
+                </div>
 
                 <div class="card-body">
 
-                    <h6 class="text-muted">
-                        Active Employees
-                    </h6>
+                    <div class="row text-center">
 
-                    <h3>
-                        0
-                    </h3>
+                        <div class="col-6">
+                            <p class="text-muted mb-1">
+                                Total Salary
+                            </p>
+
+                            <h4>
+                                @Model.TotalEarnings.ToString("C")
+                            </h4>
+                        </div>
+
+                        <div class="col-6">
+                            <p class="text-muted mb-1">
+                                Weekly Profit
+                            </p>
+
+                            <h4>
+                                @Model.WeeklyProfit.ToString("C")
+                            </h4>
+                        </div>
+
+                    </div>
+
+                    <hr />
+
+                    <p class="text-muted">
+                        Total Work Hours
+                    </p>
+
+                    <h4>
+                        @Model.TotalWorkHours hours
+                    </h4>
 
                 </div>
 
             </div>
 
         </div>
-
-
-        <!-- Reports -->
-
-        <div class="col-md-3 mb-3">
-
-            <div class="card shadow-sm">
-
-                <div class="card-body">
-
-                    <h6 class="text-muted">
-                        Reports
-                    </h6>
-
-                    <h3>
-                        0
-                    </h3>
-
-                </div>
-
-            </div>
-
-        </div>
-
 
     </div>
 
 </div>
+
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+    // employees by department chart
+
+    const departmentLabels = @Html.Raw(
+                System.Text.Json.JsonSerializer.Serialize(
+                        Model.EmployeesByDepartment.Select(x => x.DepartmentName)
+                )
+        );
+
+    const departmentValues = @Html.Raw(
+                System.Text.Json.JsonSerializer.Serialize(
+                        Model.EmployeesByDepartment.Select(x => x.EmployeeCount)
+                )
+        );
+
+    new Chart(document.getElementById('departmentChart'), {
+        type: 'bar',
+
+        data: {
+            labels: departmentLabels,
+
+            datasets: [{
+                label: 'Employees',
+                data: departmentValues
+            }]
+        },
+
+        options: {
+            responsive: true,
+
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+
+    // attendance chart
+
+    new Chart(document.getElementById('attendanceChart'), {
+        type: 'doughnut',
+
+        data: {
+            labels: [
+                'Present',
+                'Half Day',
+                'Absent'
+            ],
+
+            datasets: [{
+                data: [
+                    @Model.PresentEmployees,
+                    @Model.HalfDayEmployees,
+                    @Model.AbsentEmployees
+                ]
+            }]
+        },
+
+        options: {
+            responsive: true
+        }
+    });
+
+
+    // -- task statistics chart
+
+    new Chart(document.getElementById('taskChart'), {
+        type: 'doughnut',
+
+        data: {
+            labels: [
+                'Completed',
+                'On Hold',
+                'In Progress',
+                'Pending'
+            ],
+
+            datasets: [{
+                data: [
+                    @Model.CompletedTasks,
+                    @Model.OnHoldTasks,
+                    @Model.InProgressTasks,
+                    @Model.PendingTasks
+                ]
+            }]
+        },
+
+        options: {
+            responsive: true
+        }
+    });
+
+</script>
