@@ -1,6 +1,7 @@
 ﻿using HRMS_With_CoreMVC_RepoPattern.Models;
 using HRMS_With_CoreMVC_RepoPattern.Repository;
 using HRMS_With_CoreMVC_RepoPattern.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -112,7 +113,8 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
             var department = await EmployeeServices.GetAllDepartments();
             return View(department);
         }
-       
+
+        [HttpGet]
         public async Task<IActionResult> GetDepartmentById(int id)
         {
             var department = await EmployeeServices.GetDepartmentById(id);
@@ -122,6 +124,8 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
             }
             return View(department);
         }
+
+        [HttpGet]
         public async Task<IActionResult> GetAllDepartments()
         {
             var departments = await EmployeeServices.GetAllDepartments();
@@ -184,6 +188,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
             });
         }
 
+        [HttpGet]
         public async Task<IActionResult> DeleteDepartment(int id)
         {
             var department = await EmployeeServices.GetDepartmentById(id);
@@ -194,111 +199,408 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
             return RedirectToAction("AddDepartment");
         }
 
+
+
+        //---- all the add designation page related operations are here
+        [HttpGet]
+        public async Task<IActionResult> AddDesignation()
+        {
+            var designations = await EmployeeServices.GetAllDesignations();
+
+            ViewBag.Departments = await EmployeeServices.GetAllDepartments();
+
+            return View(designations);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllDesignations()
+        {
+            var designations = await EmployeeServices.GetAllDesignations();
+            var data = designations.Select(d => new
+            {
+                d.DesignationId,
+                d.Name,
+                d.NoOfEmployee,
+                d.status,
+                CreatedAt = d.CreatedAt?.ToString("yyyy-MM-dd HH:mm:ss"),
+                d.CreatedBy,
+                d.ModifiedBy,
+                ModifiedAt = d.ModifiedAt?.ToString("yyyy-MM-dd HH:mm:ss")
+            }).ToList();
+            return View(data);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetDesignationById(int id)
+        {
+            var designation = await EmployeeServices.GetDesignationById(id);
+            if (designation == null)
+            {
+                return NotFound();
+            }
+            return View(designation);
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddDesignation(Designation designation)
+        {
+            if (ModelState.IsValid)
+            {
+                designation.CreatedBy = "Admin";
+                designation.CreatedAt = DateTime.Now;
+                var addedDesignation = await EmployeeServices.AddDesignation(designation);
+                return RedirectToAction("AddDesignation");
+            }
+            else
+            {
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+                return Json(new
+                {
+                    success = false,
+                    message = "Validation failed.",
+                    errors
+                });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditDesignation(Designation designation)
+        {
+            if (ModelState.IsValid)
+            {
+                await EmployeeServices.EditDesignation(designation);
+                return RedirectToAction("AddDesignation");
+            }
+            var errors = ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList();
+            return Json(new
+            {
+                success = false,
+                message = "Validation failed.",
+                errors
+            });
+        }
+        [HttpGet]
+
+        public async Task<IActionResult> DeleteDesignation(int id)
+        {
+            var designation = await EmployeeServices.GetDesignationById(id);
+            if (designation != null)
+            {
+                await EmployeeServices.DeleteDesignation(id);
+            }
+            return RedirectToAction("AddDesignation");
+        }
+
+
+
+        //for employee list all the employee related functionality will be here
+
+        [HttpGet]
+        public async Task<IActionResult> EmployeeList(
+    DateTime? startDate,
+    DateTime? endDate,
+    int? designationId,
+    string? status,
+    string? sorting)
+        {
+            var employees = await EmployeeServices.GetAllEmployees(
+                startDate,
+                endDate,
+                designationId,
+                status,
+                sorting);
+
+            ViewBag.Designations = await EmployeeServices.GetAllDesignations();
+            ViewBag.Roles = await EmployeeServices.GetAllRoles();
+            ViewBag.Departments = await EmployeeServices.GetAllDepartments();
+
+            // Get all users for Reporting Manager dropdown
+            ViewBag.Users = await EmployeeServices.GetAllEmployees(
+                null,
+                null,
+                null,
+                null,
+                null);
+
+            // Keep selected filter values
+            ViewBag.StartDate = startDate?.ToString("yyyy-MM-dd");
+            ViewBag.EndDate = endDate?.ToString("yyyy-MM-dd");
+            ViewBag.DesignationId = designationId;
+            ViewBag.Status = status;
+            ViewBag.Sorting = sorting;
+
+            return View(employees);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllEmployees()
+        {
+            var employees = await EmployeeServices.GetAllEmployees(
+                null,
+                null,
+                null,
+                null,
+                null);
+
+            ViewBag.Designations = await EmployeeServices.GetAllDesignations();
+            ViewBag.Roles = await EmployeeServices.GetAllRoles();
+            ViewBag.Departments = await EmployeeServices.GetAllDepartments();
+
+            ViewBag.Users = await EmployeeServices.GetAllEmployees(
+                null,
+                null,
+                null,
+                null,
+                null);
+
+            return View(employees);
+        }
+
+        [HttpGet]
+
+        public async Task<IActionResult> GetEmployeeById(int id)
+        {
+            var employee = await EmployeeServices.GetEmployeeById(id);
+            if(employee == null)
+            {
+                return NotFound();
+            }
+            return View(employee);
+
+        }
+
+        
+        [HttpPost]
+        public async Task<IActionResult> AddEmployee(User user, IFormFile? profilePicture)
+        {
+            if (profilePicture != null && profilePicture.Length > 0)
+            {
+                string uploadsFolder = Path.Combine(
+                    Directory.GetCurrentDirectory(),
+                    "wwwroot",
+                    "uploads"
+                );
+
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+
+                string fileName = Guid.NewGuid().ToString()
+                    + Path.GetExtension(profilePicture.FileName);
+
+                string filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await profilePicture.CopyToAsync(stream);
+                }
+
+                user.ProfilePicture = "/uploads/" + fileName;
+            }
+            if (ModelState.IsValid)
+            {
+                user.CreatedBy = "Admin";
+                user.CreatedAt = DateTime.Now;
+
+                var passwordHasher = new PasswordHasher<User>();
+
+                user.PasswordHash = passwordHasher.HashPassword(user, user.PasswordHash);
+
+                var addedEmployee = await EmployeeServices.AddEmployee(user);
+
+                return RedirectToAction("EmployeeList");
+            }
+            else
+            {
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return Json(new
+                {
+                    success = false,
+                    message = "Validation failed.",
+                    errors
+                });
+            }
+        }
+        [HttpPost]
+public async Task<IActionResult> EditEmployee(User user)
+{
+    // Password is not edited from the Edit Employee modal
+    ModelState.Remove("PasswordHash");
+
+    if (ModelState.IsValid)
+    {
+        await EmployeeServices.EditEmployee(user);
+
+        TempData["Success"] = "Employee updated successfully";
+
+        return RedirectToAction("EmployeeList");
+    }
+
+    return RedirectToAction("EmployeeList");
+}
+
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteEmployeeById(int id)
+        {
+            var result = await EmployeeServices.DeleteEmployeeById(id);
+
+            if (!result)
+            {
+                return NotFound();
+            }
+
+            TempData["Success"] = "employee deleted successfully";
+
+            return RedirectToAction("EmployeeList");
+        }
+
+
+       
        
 
-        //---- all the add designation page related operations are here 
-        //public async Task<IActionResult> AddDesignation()
-        //{
-        //    var designations = await EmployeeServices.GetAllDesignations();
-        //    return View(designations);
-        //}
+        //-----for employee grid data
+        [HttpGet]
+        public async Task<IActionResult> EmployeeGrid()
+        {
+            var employees = await EmployeeServices.GetEmployeeGridData();
 
-    //    public async Task<IActionResult> GetAllDesignations()
-    //    {
-    //        var designations = await EmployeeServices.GetAllDesignations();
-    //        var data = designations.Select(d => new
-    //        {
-    //            d.DesignationId,
-    //            d.Name,
-    //            d.NoOfEmployee,
-    //            d.status,
-    //            CreatedAt = d.CreatedAt?.ToString("yyyy-MM-dd HH:mm:ss"),
-    //            d.CreatedBy,
-    //            d.ModifiedBy,
-    //            ModifiedAt = d.ModifiedAt?.ToString("yyyy-MM-dd HH:mm:ss")
-    //        }).ToList();
-    //        return View(data);
-    //    }
+            ViewBag.Designations = await EmployeeServices.GetAllDesignations();
+            ViewBag.Roles = await EmployeeServices.GetAllRoles();
+            ViewBag.Departments = await EmployeeServices.GetAllDepartments();
 
-    //    public async Task<IActionResult> GetDesignationById(int id)
-    //    {
-    //        var designation = await EmployeeServices.GetDesignationById(id);
-    //        if (designation == null)
-    //        {
-    //            return NotFound();
-    //        }
-    //        return View(designation);
-    //    }
+            ViewBag.Users = await EmployeeServices.GetAllEmployees(
+                null,
+                null,
+                null,
+                null,
+                null);
 
-    //    public async Task<IActionResult> AddDesignation(Designation designation)
-    //    {
-    //        if (ModelState.IsValid)
-    //        {
-    //            designation.CreatedBy = "Admin";
-    //            designation.CreatedAt = DateTime.Now;
-    //            var addedDesignation = await EmployeeServices.AddDesignation(designation);
-    //            return RedirectToAction("AddDesignation");
-    //        }
-    //        else
-    //        {
-    //            var errors = ModelState.Values
-    //                .SelectMany(v => v.Errors)
-    //                .Select(e => e.ErrorMessage)
-    //                .ToList();
-    //            return Json(new
-    //            {
-    //                success = false,
-    //                message = "Validation failed.",
-    //                errors
-    //            });
-    //        }
-    //    }
-
-    //    public async Task<IActionResult> EditDesignation(Designation designation)
-    //    {
-    //        if (ModelState.IsValid)
-    //        {
-    //            await EmployeeServices.EditDesignation(designation);
-    //            return RedirectToAction("AddDesignation");
-    //        }
-    //        var errors = ModelState.Values
-    //            .SelectMany(v => v.Errors)
-    //            .Select(e => e.ErrorMessage)
-    //            .ToList();
-    //        return Json(new
-    //        {
-    //            success = false,
-    //            message = "Validation failed.",
-    //            errors
-    //        });
-    //    }
-
-    //    public async Task<IActionResult> DeleteDesignation(int id)
-    //    {
-    //        var designation = await EmployeeServices.GetDesignationById(id);
-    //        if (designation != null)
-    //        {
-    //            await EmployeeServices.DeleteDesignation(id);
-    //        }
-    //        return RedirectToAction("AddDesignation");
-    //    }
+            return View(employees);
+        }
 
 
+        //------for employee details page
+        [HttpGet]
+        public async Task<IActionResult> EmployeeDetails()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
 
-    //    //for employee list all the employee related functionality will be here
+            if (userId == null)
+            {
+                return RedirectToAction("SignIn", "Auth");
+            }
 
-    //    public IActionResult EmployeeList()
-    //    {
-    //        return View();
-    //    }
-    //    public IActionResult EmployeeGrid()
-    //    {
-    //        return View();
-    //    }
-    //    public IActionResult EmployeeDetails()
-    //    {
-    //        return View();
-    //    }
+            var userProfile = await EmployeeServices.GetUserProfile(userId.Value);
 
+            if (userProfile == null)
+            {
+                return NotFound();
+            }
+
+            var bankDetails = await EmployeeServices.GetBankDetails(userId.Value);
+            var familyDetails = await EmployeeServices.GetFamilyDetails(userId.Value);
+            var educationDetails = await EmployeeServices.GetEducationDetails(userId.Value);
+            var experiences = await EmployeeServices.GetExperiences(userId.Value);
+
+            ViewBag.BankDetails = bankDetails;
+            ViewBag.FamilyDetails = familyDetails;
+            ViewBag.EducationDetails = educationDetails;
+            ViewBag.Experiences = experiences;
+
+            return View(userProfile);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditEmployeeProfile(User user)
+        {
+            await EmployeeServices.EditEmployeeProfile(user);
+
+            return RedirectToAction("EmployeeDetails");
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddBankDetails(EmployeeBankDetails bankDetails)
+        {
+            if (ModelState.IsValid)
+            {
+                await EmployeeServices.AddBankDetails(bankDetails);
+
+                return RedirectToAction("EmployeeDetails");
+            }
+
+            return RedirectToAction("EmployeeDetails");
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> EditBankDetails(EmployeeBankDetails bankDetails)
+        {
+            if (ModelState.IsValid)
+            {
+                await EmployeeServices.EditBankDetails(bankDetails);
+
+                return RedirectToAction("EmployeeDetails");
+            }
+
+            return RedirectToAction("EmployeeDetails");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddFamilyDetails(EmployeeFamilyDetail familyDetails)
+        {
+            await EmployeeServices.AddFamilyDetails(familyDetails);
+
+            return RedirectToAction("EmployeeDetails");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditFamilyDetails(EmployeeFamilyDetail familyDetails)
+        {
+            await EmployeeServices.EditFamilyDetails(familyDetails);
+
+            return RedirectToAction("EmployeeDetails");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddEducationDetails(EducationDetails educationDetails)
+        {
+            await EmployeeServices.AddEducationDetails(educationDetails);
+
+            return RedirectToAction("EmployeeDetails");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditEducationDetails(EducationDetails educationDetails)
+        {
+            await EmployeeServices.EditEducationDetails(educationDetails);
+
+            return RedirectToAction("EmployeeDetails");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddExperience(Experience experience)
+        {
+            await EmployeeServices.AddExperience(experience);
+
+            return RedirectToAction("EmployeeDetails");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditExperience(Experience experience)
+        {
+            await EmployeeServices.EditExperience(experience);
+
+            return RedirectToAction("EmployeeDetails");
+        }
     }
 }

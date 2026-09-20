@@ -1,0 +1,133 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model IEnumerable<HRMS_With_CoreMVC_RepoPattern.Models.LeaveRequest>
+@{
+    ViewData["Title"] = "Leave Requests";
+}
+<div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
+    <div class="my-auto mb-2">
+        <h2 class="mb-1">Leave Requests</h2>
+        <nav>
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="#"><i class="ti ti-smart-home"></i></a></li>
+                <li class="breadcrumb-item">Employee</li>
+                <li class="breadcrumb-item active" aria-current="page">Leave Requests</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="d-flex my-xl-auto right-content align-items-center flex-wrap">
+        <a asp-action="ApplyLeave" asp-controller="Leave" class="btn btn-primary">Apply Leave</a>
+    </div>
+</div>
+<br />
+@if (TempData["success"] != null)
+{
+    <div class="alert alert-success">@TempData["success"]</div>
+}
+@if (TempData["error"] != null)
+{
+    <div class="alert alert-danger">@TempData["error"]</div>
+}
+<div class="row">
+    @foreach (var item in ViewBag.leaves)
+    {
+        <div class="col-xl-3 col-md-6">
+            <div class="card bg-blue-le">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="text-start">
+                            <p class="mb-1">@item.MasterLeaveType.LeaveType</p>
+                            <h4>@item.TotalLeaves</h4>
+                            <p class="mb-1">Used Leaves: @item.UsedLeaves</p>
+                            <p class="mb-0">Remaining Leaves: @(item.TotalLeaves - item.UsedLeaves)</p>
+                        </div>
+                        <div class="d-flex">
+                            <div class="flex-shrink-0 me-2">
+                                <span class="avatar avatar-md d-flex">
+                                    <i class="ti ti-calendar-event fs-32"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<br />
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">My Leave Requests</h3>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered mt-4" id="leaveRequestsTable">
+            <thead>
+                <tr>
+                    <th>Leave ID</th>
+                    <th>Leave Type</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Reason</th>
+                    <th>No of Days</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.LeaveRequestId</td>
+                        <td>@item.MasterLeaveType.LeaveType</td>
+                        <td>@item.StartDate.ToString("dd-MM-yyyy")</td>
+                        <td>@item.EndDate.ToString("dd-MM-yyyy")</td>
+                        <td>@item.Reason</td>
+                        <td>@item.NumberOfDays</td>
+                        <td>
+                            @if (item.Status == "Approved")
+                            {
+                                <span class="badge bg-success"><i class="ti ti-point-filled me-1"></i>Approved</span>
+                            }
+                            else if (item.Status == "Rejected")
+                            {
+                                <span class="badge bg-danger"><i class="ti ti-point-filled me-1"></i>Rejected</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning"><i class="ti ti-point-filled me-1"></i>Pending</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+@section scripts
+{
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#leaveRequestsTable').DataTable({
+                pageLength: 5,
+                lengthMenu: [[5, 10, 25, -1], [5, 10, 25, "All"]],
+                language: {
+                    search: "Search:",
+                    lengthMenu: "Row Per Page _MENU_ Entries",
+                    emptyTable: "No records found.",
+                    paginate: {
+                        first: "First",
+                        last: "Last",
+                        next: "Next",
+                        previous: "Previous"
+                    }
+                }
+            });
+        });
+    </script>
+}

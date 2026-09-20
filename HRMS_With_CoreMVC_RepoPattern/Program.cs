@@ -6,7 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+<<<<<<< HEAD
 // Add services to the container.
+=======
+>>>>>>> 3b470edf812a7a46154d634bd3f3496232cbc105
 builder.Services.AddScoped<IEmployeeService, EmployeeServices>();
 builder.Services.AddScoped<IEventTypeService, EventTypeService>();
 builder.Services.AddScoped<IEventService, EventService>();
@@ -24,9 +27,13 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IPromotionRepository, PromotionService>();
 builder.Services.AddScoped<ITrainerRepository, TrainerService>();
 builder.Services.AddScoped<ITrainingTypeRepository, TrainingTypeService>();
+<<<<<<< HEAD
 
 builder.Services.AddScoped<ITaskReportRepository, TaskReportService>();
 builder.Services.AddScoped<IProjectReportRepository, ProjectReportRepositoryServices>();
+=======
+builder.Services.AddScoped<IProjectRepository, ProjectRepositoryServices>();
+>>>>>>> 3b470edf812a7a46154d634bd3f3496232cbc105
 builder.Services.AddScoped<IEmployeeReportRepository, EmployeeReportServices>();
 builder.Services.AddScoped<IAttendanceReportRepository, AttendanceReportServices>();
 builder.Services.AddScoped<IResignationRepository, ResignationService>();
@@ -37,12 +44,13 @@ builder.Services.AddScoped<IPayslipReportRepository, PayslipReportServices>();
 builder.Services.AddScoped<ITrainingRepository, TrainingService>();
 builder.Services.AddScoped<IFileUploadRepository, FileUploadService>();
 builder.Services.AddScoped<ILeaveService, LeaveService>();
+builder.Services.AddScoped<ITimesheetRepository, TimesheetService>();
+builder.Services.AddScoped<IAttendanceRepository, AttendanceService>();
 
 builder.Services.AddSession();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -50,12 +58,14 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseStaticFiles();
-
 app.UseRouting();
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3b470edf812a7a46154d634bd3f3496232cbc105
 app.UseSession();
+app.UseAuthorization();
 
 app.UseAuthorization();
 
@@ -63,5 +73,16 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Auth}/{action=SignIn}/{id?}")
     .WithStaticAssets();
+<<<<<<< HEAD
+=======
+//  pattern: "{controller=Project}/{action=Index}/{id?}")
+//  pattern: "{controller=Auth}/{action=SignIn}/{id?}")
+
+//pattern: "{controller=Resignation}/{action=Index}/{id?}")
+
+
+
+
+>>>>>>> 3b470edf812a7a46154d634bd3f3496232cbc105
 
 app.Run();

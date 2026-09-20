@@ -93,17 +93,52 @@ namespace HRMS_With_CoreMVC_RepoPattern.Data
                 e.Property(x => x.OvertimeHours).HasPrecision(18, 2);
                 e.Property(x => x.BreakHours).HasPrecision(18, 2);
             });
+
             builder.Entity<Timesheet>(e =>
             {
                 e.HasOne(x => x.User)
-                    .WithMany()
+                    .WithMany(x => x.Timesheets)
                     .HasForeignKey(x => x.UserId)
                     .OnDelete(DeleteBehavior.Restrict);
+
                 e.HasOne(x => x.Projects)
                     .WithMany()
                     .HasForeignKey(x => x.ProjectId)
                     .OnDelete(DeleteBehavior.Restrict);
             });
+            builder.Entity<EmployeeBankDetails>(e =>
+            {
+                e.HasOne(x => x.User)
+                    .WithMany()
+                    .HasForeignKey(x => x.UserId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            builder.Entity<EmployeeFamilyDetail>(e =>
+            {
+                e.HasOne(x => x.User)
+                    .WithMany()
+                    .HasForeignKey(x => x.UserId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            builder.Entity<EducationDetails>(e =>
+            {
+                e.HasOne(x => x.User)
+                    .WithMany()
+                    .HasForeignKey(x => x.UserId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            builder.Entity<Experience>(e =>
+            {
+                e.HasOne(x => x.User)
+                    .WithMany()
+                    .HasForeignKey(x => x.UserId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+
             builder.Entity<Payslips>(e =>
             {
                 e.HasOne(x => x.User)
@@ -124,6 +159,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Data
         public DbSet<EmployeeFamilyDetail> EmployeeFamilyDetails { get; set; }
         public DbSet<EmployeeBankDetails> EmployeeBankDetails { get; set; }
         public DbSet<EducationDetails> EducationDetails { get; set; }
+        public DbSet<Experience> Experiences { get; set; }
         public DbSet<EventModel> Events { get; set; }
         public DbSet<EventTypes> EventTypes { get; set; }
         public DbSet<Projects> AllProjects { get; set; }
@@ -144,7 +180,8 @@ namespace HRMS_With_CoreMVC_RepoPattern.Data
         public DbSet<TaskBoards> TaskBoards { get; set; }
         public DbSet<Tasks> Task { get; set; }
         public DbSet<TaskMembers> Taskmember { get; set; }
-        public DbSet<Timesheet> Timesheet { get; set; }
+        public DbSet<Timesheet> Timesheets { get; set; }
+       
         public DbSet<EmployeePerformance> EmployeePerformances { get; set; }
         public DbSet<Attendance> Attendance { get; set; }
         public DbSet<Deduction> Deduction { get; set; }

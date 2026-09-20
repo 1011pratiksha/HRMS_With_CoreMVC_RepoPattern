@@ -54,9 +54,10 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
             if (role == "Admin" || role == "Manager" || role == "Employee")
             {
                 var user = await authService.GetUserByEmail(Email);
-                HttpContext.Session.SetInt32("UserId", user.UserId);
-            }
 
+                HttpContext.Session.SetInt32("UserId", user.UserId);
+                HttpContext.Session.SetString("Role", role);
+            }
             if (role == "Admin")
             {
                 HttpContext.Session.SetString("UserRole", "Admin");
