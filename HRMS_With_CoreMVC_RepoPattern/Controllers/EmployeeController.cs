@@ -307,24 +307,13 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
     string? status,
     string? sorting)
         {
-            var employees = await EmployeeServices.GetAllEmployees(
-                startDate,
-                endDate,
-                designationId,
-                status,
-                sorting);
-
+            var employees = await EmployeeServices.GetAllEmployees(startDate, endDate, designationId, status,sorting);
             ViewBag.Designations = await EmployeeServices.GetAllDesignations();
             ViewBag.Roles = await EmployeeServices.GetAllRoles();
             ViewBag.Departments = await EmployeeServices.GetAllDepartments();
 
             // Get all users for Reporting Manager dropdown
-            ViewBag.Users = await EmployeeServices.GetAllEmployees(
-                null,
-                null,
-                null,
-                null,
-                null);
+            ViewBag.Users = await EmployeeServices.GetAllEmployees(null, null, null, null,null);
 
             // Keep selected filter values
             ViewBag.StartDate = startDate?.ToString("yyyy-MM-dd");
@@ -332,7 +321,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
             ViewBag.DesignationId = designationId;
             ViewBag.Status = status;
             ViewBag.Sorting = sorting;
-
             return View(employees);
         }
 
@@ -340,23 +328,13 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllEmployees()
         {
-            var employees = await EmployeeServices.GetAllEmployees(
-                null,
-                null,
-                null,
-                null,
-                null);
+            var employees = await EmployeeServices.GetAllEmployees(null, null, null, null,null);
 
             ViewBag.Designations = await EmployeeServices.GetAllDesignations();
             ViewBag.Roles = await EmployeeServices.GetAllRoles();
             ViewBag.Departments = await EmployeeServices.GetAllDepartments();
 
-            ViewBag.Users = await EmployeeServices.GetAllEmployees(
-                null,
-                null,
-                null,
-                null,
-                null);
+            ViewBag.Users = await EmployeeServices.GetAllEmployees(null, null, null, null, null);s
 
             return View(employees);
         }
@@ -479,13 +457,7 @@ public async Task<IActionResult> EditEmployee(User user)
             ViewBag.Roles = await EmployeeServices.GetAllRoles();
             ViewBag.Departments = await EmployeeServices.GetAllDepartments();
 
-            ViewBag.Users = await EmployeeServices.GetAllEmployees(
-                null,
-                null,
-                null,
-                null,
-                null);
-
+            ViewBag.Users = await EmployeeServices.GetAllEmployees(null, null, null, null, null);
             return View(employees);
         }
 

@@ -17,8 +17,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Data
             builder.Entity<LeaveBalance>().ToTable("LeaveBalance");
             builder.Entity<LeaveRequest>().ToTable("LeaveRequest");
             builder.Entity<MasterLeaveType>().ToTable("MasterLeaveType");
-
-            // Event
+            builder.Entity<Timesheet>().ToTable("Timesheet");
             builder.Entity<EventModel>(e =>
             {
                 e.HasOne(x => x.EventType)
@@ -49,18 +48,8 @@ namespace HRMS_With_CoreMVC_RepoPattern.Data
                     .HasForeignKey(x => x.UserId)
                     .OnDelete(DeleteBehavior.Restrict);
             });
-<<<<<<< HEAD
 
             // Leave Balance
-=======
-            builder.Entity<TaskBoards>(e =>
-            {
-                e.HasOne(x => x.Task)
-                    .WithMany(x => x.TaskBoard)
-                    .HasForeignKey(x => x.TaskId)
-                    .OnDelete(DeleteBehavior.Restrict);
-            });
->>>>>>> ea107a6edb6852fac142fbbb64f3369548b2b2a6
             builder.Entity<LeaveBalance>(e =>
             {
                 e.HasOne(x => x.MasterLeaveType)
