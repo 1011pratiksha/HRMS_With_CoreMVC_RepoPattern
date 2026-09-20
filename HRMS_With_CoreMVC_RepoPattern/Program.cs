@@ -29,12 +29,6 @@ builder.Services.AddScoped<IResignationRepository, ResignationService>();
 builder.Services.AddScoped<ITerminationRepository, TerminationService>();
 builder.Services.AddScoped<ILeaveReportRepository, LeaveReportServices>();
 builder.Services.AddScoped<IPayslipReportRepository, PayslipReportServices>();
-<<<<<<< HEAD
-=======
-builder.Services.AddScoped<ITrainingRepository, TrainingService>();
-builder.Services.AddScoped<IFileUploadRepository, FileUploadService>();
-
->>>>>>> b12580a6a9b953de2065979d94a5387c77fc28a1
 builder.Services.AddScoped<ILeaveService, LeaveService>();
 builder.Services.AddScoped<ITimesheetRepository, TimesheetService>();
 builder.Services.AddScoped<IAttendanceRepository, AttendanceService>();
@@ -57,22 +51,10 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-<<<<<<< HEAD
 
     pattern: "{controller=Auth}/{action=SignIn}/{id?}")
 
     .WithStaticAssets();
-=======
-    pattern: "{controller=Auth}/{action=SignIn}/{id?}")
-    .WithStaticAssets();
-//  pattern: "{controller=Project}/{action=Index}/{id?}")
-//  pattern: "{controller=Auth}/{action=SignIn}/{id?}")
-
-//pattern: "{controller=Resignation}/{action=Index}/{id?}")
-
-
-
->>>>>>> b12580a6a9b953de2065979d94a5387c77fc28a1
 
 
 app.Run();

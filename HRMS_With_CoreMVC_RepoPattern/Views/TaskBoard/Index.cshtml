@@ -114,17 +114,21 @@
                                                     @task.Title
                                                 </h6>
 
-                                                @foreach (var board in task.TaskBoard)
+                                                @if (task.TaskBoard != null)
                                                 {
-                                                    <div class="progress mt-2">
-                                                        <div class="progress-bar" style="width:@board.Percentage%"></div>
-                                                    </div>
+                                                    @foreach (var board in task.TaskBoard)
+                                                    {
+                                                        <div class="progress mt-2">
+                                                            <div class="progress-bar" style="width:@board.Percentage%"></div>
+                                                        </div>
 
-                                                    <small>@board.Percentage%</small>
+                                                        <small>@board.Percentage%</small>
 
-                                                    <p class="mt-2">
-                                                        Due on: @board.DueDate.ToString("dd MMM yyyy")
-                                                    </p>
+                                                        <p class="mt-2">
+                                                            Due on: @board.DueDate.ToString("dd MMM yyyy")
+                                                        </p>
+                                                    }
+
                                                 }
 
                                                 @foreach (var member in task.Taskmember)
