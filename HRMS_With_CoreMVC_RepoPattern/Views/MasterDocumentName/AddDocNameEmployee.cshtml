@@ -1,0 +1,45 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@{
+    ViewData["Title"] = "Add Employee Document Name";
+}
+
+<div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
+    <div class="my-auto mb-2">
+        <h2 class="mb-1">Add Employee Document Name</h2>
+        <nav>
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item">Admin</li>
+                <li class="breadcrumb-item active" aria-current="page">Add Employee Document Name</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+@if (TempData["Message"] != null)
+{
+    <script>
+        window.onload = function () {
+            alert("@TempData["Message"]");
+        };
+    </script>
+}
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">Add Employee Document Name</h5>
+    </div>
+    <div class="card-body">
+        <form asp-action="AddDocNameEmployee" method="post">
+            <div class="mb-3">
+                <label class="form-label">Document Name</label>
+                <input type="text" name="DocName" class="form-control" placeholder="Enter Document Name" required />
+            </div>
+            <button type="submit" class="btn btn-warning">Add</button>
+        </form>
+    </div>
+</div>

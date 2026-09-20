@@ -106,8 +106,9 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
                 return RedirectToAction("SignIn", "Auth");
             }
 
-            var files = await _service.FetchUserById(userId.Value);
-            return View(files);
+            var files = await _service.FetchAll();
+            var myFiles = files.Where(f => f.UserId == userId.Value).ToList();
+            return View(myFiles);
         }
     }
 }

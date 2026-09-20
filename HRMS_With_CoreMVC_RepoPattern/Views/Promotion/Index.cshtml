@@ -249,8 +249,23 @@
                 $('#promotionTable').DataTable().destroy();
             }
             $('#promotionTable').DataTable({
-                "info": false, "searching": true, "ordering": true, "order": [],
-                "paging": true, "pageLength": 10, "lengthChange": false
+                "info": false,
+                "searching": true,
+                "ordering": true,
+                "order": [],
+                "paging": true,
+                "pageLength": 10,
+                "lengthChange": false,
+                "dom": '<"d-flex justify-content-end mb-2"f>rt<"d-flex justify-content-end mt-2"p>',
+                "initComplete": function () {
+                    $('#promotionTable_filter label').addClass('d-flex align-items-center gap-2 mb-0');
+                    $('#promotionTable_filter input').addClass('form-control form-control-sm');
+                },
+                "drawCallback": function () {
+                    $('#promotionTable_paginate .paginate_button').addClass('page-link');
+                    $('#promotionTable_paginate .paginate_button').wrap('<li class="page-item"></li>');
+                    $('#promotionTable_paginate').addClass('pagination');
+                }
             });
         });
 
@@ -263,3 +278,4 @@
         }
     </script>
 }
+

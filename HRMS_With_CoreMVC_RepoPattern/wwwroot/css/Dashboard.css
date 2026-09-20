@@ -38,6 +38,15 @@
         cursor: pointer;
     }
 
+.page-wrapper {
+    display: flex;
+}
+
+.container {
+    flex: 1;
+    padding: 20px;
+}
+
         .menu-link:hover {
             background-color: #f5f5f5;
         }
