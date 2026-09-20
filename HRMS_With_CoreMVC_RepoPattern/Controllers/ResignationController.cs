@@ -1,7 +1,8 @@
-﻿using HRMS_With_CoreMVC_RepoPattern.Repository;
-using Microsoft.AspNetCore.Mvc;
+﻿using HRMS_With_CoreMVC_RepoPattern.Data;
 using HRMS_With_CoreMVC_RepoPattern.Models;
-using HRMS_With_CoreMVC_RepoPattern.Data;
+using HRMS_With_CoreMVC_RepoPattern.Repository;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HRMS_With_CoreMVC_RepoPattern.Controllers
 {
@@ -10,88 +11,91 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
         private readonly IResignationRepository resignationRepository;
         private readonly ApplicationDbContext context;
 
-        public ResignationController(
-            IResignationRepository resignationRepository,
-            ApplicationDbContext context)
+        public ResignationController(IResignationRepository resignationRepository, ApplicationDbContext context)
         {
             this.resignationRepository = resignationRepository;
             this.context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string? dateFilter, string? sortType)
         {
-            List<Resignation> li = resignationRepository.GetResignations();
+            List<Resignation> li = await resignationRepository.GetResignations();
+            DateTime today = DateTime.Today;
+
+            switch (dateFilter)
+            {
+                case "Today":
+                    li = li.Where(x => x.NoticeDate.Date == today).ToList();
+                    break;
+                case "LastWeek":
+                    li = li.Where(x => x.NoticeDate.Date >= today.AddDays(-7) && x.NoticeDate.Date <= today).ToList();
+                    break;
+                case "LastMonth":
+                    li = li.Where(x => x.NoticeDate.Date >= today.AddMonths(-1) && x.NoticeDate.Date <= today).ToList();
+                    break;
+                case "LastYear":
+                    li = li.Where(x => x.NoticeDate.Date >= today.AddYears(-1) && x.NoticeDate.Date <= today).ToList();
+                    break;
+            }
+
+            if (sortType == "Ascending")
+                li = li.OrderBy(x => x.NoticeDate).ToList();
+            else if (sortType == "Descending")
+                li = li.OrderByDescending(x => x.NoticeDate).ToList();
+
+            ViewBag.Users = await context.User.Include(x => x.Department).ToListAsync();
+            ViewBag.DateFilter = dateFilter;
+            ViewBag.SortType = sortType;
+
             return View("Resignation", li);
         }
 
-        [HttpGet]
-        public IActionResult AddResignation()
-        {
-            ViewBag.Users = context.User.ToList();
-
-            return View();
-        }
-
         [HttpPost]
-        public IActionResult AddResignation(Resignation r)
+        public async Task<IActionResult> AddResignation(Resignation r)
         {
             if (ModelState.IsValid)
             {
-                var user = context.User.Find(r.UserId);
+                var user = await context.User.Include(x => x.Department).FirstOrDefaultAsync(x => x.UserId == r.UserId);
 
                 if (user != null)
                 {
-                    r.DepartmentId = user.DepartmentId ??0;
-
-                    resignationRepository.AddResignation(r);
-
-                    TempData["msg"] = "Added Successfully";
-
+                    r.DepartmentId = user.DepartmentId ?? 0;
+                    string msg = await resignationRepository.AddResignation(r);
+                    TempData["msg"] = msg;
                     return RedirectToAction("Index");
                 }
             }
 
-            ViewBag.Users = context.User.ToList();
-
-            return View(r);
-        }
-
-        [HttpPost]
-        public IActionResult DeleteResignation(int id)
-        {
-            string msg = resignationRepository.DeleteResignation(id);
-
-            TempData["msg"] = msg;
-
+            TempData["msg"] = "Please select a valid employee.";
             return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public IActionResult EditResignation(Resignation r)
+        public async Task<IActionResult> EditResignation(Resignation r)
         {
             if (ModelState.IsValid)
             {
-                string msg = resignationRepository.UpdateResignation(r);
+                var user = await context.User.Include(x => x.Department).FirstOrDefaultAsync(x => x.UserId == r.UserId);
 
-                TempData["msg"] = msg;
-
-                return RedirectToAction("Index");
+                if (user != null)
+                {
+                    r.DepartmentId = user.DepartmentId ?? 0;
+                    string msg = await resignationRepository.UpdateResignation(r);
+                    TempData["msg"] = msg;
+                    return RedirectToAction("Index");
+                }
             }
 
-            return View(r);
+            TempData["msg"] = "Please select a valid employee.";
+            return RedirectToAction("Index");
         }
 
-        [HttpGet]
-        public IActionResult EditResignation(int id)
+        [HttpPost]
+        public async Task<IActionResult> DeleteResignation(int id)
         {
-            Resignation r = resignationRepository.GetResignationById(id);
-
-            if (r == null)
-            {
-                return NotFound();
-            }
-
-            return View(r);
+            string msg = await resignationRepository.DeleteResignation(id);
+            TempData["msg"] = msg;
+            return RedirectToAction("Index");
         }
     }
 }

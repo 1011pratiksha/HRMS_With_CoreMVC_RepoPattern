@@ -21,23 +21,17 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
 
         public async Task<int> fetchApprovedLeaves()
         {
-            return await context.LeaveRequests
-                .Where(x => x.Status == "Approved")
-                .CountAsync();
+            return await context.LeaveRequests.Where(x => x.Status == "Approved").CountAsync();
         }
 
         public async Task<int> fetchPendingLeaves()
         {
-            return await context.LeaveRequests
-                .Where(x => x.Status == "Pending")
-                .CountAsync();
+            return await context.LeaveRequests.Where(x => x.Status == "Pending").CountAsync();
         }
 
         public async Task<int> fetchRejectedLeaves()
         {
-            return await context.LeaveRequests
-                .Where(x => x.Status == "Rejected")
-                .CountAsync();
+            return await context.LeaveRequests.Where(x => x.Status == "Rejected").CountAsync();
         }
 
         public async Task<IEnumerable<LeaveReport>> fetchLeaveReports()
@@ -46,25 +40,15 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
                 .Select(x => new LeaveReport
                 {
                     LeaveRequestId = x.LeaveRequestId,
-
                     ProfilePicture = x.User.ProfilePicture,
-
                     UserName = x.User.FirstName + " " + x.User.LastName,
-
                     LeaveType = x.MasterLeaveType.LeaveType,
-
                     StartDate = x.StartDate,
-
                     EndDate = x.EndDate,
-
                     Status = x.Status,
-
                     NumberOfDays = x.NumberOfDays,
-
                     Reason = x.Reason,
-
                     ApprovedBy = x.ApprovedBy,
-
                     StatusHistory = x.StatusHistory
                 })
                 .ToListAsync();
@@ -72,4 +56,4 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
             return leaves;
         }
     }
-} 
+}

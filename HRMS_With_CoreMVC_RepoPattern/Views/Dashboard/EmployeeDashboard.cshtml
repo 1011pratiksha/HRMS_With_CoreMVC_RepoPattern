@@ -1,143 +1,103 @@
 ﻿@{
-    ViewData["title"] = "Employee Dashboard";
+    ViewData["Title"] = "Employee Dashboard";
 }
-<link rel="stylesheet" href="~/css/Dashboard.css" asp-append-version="true" />
-<div class="sidebar">
 
-    <div class="menu-title">Main Menu</div>
+<div class="container-fluid">
 
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Dashboard</span>
-            <span class="arrow">▼</span>
-        </a>
+    <div class="d-flex align-items-center justify-content-between mb-3">
 
-        <div class="submenu">
-            <a href="">Employee Dashboard</a>
+        <div>
+
+            <h2 class="mb-1">
+                Employee Dashboard
+            </h2>
+
+            <p class="text-muted mb-0">
+                Welcome to Employee Dashboard
+            </p>
+
         </div>
+
     </div>
 
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Employees</span>
-            <span class="arrow">▼</span>
-        </a>
 
-        <div class="submenu">
-            <a href="">User Profile</a>
-        </div>
-    </div>
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Attendance</span>
-            <span class="arrow">▼</span>
-        </a>
+    <div class="row">
 
-        <div class="submenu">
+        <div class="col-md-3 mb-3">
 
-            <div class="submenu-item">
-                <a href="javascript:void(0)" class="submenu-link" onclick="Dropdown(this)">
-                    <span>Leaves</span>
-                    <span class="arrow">▼</span>
-                </a>
+            <div class="card">
 
-                <div class="nested-submenu">
-                    <a href="">Apply Leave</a>
-                    <a href="">Leave Details</a>
+                <div class="card-body">
+
+                    <h6 class="text-muted">
+                        Attendance
+                    </h6>
+
+                    <h3>0</h3>
+
                 </div>
+
             </div>
 
-            <a href="">Attendance (Employee)</a>
-            <a href="">TimeSheet</a>
+        </div>
+
+
+        <div class="col-md-3 mb-3">
+
+            <div class="card">
+
+                <div class="card-body">
+
+                    <h6 class="text-muted">
+                        Leave
+                    </h6>
+
+                    <h3>0</h3>
+
+                </div>
+
+            </div>
 
         </div>
-    </div>
 
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Payroll</span>
-            <span class="arrow">▼</span>
-        </a>
 
-        <div class="submenu">
-            <a href="">Payslip</a>
+        <div class="col-md-3 mb-3">
+
+            <div class="card">
+
+                <div class="card-body">
+
+                    <h6 class="text-muted">
+                        Tasks
+                    </h6>
+
+                    <h3>0</h3>
+
+                </div>
+
+            </div>
+
         </div>
-    </div>
 
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Calendar</span>
-            <span class="arrow">▼</span>
-        </a>
 
-        <div class="submenu">
-            <a href="">Events</a>
+        <div class="col-md-3 mb-3">
+
+            <div class="card">
+
+                <div class="card-body">
+
+                    <h6 class="text-muted">
+                        Documents
+                    </h6>
+
+                    <h3>0</h3>
+
+                </div>
+
+            </div>
+
         </div>
-    </div>
 
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Performance</span>
-            <span class="arrow">▼</span>
-        </a>
-
-        <div class="submenu">
-            <a href="">Performance Review</a>
-        </div>
-    </div>
-
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Documents</span>
-            <span class="arrow">▼</span>
-        </a>
-
-        <div class="submenu">
-            <a href="">Company Letters</a>
-            <a href="">My Document</a>
-            <a href="">Upload Document</a>
-        </div>
-    </div>
-
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Help & Supports</span>
-            <span class="arrow">▼</span>
-        </a>
-
-        <div class="submenu">
-            <a href="">Knowledge Base</a>
-            <a href="">Activities</a>
-        </div>
-    </div>
-
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Tickets</span>
-            <span class="arrow">▼</span>
-        </a>
-
-        <div class="submenu">
-            <a href="">Tickets</a>
-            <a href="">Ticket Details</a>
-        </div>
-    </div>
-
-    <div class="menu-item">
-        <a href="" class="menu-link">
-            <span>Logout</span>
-        </a>
     </div>
 
 </div>
-
-
-
-<script>
-
-    function Dropdown(element) {
-        var parent = element.parentElement;
-        parent.classList.toggle("open");
-    }
-
-</script>

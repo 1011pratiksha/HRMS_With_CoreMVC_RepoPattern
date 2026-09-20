@@ -5,8 +5,7 @@ public class AttendanceReportController : Controller
 {
     private readonly IAttendanceReportRepository attendanceRepository;
 
-    public AttendanceReportController(
-        IAttendanceReportRepository attendanceRepository)
+    public AttendanceReportController(IAttendanceReportRepository attendanceRepository)
     {
         this.attendanceRepository = attendanceRepository;
     }
@@ -15,14 +14,19 @@ public class AttendanceReportController : Controller
     {
         var attendance = await attendanceRepository.fetchAttendanceReports();
 
-        ViewBag.TotalAttendance =
-            await attendanceRepository.fetchTotalAttendance();
+        ViewBag.TotalAttendance = await attendanceRepository.fetchTotalAttendance();
+        ViewBag.PresentAttendance = await attendanceRepository.fetchPresentAttendance();
+        ViewBag.AbsentAttendance = await attendanceRepository.fetchAbsentAttendance();
+        ViewBag.HalfdayAttendance = await attendanceRepository.fetchHalfdayAttendance();
 
-        ViewBag.PresentAttendance =
-            await attendanceRepository.fetchPresentAttendance();
+        var attendanceYears = attendance
+            .Select(x => x.Date.Year)
+            .Distinct()
+            .OrderByDescending(x => x)
+            .ToList();
 
-        ViewBag.AbsentAttendance =
-            await attendanceRepository.fetchAbsentAttendance();
+        ViewBag.AttendanceYears = attendanceYears;
+        ViewBag.CurrentYear = DateTime.Now.Year;
 
         return View(attendance);
     }

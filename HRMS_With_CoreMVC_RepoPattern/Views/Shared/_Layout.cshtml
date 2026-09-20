@@ -1,10 +1,19 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - HRMS_With_CoreMVC_RepoPattern</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>
+        @ViewData["Title"] - HRMS_With_CoreMVC_RepoPattern
+    </title>
+
     <script type="importmap"></script>
+<<<<<<< HEAD
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/HRMS_With_CoreMVC_RepoPattern.styles.css" asp-append-version="true" />
@@ -14,51 +23,913 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="~/wwwroot/assets/css/style.css">
+=======
+>>>>>>> 9a0dc0a (Shreya modules)
 
+    <!-- Bootstrap CSS -->
 
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Site CSS -->
+
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+    <!-- Project CSS -->
+
+    <link rel="stylesheet"
+          href="~/HRMS_With_CoreMVC_RepoPattern.styles.css"
+          asp-append-version="true" />
+
+    <!-- Dashboard CSS -->
+
+    <link rel="stylesheet"
+          href="~/css/Dashboard.css"
+          asp-append-version="true" />
+
+    <!-- Bootstrap Icons -->
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Tabler Icons -->
+
+    <link rel="stylesheet"
+          href="~/assets/plugins/tabler-icons/tabler-icons.min.css">
+
+    <!-- Full Calendar -->
+
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.css"
+          rel="stylesheet" />
+
+    <!-- DataTables -->
+
+    <link rel="stylesheet"
+          href="https://cdn.datatables.net/2.3.3/css/dataTables.dataTables.min.css" />
 
 </head>
+
+
 <body>
+
+    <!-- ================= NAVBAR ================= -->
+
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
+
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">HRMS_With_CoreMVC_RepoPattern</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+
+                <a class="navbar-brand"
+                   asp-area=""
+                   asp-controller="Home"
+                   asp-action="Index">
+
+                    HRMS_With_CoreMVC_RepoPattern
+
+                </a>
+
+
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target=".navbar-collapse"
+                        aria-controls="navbarSupportedContent"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+
                     <span class="navbar-toggler-icon"></span>
+
                 </button>
+
+
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+
                     <ul class="navbar-nav flex-grow-1">
+
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+
+                            <a class="nav-link text-dark"
+                               asp-area=""
+                               asp-controller="Home"
+                               asp-action="Index">
+
+                                Home
+
+                            </a>
+
                         </li>
+
+
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+
+                            <a class="nav-link text-dark"
+                               asp-area=""
+                               asp-controller="Home"
+                               asp-action="Privacy">
+
+                                Privacy
+
+                            </a>
+
                         </li>
+
                     </ul>
+
                 </div>
+
             </div>
+
         </nav>
+
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+
+
+    @{
+        string role = Context.Session.GetString("UserRole") ?? "";
+    }
+
+
+    <!-- ================= SIDEBAR + CONTENT ================= -->
+
+    @if (role == "Admin")
+    {
+        <div class="d-flex align-items-start">
+
+            <!-- ================= ADMIN SIDEBAR ================= -->
+
+            <div class="sidebar">
+
+                <div class="menu-title">
+                    Main Menu
+                </div>
+
+
+                <!-- Dashboard -->
+
+                <div class="menu-item">
+
+                    <a href="javascript:void(0)"
+                       class="menu-link"
+                       onclick="Dropdown(this)">
+
+                        <span>Dashboard</span>
+
+                        <span class="arrow">▼</span>
+
+                    </a>
+
+                    <div class="submenu">
+
+                        <a asp-controller="Dashboard"
+                           asp-action="AdminDashboard">
+
+                            Admin Dashboard
+
+                        </a>
+
+                        <a href="">
+                            Organizational List
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Employees -->
+
+                <div class="menu-item">
+
+                    <a href="javascript:void(0)"
+                       class="menu-link"
+                       onclick="Dropdown(this)">
+
+                        <span>Employees</span>
+
+                        <span class="arrow">▼</span>
+
+                    </a>
+
+                    <div class="submenu">
+
+                        <a href="">Add Department</a>
+                        <a href="">Add Role</a>
+                        <a href="">Add Designation</a>
+                        <a href="">Employee List</a>
+                        <a href="">Employee Grid</a>
+                        <a href="">Employee Details</a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Events -->
+
+                <div class="menu-item">
+
+                    <a href="javascript:void(0)"
+                       class="menu-link"
+                       onclick="Dropdown(this)">
+
+                        <span>Events</span>
+
+                        <span class="arrow">▼</span>
+
+                    </a>
+
+                    <div class="submenu">
+
+                        <a href="">Add Event</a>
+                        <a href="">Add Master Event</a>
+                        <a href="">Event List</a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Training -->
+
+                <div class="menu-item">
+
+                    <a href="javascript:void(0)"
+                       class="menu-link"
+                       onclick="Dropdown(this)">
+
+                        <span>Training</span>
+
+                        <span class="arrow">▼</span>
+
+                    </a>
+
+                    <div class="submenu">
+
+                        <a href="">Training List</a>
+                        <a href="">Trainers</a>
+                        <a href="">Training Type</a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Projects -->
+
+                <div class="menu-item">
+
+                    <a href="javascript:void(0)"
+                       class="menu-link"
+                       onclick="Dropdown(this)">
+
+                        <span>Projects</span>
+
+                        <span class="arrow">▼</span>
+
+                    </a>
+
+                    <div class="submenu">
+
+                        <a href="">Project</a>
+                        <a href="">Task</a>
+                        <a href="">TaskBoard</a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Reports -->
+
+                <div class="menu-item">
+
+                    <a href="javascript:void(0)"
+                       class="menu-link"
+                       onclick="Dropdown(this)">
+
+                        <span>Reports</span>
+
+                        <span class="arrow">▼</span>
+
+                    </a>
+
+                    <div class="submenu">
+
+                        <a href="/EmployeeReport/Index">
+                            Employee Report
+                        </a>
+
+                        <a href="/AttendanceReport/Index">
+                            Attendance Report
+                        </a>
+
+                        <a href="/LeaveReport/Index">
+                            Leave Report
+                        </a>
+
+                        <a href="/PayslipReport/Index">
+                            Payslip Report
+                        </a>
+
+                        <a href="/ProjectReport/GetAllProjectsReports">
+                            Project Report
+                        </a>
+
+                        <a href="/ProjectTaskReport/TaskReport">
+                            Task Report
+                        </a>
+
+                        <a href="/DailyReports/DailyReport">
+                            Daily Report
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Attendance -->
+
+                <div class="menu-item">
+
+                    <a href="javascript:void(0)"
+                       class="menu-link"
+                       onclick="Dropdown(this)">
+
+                        <span>Attendance</span>
+
+                        <span class="arrow">▼</span>
+
+                    </a>
+
+                    <div class="submenu">
+
+                        <a href="">Leaves</a>
+                        <a href="">Attendance</a>
+                        <a href="">TimeSheet</a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Payroll -->
+
+                <div class="menu-item">
+
+                    <a href="javascript:void(0)"
+                       class="menu-link"
+                       onclick="Dropdown(this)">
+
+                        <span>Payroll</span>
+
+                        <span class="arrow">▼</span>
+
+                    </a>
+
+                    <div class="submenu">
+
+                        <a href="">Add Employee Salary</a>
+                        <a href="">Master Payroll</a>
+                        <a href="">Employee Salary List</a>
+                        <a href="">Generate Payslips Monthly</a>
+                        <a href="">Transaction History</a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Promotion -->
+
+                <div class="menu-item">
+
+                    <a href=""
+                       class="menu-link">
+
+                        <span>Promotion</span>
+
+                    </a>
+
+                </div>
+
+
+                <!-- Resignation -->
+
+                <div class="menu-item">
+
+                    <a href="/Resignation/Index"
+                       class="menu-link">
+
+                        <span>Resignation</span>
+
+                    </a>
+
+                </div>
+
+
+                <!-- Termination -->
+
+                <div class="menu-item">
+
+                    <a href="/Termination/Index"
+                       class="menu-link">
+
+                        <span>Termination</span>
+
+                    </a>
+
+                </div>
+
+
+                <!-- Tickets -->
+
+                <div class="menu-item">
+
+                    <a href="javascript:void(0)"
+                       class="menu-link"
+                       onclick="Dropdown(this)">
+
+                        <span>Tickets</span>
+
+                        <span class="arrow">▼</span>
+
+                    </a>
+
+                    <div class="submenu">
+
+                        <a href="">Tickets</a>
+                        <a href="">Ticket Details</a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Logout -->
+
+                <div class="menu-item">
+
+                    <a href=""
+                       class="menu-link">
+
+                        <span>Logout</span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- ADMIN PAGE -->
+
+            <main role="main"
+                  class="flex-grow-1 p-3">
+
+                @RenderBody()
+
+            </main>
+
+        </div>
+    }
+    else if (role == "Manager")
+    {
+        <div class="d-flex align-items-start">
+
+            <!-- ================= MANAGER SIDEBAR ================= -->
+
+            <div class="sidebar">
+
+                <div class="menu-title">
+                    Main Menu
+                </div>
+
+
+                <!-- Projects -->
+
+                <div class="menu-item">
+
+                    <a href="javascript:void(0)"
+                       class="menu-link"
+                       onclick="Dropdown(this)">
+
+                        <span>Projects</span>
+
+                        <span class="arrow">▼</span>
+
+                    </a>
+
+                    <div class="submenu">
+
+                        <a href="">Project</a>
+                        <a href="">Task</a>
+                        <a href="">TaskBoard</a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Leave -->
+
+                <div class="menu-item">
+
+                    <a href="javascript:void(0)"
+                       class="menu-link"
+                       onclick="Dropdown(this)">
+
+                        <span>Leave</span>
+
+                        <span class="arrow">▼</span>
+
+                    </a>
+
+                    <div class="submenu">
+
+                        <a href="">Leaves</a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Tickets -->
+
+                <div class="menu-item">
+
+                    <a href="javascript:void(0)"
+                       class="menu-link"
+                       onclick="Dropdown(this)">
+
+                        <span>Tickets</span>
+
+                        <span class="arrow">▼</span>
+
+                    </a>
+
+                    <div class="submenu">
+
+                        <a href="">Tickets</a>
+                        <a href="">Ticket Details</a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Logout -->
+
+                <div class="menu-item">
+
+                    <a href=""
+                       class="menu-link">
+
+                        <span>Logout</span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- MANAGER PAGE -->
+
+            <main role="main"
+                  class="flex-grow-1 p-3">
+
+                @RenderBody()
+
+            </main>
+
+        </div>
+    }
+    else if (role == "Employee")
+    {
+        <div class="d-flex align-items-start">
+
+            <!-- ================= EMPLOYEE SIDEBAR ================= -->
+
+            <div class="sidebar">
+
+                <div class="menu-title">
+                    Main Menu
+                </div>
+
+
+                <!-- Dashboard -->
+
+                <div class="menu-item">
+
+                    <a href="javascript:void(0)"
+                       class="menu-link"
+                       onclick="Dropdown(this)">
+
+                        <span>Dashboard</span>
+
+                        <span class="arrow">▼</span>
+
+                    </a>
+
+                    <div class="submenu">
+
+                        <a asp-controller="Dashboard"
+                           asp-action="EmployeeDashboard">
+
+                            Employee Dashboard
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Profile -->
+
+                <div class="menu-item">
+
+                    <a href=""
+                       class="menu-link">
+
+                        <span>Profile</span>
+
+                    </a>
+
+                </div>
+
+
+                <!-- Attendance -->
+
+                <div class="menu-item">
+
+                    <a href="javascript:void(0)"
+                       class="menu-link"
+                       onclick="Dropdown(this)">
+
+                        <span>Attendance</span>
+
+                        <span class="arrow">▼</span>
+
+                    </a>
+
+                    <div class="submenu">
+
+                        <a href="">Attendance</a>
+                        <a href="">TimeSheet</a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Leave -->
+
+                <div class="menu-item">
+
+                    <a href="javascript:void(0)"
+                       class="menu-link"
+                       onclick="Dropdown(this)">
+
+                        <span>Leave</span>
+
+                        <span class="arrow">▼</span>
+
+                    </a>
+
+                    <div class="submenu">
+
+                        <a href="">Apply Leave</a>
+                        <a href="">Leave Details</a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Projects -->
+
+                <div class="menu-item">
+
+                    <a href="javascript:void(0)"
+                       class="menu-link"
+                       onclick="Dropdown(this)">
+
+                        <span>Projects</span>
+
+                        <span class="arrow">▼</span>
+
+                    </a>
+
+                    <div class="submenu">
+
+                        <a href="">My Projects</a>
+                        <a href="">My Tasks</a>
+                        <a href="">Task Board</a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Payroll -->
+
+                <div class="menu-item">
+
+                    <a href="javascript:void(0)"
+                       class="menu-link"
+                       onclick="Dropdown(this)">
+
+                        <span>Payroll</span>
+
+                        <span class="arrow">▼</span>
+
+                    </a>
+
+                    <div class="submenu">
+
+                        <a href="">Payslip</a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Documents -->
+
+                <div class="menu-item">
+
+                    <a href="javascript:void(0)"
+                       class="menu-link"
+                       onclick="Dropdown(this)">
+
+                        <span>Documents</span>
+
+                        <span class="arrow">▼</span>
+
+                    </a>
+
+                    <div class="submenu">
+
+                        <a href="">Company Letters</a>
+                        <a href="">My Documents</a>
+                        <a href="">Upload Document</a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Performance -->
+
+                <div class="menu-item">
+
+                    <a href="javascript:void(0)"
+                       class="menu-link"
+                       onclick="Dropdown(this)">
+
+                        <span>Performance</span>
+
+                        <span class="arrow">▼</span>
+
+                    </a>
+
+                    <div class="submenu">
+
+                        <a href="">Performance Review</a>
+                        <a href="">Goals</a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Tickets -->
+
+                <div class="menu-item">
+
+                    <a href="javascript:void(0)"
+                       class="menu-link"
+                       onclick="Dropdown(this)">
+
+                        <span>Tickets</span>
+
+                        <span class="arrow">▼</span>
+
+                    </a>
+
+                    <div class="submenu">
+
+                        <a href="">Tickets</a>
+                        <a href="">Ticket Details</a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Logout -->
+
+                <div class="menu-item">
+
+                    <a href=""
+                       class="menu-link">
+
+                        <span>Logout</span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- EMPLOYEE PAGE -->
+
+            <main role="main"
+                  class="flex-grow-1 p-3">
+
+                @RenderBody()
+
+            </main>
+
+        </div>
+    }
+    else
+    {
+        <!-- Login / Other Pages -->
+
+        <main role="main">
+
             @RenderBody()
+
         </main>
-    </div>
+    }
+
+
+    <!-- ================= FOOTER ================= -->
 
     <footer class="border-top footer text-muted">
+
         <div class="container">
-            &copy; 2026 - HRMS_With_CoreMVC_RepoPattern - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+
+            &copy; 2026 - HRMS_With_CoreMVC_RepoPattern -
+
+            <a asp-area=""
+               asp-controller="Home"
+               asp-action="Privacy">
+
+                Privacy
+
+            </a>
+
         </div>
+
     </footer>
+
+
+    <!-- ================= SCRIPTS ================= -->
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="~/js/site.js"
+            asp-append-version="true"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
+<<<<<<< HEAD
     <script src="https://cdn.datatables.net/2.3.3/js/dataTables.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"></script>;
+=======
+
+    <script src="https://cdn.datatables.net/2.3.3/js/dataTables.min.js"></script>
+
+
+    <!-- Sidebar Dropdown -->
+
+    <script>
+
+        function Dropdown(element) {
+
+            var parent = element.parentElement;
+
+            parent.classList.toggle("open");
+
+        }
+
+    </script>
+
+
+>>>>>>> 9a0dc0a (Shreya modules)
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
+
 </html>

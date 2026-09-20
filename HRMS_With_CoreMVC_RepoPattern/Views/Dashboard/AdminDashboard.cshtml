@@ -1,307 +1,103 @@
-﻿
-@{
-    ViewData["title"] = "Admin Dashboard";
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
 }
-<link rel="stylesheet" href="~/css/Dashboard.css" asp-append-version="true" />
-<div class="sidebar">
 
-    <div class="menu-title">Main Menu</div>
+<div class="container-fluid">
 
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Dashboard</span>
-            <span class="arrow">▼</span>
-        </a>
+    <div class="d-flex align-items-center justify-content-between mb-3">
 
-        <div class="submenu">
-            <a href="">Admin Dashboard</a>
-            <a href="">Organizational List</a>
+        <div>
+
+            <h2 class="mb-1">
+                Admin Dashboard
+            </h2>
+
+            <p class="text-muted mb-0">
+                Welcome to Admin Dashboard
+            </p>
+
         </div>
+
     </div>
 
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Employees</span>
-            <span class="arrow">▼</span>
-        </a>
 
-        <div class="submenu">
-            <a href="">Add Department</a>
-            <a href="">Add Role</a>
-            <a href="">Add Designation</a>
-            <a href="">Employee List</a>
-            <a href="">Employee Grid</a>
-            <a href="">Employee Details</a>
-        </div>
-    </div>
+    <div class="row">
 
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Events</span>
-            <span class="arrow">▼</span>
-        </a>
+        <div class="col-md-3 mb-3">
 
-        <div class="submenu">
-            <a href="">Add Event</a>
-            <a href="">Add Master Event</a>
-            <a href="">Event List</a>
-        </div>
-    </div>
+            <div class="card">
 
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Training</span>
-            <span class="arrow">▼</span>
-        </a>
+                <div class="card-body">
 
-        <div class="submenu">
-            <a href="">Training List</a>
-            <a href="">Trainers</a>
-            <a href="">Training Type</a>
-        </div>
-    </div>
+                    <h6 class="text-muted">
+                        Total Employees
+                    </h6>
 
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Performance & Goal</span>
-            <span class="arrow">▼</span>
-        </a>
+                    <h3>0</h3>
 
-        <div class="submenu">
-
-            <div class="submenu-item">
-                <a href="javascript:void(0)" class="submenu-link" onclick="Dropdown(this)">
-                    <span>Performance</span>
-                    <span class="arrow">▼</span>
-                </a>
-
-                <div class="nested-submenu">
-                    <a href="">Performance Indicators</a>
-                    <a href="">Performance Appraisal</a>
-                    <a href="">Performance Review</a>
                 </div>
-            </div>
 
-            <div class="submenu-item">
-                <a href="javascript:void(0)" class="submenu-link" onclick="Dropdown(this)">
-                    <span>Goal</span>
-                    <span class="arrow">▼</span>
-                </a>
-
-                <div class="nested-submenu">
-                    <a href="">Goal Type</a>
-                    <a href="">Goal Tracking</a>
-                </div>
             </div>
 
         </div>
-    </div>
 
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Master Documents</span>
-            <span class="arrow">▼</span>
-        </a>
 
-        <div class="submenu">
+        <div class="col-md-3 mb-3">
 
-            <div class="submenu-item">
-                <a href="javascript:void(0)" class="submenu-link" onclick="Dropdown(this)">
-                    <span>Add Master Document</span>
-                    <span class="arrow">▼</span>
-                </a>
+            <div class="card">
 
-                <div class="nested-submenu">
-                    <a href="">Add Document Name (Admin)</a>
-                    <a href="">Add Document Name (Employee)</a>
+                <div class="card-body">
+
+                    <h6 class="text-muted">
+                        Departments
+                    </h6>
+
+                    <h3>0</h3>
+
                 </div>
-            </div>
 
-            <div class="submenu-item">
-                <a href="javascript:void(0)" class="submenu-link" onclick="Dropdown(this)">
-                    <span>Master Document List</span>
-                    <span class="arrow">▼</span>
-                </a>
-
-                <div class="nested-submenu">
-                    <a href="">Admin Document List</a>
-                    <a href="">Employee Document List</a>
-                </div>
             </div>
 
         </div>
-    </div>
 
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Documents</span>
-            <span class="arrow">▼</span>
-        </a>
 
-        <div class="submenu">
+        <div class="col-md-3 mb-3">
 
-            <div class="submenu-item">
-                <a href="javascript:void(0)" class="submenu-link" onclick="Dropdown(this)">
-                    <span>Upload Documents</span>
-                    <span class="arrow">▼</span>
-                </a>
+            <div class="card">
 
-                <div class="nested-submenu">
-                    <a href="">Upload Document</a>
-                    <a href="">Document List</a>
+                <div class="card-body">
+
+                    <h6 class="text-muted">
+                        Active Employees
+                    </h6>
+
+                    <h3>0</h3>
+
                 </div>
-            </div>
 
-            <div class="submenu-item">
-                <a href="javascript:void(0)" class="submenu-link" onclick="Dropdown(this)">
-                    <span>Generate Letter</span>
-                    <span class="arrow">▼</span>
-                </a>
-
-                <div class="nested-submenu">
-                    <a href="">Generate Offer Letter</a>
-                    <a href="">Generate Resignation Letter</a>
-                    <a href="">Generated Letters List</a>
-                </div>
             </div>
 
         </div>
-    </div>
 
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Projects</span>
-            <span class="arrow">▼</span>
-        </a>
 
-        <div class="submenu">
-            <a href="">Project</a>
-            <a href="">Task</a>
-            <a href="">TaskBoard</a>
-        </div>
-    </div>
+        <div class="col-md-3 mb-3">
 
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Reports</span>
-            <span class="arrow">▼</span>
-        </a>
+            <div class="card">
 
-        <div class="submenu">
-            <a href="https://localhost:7181/EmployeeReport/Index">Employee Report</a>
-            <a href="https://localhost:7181/AttendanceReport/Index">Attendance Report</a>
-            <a href="https://localhost:7181/LeaveReport/Index">Leave Report</a>
-            <a href="https://localhost:44325/PayslipReport/Index">Payslip Report</a>
-            <a href="https://localhost:7181/ProjectReport/GetAllProjectsReports">Project Report</a>
-            <a href="">Task Report</a>
-            <a href="">Daily Report</a>
-        </div>
-    </div>
+                <div class="card-body">
 
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Attendance</span>
-            <span class="arrow">▼</span>
-        </a>
+                    <h6 class="text-muted">
+                        Reports
+                    </h6>
 
-        <div class="submenu">
+                    <h3>0</h3>
 
-            <div class="submenu-item">
-                <a href="javascript:void(0)" class="submenu-link" onclick="Dropdown(this)">
-                    <span>Leaves</span>
-                    <span class="arrow">▼</span>
-                </a>
-
-                <div class="nested-submenu">
-                    <a href="">Add Leave Type</a>
-                    <a href="">Add Leave</a>
-                    <a href="">Department Leave Details</a>
-                    <a href="">Leave Setting</a>
                 </div>
+
             </div>
 
-            <a href="">Attendance (Admin)</a>
-            <a href="">TimeSheet</a>
-
         </div>
-    </div>
 
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Payroll</span>
-            <span class="arrow">▼</span>
-        </a>
-
-        <div class="submenu">
-            <a href="">Add Employee Salary</a>
-            <a href="">Master Payroll</a>
-            <a href="">Employee Salary List</a>
-            <a href="">Generate Payslips Monthly</a>
-            <a href="">Transaction History</a>
-        </div>
-    </div>
-
-    <div class="menu-item">
-        <a href="" class="menu-link">
-            <span>Promotion</span>
-        </a>
-    </div>
-
-    <div class="menu-item">
-        <a href="https://localhost:7181/Resignation/Index" class="menu-link">
-            <span>Resignation</span>
-        </a>
-    </div>''
-
-    <div class="menu-item">
-        <a href="https://localhost:7181/Termination/Index" class="menu-link">
-            <span>Termination</span>
-        </a>
-    </div>
-
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Help & Supports</span>
-            <span class="arrow">▼</span>
-        </a>
-
-        <div class="submenu">
-            <a href="">Knowledge Base</a>
-            <a href="">Activities</a>
-        </div>
-    </div>
-
-    <div class="menu-item">
-        <a href="javascript:void(0)" class="menu-link" onclick="Dropdown(this)">
-            <span>Tickets</span>
-            <span class="arrow">▼</span>
-        </a>
-
-        <div class="submenu">
-            <a href="">Tickets</a>
-            <a href="">Ticket Details</a>
-        </div>
-    </div>
-
-    <div class="menu-item">
-        <a href="" class="menu-link">
-            <span>Logout</span>
-        </a>
     </div>
 
 </div>
-
-
-
-<script>
-
-    function Dropdown(element) {
-
-        var parent = element.parentElement;
-
-        parent.classList.toggle("open");
-
-    }
-
-</script>
-
