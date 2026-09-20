@@ -1,4 +1,5 @@
-﻿using HRMS_With_CoreMVC_RepoPattern.Models;
+﻿
+using HRMS_With_CoreMVC_RepoPattern.Models;
 using HRMS_With_CoreMVC_RepoPattern.Repository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,46 +8,50 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
     public class EventController : Controller
     {
         public readonly IEventService service;
-        public EventController(IEventService eventService) 
+
+        public EventController(IEventService eventService)
         {
             service = eventService;
         }
-        public IActionResult Index()
+
+        public async Task<IActionResult> Index()
         {
-            ViewBag.EventTypes= service.GetEventTypes();
-            var ev = service.GetEvent();
+            ViewBag.EventTypes = await service.GetEventTypes();
+
+            var ev = await service.GetEvent();
 
             return View(ev);
         }
 
-        public IActionResult EventList()
+        public async Task<IActionResult> EventList()
         {
-            ViewBag.EventTypes = service.GetEventTypes();
-            var ev = service.GetEvent();
+            ViewBag.EventTypes = await service.GetEventTypes();
+
+            var ev = await service.GetEvent();
 
             return View(ev);
         }
 
         [HttpPost]
-        public IActionResult AddActualEvent(EventModel model)
+        public async Task<IActionResult> AddActualEvent(EventModel model)
         {
-            service.AddEvent(model);
+            await service.AddEvent(model);
+
             return RedirectToAction("Index");
         }
 
-        public IActionResult EventDelete(int id)
+        public async Task<IActionResult> EventDelete(int id)
         {
-            service.DeleteEvent(id);
-            return RedirectToAction("EventList");
-
-        }
-
-        public IActionResult updateEvent(EventModel model)
-        {
-            service.UpdateEvent(model);
+            await service.DeleteEvent(id);
 
             return RedirectToAction("EventList");
         }
-       
+
+        public async Task<IActionResult> updateEvent(EventModel model)
+        {
+            await service.UpdateEvent(model);
+
+            return RedirectToAction("EventList");
+        }
     }
 }

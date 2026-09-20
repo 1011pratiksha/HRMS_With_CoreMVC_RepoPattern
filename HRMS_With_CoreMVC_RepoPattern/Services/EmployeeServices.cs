@@ -324,8 +324,10 @@ public async Task<List<EmployeeGridViewModel>> GetEmployeeGridData()
                                 x.Task.Status == "Pending");
 
                 var timesheets = await db.Timesheets
-                    .Where(x => x.UserId == employee.UserId)
-                    .ToListAsync();
+       .Where(x => x.UserId == employee.UserId)
+       .ToListAsync();
+
+                  
 
                
                 var totalWorkHours = timesheets.Sum(x => x.WorkHours);

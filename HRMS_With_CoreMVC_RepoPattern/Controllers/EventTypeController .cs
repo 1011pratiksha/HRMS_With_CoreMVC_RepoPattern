@@ -1,4 +1,5 @@
-﻿using HRMS_With_CoreMVC_RepoPattern.Models;
+﻿
+using HRMS_With_CoreMVC_RepoPattern.Models;
 using HRMS_With_CoreMVC_RepoPattern.Repository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,27 +8,30 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
     public class EventTypeController : Controller
     {
         private readonly IEventTypeService service;
-        public EventTypeController(IEventTypeService serviceData) { 
+
+        public EventTypeController(IEventTypeService serviceData)
+        {
             service = serviceData;
         }
-        public IActionResult Index()
+
+        public async Task<IActionResult> Index()
         {
-            var master = service.GetMasterEvents();
+            var master = await service.GetMasterEvents();
 
             return View(master);
         }
 
         [HttpPost]
-        public IActionResult AddMaster(EventTypes masterEvent)
+        public async Task<IActionResult> AddMaster(EventTypes masterEvent)
         {
-            service.AddMasterEvent(masterEvent);
+            await service.AddMasterEvent(masterEvent);
+
             return RedirectToAction("Index");
         }
 
-
-        public IActionResult DeleteEvent(int id)
+        public async Task<IActionResult> DeleteEvent(int id)
         {
-            service.RemoveMasterEvent(id);
+            await service.RemoveMasterEvent(id);
 
             return RedirectToAction("Index");
         }

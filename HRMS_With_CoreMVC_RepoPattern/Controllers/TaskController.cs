@@ -1,4 +1,5 @@
-﻿using HRMS_With_CoreMVC_RepoPattern.Models;
+﻿
+using HRMS_With_CoreMVC_RepoPattern.Models;
 using HRMS_With_CoreMVC_RepoPattern.Repository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,17 +8,17 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
     public class TaskController : Controller
     {
         private readonly ITaskService service;
+
         public TaskController(ITaskService task)
         {
             service = task;
         }
-        public IActionResult Index(string priority)
+
+        public async Task<IActionResult> Index(string priority)
         {
+            var task = await service.GetTask();
 
-            var task = service.GetTask();
-
-
-            if(priority == "High")
+            if (priority == "High")
             {
                 task = task.Where(x => x.Priority == "High").ToList();
             }
@@ -32,27 +33,24 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
                 task = task.Where(x => x.Priority == "Low").ToList();
             }
 
-
             return View(task);
         }
 
 
-        public IActionResult AddTask(int projectId)
+        public async Task<IActionResult> AddTask(int projectId)
         {
-            ViewBag.GetProject = service.GetProject();
-            ViewBag.GetUser = service.GetUsers(projectId);
+            ViewBag.GetProject = await service.GetProject();
+            ViewBag.GetUser = await service.GetUsers(projectId);
 
             return View();
         }
 
         [HttpPost]
-        public IActionResult AddTaskForm(Tasks tk, IFormFile file, int[] Users)
+        public async Task<IActionResult> AddTaskForm(Tasks tk, IFormFile file, int[] Users)
         {
-            service.AddTask(tk, file, Users);
+            await service.AddTask(tk, file, Users);
+
             return RedirectToAction("Index");
         }
-
-       
-
     }
 }
