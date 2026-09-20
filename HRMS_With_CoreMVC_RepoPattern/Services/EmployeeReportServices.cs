@@ -46,17 +46,19 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
         public async Task<IEnumerable<EmployeeReport>> fetchEmployeeReports()
         {
             var employees = await context.User
+                .Include(x => x.Department)
                 .Select(x => new EmployeeReport
                 {
                     UserId = x.UserId,
                     Name = x.FirstName + " " + x.LastName,
                     Email = x.Email,
-                    Department = x.DepartmentId.ToString(),
+                    Department = x.Department != null ? x.Department.Name : "",
                     PhoneNumber = x.PhoneNumber,
                     DateOfJoining = x.DateOfJoining,
                     Status = x.Status,
                     ProfilePicture = x.ProfilePicture
                 })
+                .OrderByDescending(x => x.DateOfJoining)
                 .ToListAsync();
 
             return employees;
@@ -66,7 +68,9 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
             string? statusType,
             string? sortType)
         {
-            var query = context.User.AsQueryable();
+            var query = context.User
+                .Include(x => x.Department)
+                .AsQueryable();
 
             if (!string.IsNullOrEmpty(statusType))
             {
@@ -77,7 +81,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
             {
                 query = query.OrderBy(x => x.DateOfJoining);
             }
-            else if (sortType == "Descending")
+            else
             {
                 query = query.OrderByDescending(x => x.DateOfJoining);
             }
@@ -88,7 +92,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
                     UserId = x.UserId,
                     Name = x.FirstName + " " + x.LastName,
                     Email = x.Email,
-                    Department = x.DepartmentId.ToString(),
+                    Department = x.Department != null ? x.Department.Name : "",
                     PhoneNumber = x.PhoneNumber,
                     DateOfJoining = x.DateOfJoining,
                     Status = x.Status,

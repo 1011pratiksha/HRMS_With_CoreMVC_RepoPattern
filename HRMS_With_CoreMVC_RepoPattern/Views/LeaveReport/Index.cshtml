@@ -2,125 +2,180 @@
 
 @{
     ViewData["Title"] = "Leave Report";
+
+    int totalLeaves = Convert.ToInt32(ViewBag.TotalLeaves ?? 0);
+    int approvedLeaves = Convert.ToInt32(ViewBag.ApprovedLeaves ?? 0);
+    int pendingLeaves = Convert.ToInt32(ViewBag.PendingLeaves ?? 0);
+    int rejectedLeaves = Convert.ToInt32(ViewBag.RejectedLeaves ?? 0);
+
+    double totalLeavePercentage = Convert.ToDouble(ViewBag.TotalLeavePercentage ?? 0);
+    double approvedLeavePercentage = Convert.ToDouble(ViewBag.ApprovedLeavePercentage ?? 0);
+    double pendingLeavePercentage = Convert.ToDouble(ViewBag.PendingLeavePercentage ?? 0);
+    double rejectedLeavePercentage = Convert.ToDouble(ViewBag.RejectedLeavePercentage ?? 0);
+
+    string totalLeaveClass = totalLeavePercentage >= 0 ? "text-success" : "text-danger";
+    string approvedLeaveClass = approvedLeavePercentage >= 0 ? "text-success" : "text-danger";
+    string pendingLeaveClass = pendingLeavePercentage >= 0 ? "text-success" : "text-danger";
+    string rejectedLeaveClass = rejectedLeavePercentage >= 0 ? "text-success" : "text-danger";
+
+    string totalLeaveIcon = totalLeavePercentage >= 0 ? "ti-arrow-up-right" : "ti-arrow-down-right";
+    string approvedLeaveIcon = approvedLeavePercentage >= 0 ? "ti-arrow-up-right" : "ti-arrow-down-right";
+    string pendingLeaveIcon = pendingLeavePercentage >= 0 ? "ti-arrow-up-right" : "ti-arrow-down-right";
+    string rejectedLeaveIcon = rejectedLeavePercentage >= 0 ? "ti-arrow-up-right" : "ti-arrow-down-right";
 }
 
-<div class="page-wrapper">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css" />
 
-    <!-- Page Header -->
-    <div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
-        <div class="my-auto mb-2">
-            <h2 class="mb-1">Leave Report</h2>
+<div class="container-fluid">
 
-            <nav>
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item">
-                        <a asp-controller="Dashboard" asp-action="Index">
-                            Home
-                        </a>
-                    </li>
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <div>
+            <h4 class="mb-1">Leave Report</h4>
+            <p class="text-muted mb-0">Leave details and summary</p>
+        </div>
 
-                    <li class="breadcrumb-item active">
-                        Leave Report
-                    </li>
-                </ol>
-            </nav>
+        <div class="dropdown">
+            <button type="button" class="btn btn-sm text-white dropdown-toggle" style="background:#ff641f;" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="ti ti-download me-1"></i> Export
+            </button>
+
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                    <button type="button" class="dropdown-item" id="exportPdf">
+                        <i class="ti ti-file-type-pdf me-1 text-danger"></i> Export as PDF
+                    </button>
+                </li>
+
+                <li>
+                    <button type="button" class="dropdown-item" id="exportExcel">
+                        <i class="ti ti-file-type-xls me-1 text-success"></i> Export as Excel
+                    </button>
+                </li>
+            </ul>
         </div>
     </div>
 
-
-    <!-- Summary Cards -->
     <div class="row">
 
-        <!-- Total Leaves -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex align-items-center justify-content-between">
+        <div class="col-xl-6 d-flex">
+            <div class="row flex-fill">
 
-                        <div>
-                            <h6 class="mb-2">Total Leaves</h6>
+                <div class="col-lg-6 col-md-6 d-flex mb-3">
+                    <div class="card flex-fill">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <p class="mb-2 text-muted">Total Leaves</p>
+                                    <h4 class="mb-0">@totalLeaves</h4>
+                                </div>
+                                <div class="text-warning">
+                                    <i class="ti ti-calendar-x fs-24"></i>
+                                </div>
+                            </div>
 
-                            <h3 class="mb-0">
-                                @ViewBag.TotalLeaves
-                            </h3>
+                            <div class="bg-light rounded p-2 mt-3">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <span class="text-muted small">Last Month</span>
+                                    <span class="@totalLeaveClass small">
+                                        <i class="ti @totalLeaveIcon"></i>
+                                        @totalLeavePercentage.ToString("+0.00;-0.00;0.00")%
+                                    </span>
+                                </div>
+                            </div>
                         </div>
-
-                        <div class="avatar avatar-lg bg-primary rounded">
-                            <i class="ti ti-calendar fs-24"></i>
-                        </div>
-
                     </div>
                 </div>
+
+                <div class="col-lg-6 col-md-6 d-flex mb-3">
+                    <div class="card flex-fill">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <p class="mb-2 text-muted">Approved Leaves</p>
+                                    <h4 class="mb-0">@approvedLeaves</h4>
+                                </div>
+                                <div class="text-success">
+                                    <i class="ti ti-calendar-check fs-24"></i>
+                                </div>
+                            </div>
+
+                            <div class="bg-light rounded p-2 mt-3">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <span class="text-muted small">Last Month</span>
+                                    <span class="@approvedLeaveClass small">
+                                        <i class="ti @approvedLeaveIcon"></i>
+                                        @approvedLeavePercentage.ToString("+0.00;-0.00;0.00")%
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6 d-flex mb-3">
+                    <div class="card flex-fill">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <p class="mb-2 text-muted">Pending Requests</p>
+                                    <h4 class="mb-0">@pendingLeaves</h4>
+                                </div>
+                                <div class="text-info">
+                                    <i class="ti ti-calendar-time fs-24"></i>
+                                </div>
+                            </div>
+
+                            <div class="bg-light rounded p-2 mt-3">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <span class="text-muted small">Last Month</span>
+                                    <span class="@pendingLeaveClass small">
+                                        <i class="ti @pendingLeaveIcon"></i>
+                                        @pendingLeavePercentage.ToString("+0.00;-0.00;0.00")%
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6 d-flex mb-3">
+                    <div class="card flex-fill">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <p class="mb-2 text-muted">Rejected Leaves</p>
+                                    <h4 class="mb-0">@rejectedLeaves</h4>
+                                </div>
+                                <div class="text-danger">
+                                    <i class="ti ti-x fs-24"></i>
+                                </div>
+                            </div>
+
+                            <div class="bg-light rounded p-2 mt-3">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <span class="text-muted small">Last Month</span>
+                                    <span class="@rejectedLeaveClass small">
+                                        <i class="ti @rejectedLeaveIcon"></i>
+                                        @rejectedLeavePercentage.ToString("+0.00;-0.00;0.00")%
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
-
-        <!-- Approved -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex align-items-center justify-content-between">
-
-                        <div>
-                            <h6 class="mb-2">Approved</h6>
-
-                            <h3 class="mb-0">
-                                @ViewBag.ApprovedLeaves
-                            </h3>
-                        </div>
-
-                        <div class="avatar avatar-lg bg-success rounded">
-                            <i class="ti ti-check fs-24"></i>
-                        </div>
-
-                    </div>
+        <div class="col-xl-6 d-flex mb-3">
+            <div class="card flex-fill">
+                <div class="card-header">
+                    <h5 class="mb-0">Leaves</h5>
                 </div>
-            </div>
-        </div>
 
-
-        <!-- Pending -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card">
                 <div class="card-body">
-                    <div class="d-flex align-items-center justify-content-between">
-
-                        <div>
-                            <h6 class="mb-2">Pending Requests</h6>
-
-                            <h3 class="mb-0">
-                                @ViewBag.PendingLeaves
-                            </h3>
-                        </div>
-
-                        <div class="avatar avatar-lg bg-warning rounded">
-                            <i class="ti ti-clock fs-24"></i>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <!-- Rejected -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex align-items-center justify-content-between">
-
-                        <div>
-                            <h6 class="mb-2">Rejected</h6>
-
-                            <h3 class="mb-0">
-                                @ViewBag.RejectedLeaves
-                            </h3>
-                        </div>
-
-                        <div class="avatar avatar-lg bg-danger rounded">
-                            <i class="ti ti-x fs-24"></i>
-                        </div>
-
+                    <div style="height:300px;">
+                        <canvas id="leaveChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -128,194 +183,510 @@
 
     </div>
 
-
-    <!-- Leave Report Table -->
-    <div class="card">
+    <div class="card mt-2">
 
         <div class="card-header">
-            <h5 class="card-title mb-0">
-                Leave Details
-            </h5>
+            <div class="d-flex align-items-center justify-content-between">
+                <h5 class="mb-0">Leave Details</h5>
+
+                <div class="d-flex align-items-center gap-2">
+
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-sm btn-light dropdown-toggle" id="dateFilterButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            Date Filter
+                        </button>
+
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><button type="button" class="dropdown-item date-option" data-date="all">All</button></li>
+                            <li><button type="button" class="dropdown-item date-option" data-date="yesterday">Yesterday</button></li>
+                            <li><button type="button" class="dropdown-item date-option" data-date="last7Days">Last 7 Days</button></li>
+                            <li><button type="button" class="dropdown-item date-option" data-date="last30Days">Last 30 Days</button></li>
+                            <li><button type="button" class="dropdown-item date-option" data-date="lastYear">Last Year</button></li>
+                            <li><button type="button" class="dropdown-item date-option" data-date="thisYear">This Year</button></li>
+                            <li><button type="button" class="dropdown-item date-option" data-date="custom">Custom</button></li>
+                        </ul>
+                    </div>
+
+                    <select id="statusFilter" class="form-select form-select-sm" style="width:150px;">
+                        <option value="">All Status</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Rejected">Rejected</option>
+                    </select>
+
+                    <select id="sortDate" class="form-select form-select-sm" style="width:150px;">
+                        <option value="">Sort By Date</option>
+                        <option value="asc">Oldest First</option>
+                        <option value="desc">Newest First</option>
+                    </select>
+
+                </div>
+            </div>
+
+            <div class="row mt-3 d-none" id="customDateBox">
+                <div class="col-md-4">
+                    <label class="form-label">From Date</label>
+                    <input type="date" id="fromDate" class="form-control" />
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">To Date</label>
+                    <input type="date" id="toDate" class="form-control" />
+                </div>
+
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="button" class="btn btn-primary w-100" id="applyDate">Apply</button>
+                </div>
+
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="button" class="btn btn-light w-100" id="clearDate">Clear</button>
+                </div>
+            </div>
         </div>
 
         <div class="card-body">
-
             <div class="table-responsive">
 
-                <table id="leaveReportTable"
-                       class="table table-striped table-hover">
-
+                <table id="leaveTable" class="table table-striped table-hover align-middle">
                     <thead>
                         <tr>
-
-                            <th>#</th>
-
+                            <th>ID</th>
                             <th>Employee</th>
-
                             <th>Leave Type</th>
-
                             <th>Start Date</th>
-
                             <th>End Date</th>
-
                             <th>Days</th>
-
                             <th>Reason</th>
-
                             <th>Approved By</th>
-
                             <th>Status</th>
-
                         </tr>
                     </thead>
 
                     <tbody>
-
-                        @if (Model != null && Model.Any())
+                        @foreach (var leave in Model)
                         {
-                            int count = 1;
+                            <tr>
+                                <td>@leave.LeaveRequestId</td>
 
-                            foreach (var leave in Model)
-                            {
-                                <tr>
-
-                                    <td>
-                                        @count
-                                    </td>
-
-                                    <!-- Employee -->
-                                    <td>
-                                        <div class="d-flex align-items-center">
-
-                                            @if (!string.IsNullOrEmpty(leave.ProfilePicture))
-                                            {
-                                                <img src="@leave.ProfilePicture"
-                                                     class="avatar avatar-sm rounded-circle me-2"
-                                                     alt="Profile">
-                                            }
-                                            else
-                                            {
-                                                <div class="avatar avatar-sm rounded-circle bg-secondary text-white me-2">
-                                                    @(leave.UserName?.Substring(0, 1).ToUpper())
-                                                </div>
-                                            }
-
-                                            <span>
-                                                @leave.UserName
-                                            </span>
-
-                                        </div>
-                                    </td>
-
-
-                                    <!-- Leave Type -->
-                                    <td>
-                                        @leave.LeaveType
-                                    </td>
-
-
-                                    <!-- Start Date -->
-                                    <td>
-                                        @leave.StartDate.ToString("dd-MM-yyyy")
-                                    </td>
-
-
-                                    <!-- End Date -->
-                                    <td>
-                                        @leave.EndDate.ToString("dd-MM-yyyy")
-                                    </td>
-
-
-                                    <!-- Number of Days -->
-                                    <td>
-                                        @leave.NumberOfDays
-                                    </td>
-
-
-                                    <!-- Reason -->
-                                    <td>
-                                        @leave.Reason
-                                    </td>
-
-
-                                    <!-- Approved By -->
-                                    <td>
-                                        @(string.IsNullOrEmpty(leave.ApprovedBy)
-                                            ? "-"
-                                            : leave.ApprovedBy)
-                                    </td>
-
-
-                                    <!-- Status -->
-                                    <td>
-
-                                        @if (leave.Status == "Approved")
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        @if (!string.IsNullOrEmpty(leave.ProfilePicture))
                                         {
-                                            <span class="badge bg-success">
-                                                Approved
-                                            </span>
-                                        }
-                                        else if (leave.Status == "Pending")
-                                        {
-                                            <span class="badge bg-warning">
-                                                Pending
-                                            </span>
-                                        }
-                                        else if (leave.Status == "Rejected")
-                                        {
-                                            <span class="badge bg-danger">
-                                                Rejected
-                                            </span>
+                                            <img src="@leave.ProfilePicture" class="rounded-circle me-2" width="35" height="35" style="object-fit:cover;" />
                                         }
                                         else
                                         {
-                                            <span class="badge bg-secondary">
-                                                @leave.Status
-                                            </span>
+                                            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-2" style="width:35px;height:35px;">
+                                                <i class="ti ti-user text-muted"></i>
+                                            </div>
                                         }
 
-                                    </td>
+                                        <span>@leave.UserName</span>
+                                    </div>
+                                </td>
 
-                                </tr>
+                                <td>@leave.LeaveType</td>
+                                <td>@leave.StartDate.ToString("yyyy-MM-dd")</td>
+                                <td>@leave.EndDate.ToString("yyyy-MM-dd")</td>
+                                <td>@leave.NumberOfDays</td>
+                                <td>@leave.Reason</td>
+                                <td>@leave.ApprovedBy</td>
 
-                                count++;
-                            }
-                        }
-                        else
-                        {
-                            <tr>
-                                <td colspan="9" class="text-center">
-                                    No leave records found.
+                                <td>
+                                    @if (leave.Status == "Approved")
+                                    {
+                                        <span class="badge bg-success">Approved</span>
+                                    }
+                                    else if (leave.Status == "Pending")
+                                    {
+                                        <span class="badge bg-warning">Pending</span>
+                                    }
+                                    else if (leave.Status == "Rejected")
+                                    {
+                                        <span class="badge bg-danger">Rejected</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">@leave.Status</span>
+                                    }
                                 </td>
                             </tr>
                         }
-
                     </tbody>
-
                 </table>
 
             </div>
-
         </div>
 
     </div>
 
 </div>
 
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.3/jspdf.plugin.autotable.min.js"></script>
 
-@section Scripts
-{
-    <!-- DataTables -->
-    <script>
-        $(document).ready(function() {
+<script>
+    $(document).ready(function () {
 
-            $('#leaveReportTable').DataTable({
-                pageLength: 10,
-                lengthMenu: [10, 25, 50, 100],
-                ordering: true,
-                searching: true
+        var table = $('#leaveTable').DataTable({
+            pageLength: 10,
+            lengthMenu: [[10, 25, 50], [10, 25, 50]],
+            order: [[3, 'desc']]
+        });
+
+        var selectedDateFilter = 'all';
+        var customFromDate = '';
+        var customToDate = '';
+
+        $.fn.dataTable.ext.search.push(function (settings, data) {
+
+            if (settings.nTable.id !== 'leaveTable') {
+                return true;
+            }
+
+            var startDateText = data[3];
+
+            if (!startDateText) {
+                return true;
+            }
+
+            var parts = startDateText.split('-');
+
+            if (parts.length !== 3) {
+                return true;
+            }
+
+            var rowDate = new Date(
+                parseInt(parts[0]),
+                parseInt(parts[1]) - 1,
+                parseInt(parts[2])
+            );
+
+            rowDate.setHours(0, 0, 0, 0);
+
+            var today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            if (selectedDateFilter === 'all') {
+                return true;
+            }
+
+            if (selectedDateFilter === 'yesterday') {
+
+                var yesterday = new Date(today);
+                yesterday.setDate(today.getDate() - 1);
+
+                return rowDate.getTime() === yesterday.getTime();
+            }
+
+            if (selectedDateFilter === 'last7Days') {
+
+                var last7Days = new Date(today);
+                last7Days.setDate(today.getDate() - 6);
+
+                return rowDate >= last7Days && rowDate <= today;
+            }
+
+            if (selectedDateFilter === 'last30Days') {
+
+                var last30Days = new Date(today);
+                last30Days.setDate(today.getDate() - 29);
+
+                return rowDate >= last30Days && rowDate <= today;
+            }
+
+            if (selectedDateFilter === 'lastYear') {
+
+                var lastYearStart = new Date(today.getFullYear() - 1, 0, 1);
+                var thisYearStart = new Date(today.getFullYear(), 0, 1);
+
+                return rowDate >= lastYearStart && rowDate < thisYearStart;
+            }
+
+            if (selectedDateFilter === 'thisYear') {
+
+                var thisYearStart = new Date(today.getFullYear(), 0, 1);
+                var nextYearStart = new Date(today.getFullYear() + 1, 0, 1);
+
+                return rowDate >= thisYearStart && rowDate < nextYearStart;
+            }
+
+            if (selectedDateFilter === 'custom') {
+
+                if (!customFromDate && !customToDate) {
+                    return true;
+                }
+
+                var fromDate = customFromDate ? new Date(customFromDate) : null;
+                var toDate = customToDate ? new Date(customToDate) : null;
+
+                if (fromDate) {
+                    fromDate.setHours(0, 0, 0, 0);
+                }
+
+                if (toDate) {
+                    toDate.setHours(23, 59, 59, 999);
+                }
+
+                if (fromDate && rowDate < fromDate) {
+                    return false;
+                }
+
+                if (toDate && rowDate > toDate) {
+                    return false;
+                }
+
+                return true;
+            }
+
+            return true;
+        });
+
+        $('.date-option').on('click', function () {
+
+            selectedDateFilter = $(this).data('date');
+            $('#dateFilterButton').text($(this).text());
+
+            if (selectedDateFilter === 'custom') {
+                $('#customDateBox').removeClass('d-none');
+            }
+            else {
+                $('#customDateBox').addClass('d-none');
+                table.draw();
+            }
+        });
+
+        $('#applyDate').on('click', function () {
+
+            customFromDate = $('#fromDate').val();
+            customToDate = $('#toDate').val();
+
+            selectedDateFilter = 'custom';
+
+            table.draw();
+        });
+
+        $('#clearDate').on('click', function () {
+
+            $('#fromDate').val('');
+            $('#toDate').val('');
+
+            customFromDate = '';
+            customToDate = '';
+
+            selectedDateFilter = 'all';
+
+            $('#dateFilterButton').text('Date Filter');
+            $('#customDateBox').addClass('d-none');
+
+            table.draw();
+        });
+
+        $('#statusFilter').on('change', function () {
+
+            var value = $(this).val();
+
+            table.column(8).search(value).draw();
+        });
+
+        $('#sortDate').on('change', function () {
+
+            var value = $(this).val();
+
+            if (value) {
+                table.order([3, value]).draw();
+            }
+        });
+
+        $('#exportExcel').on('click', function () {
+
+            var rows = [];
+
+            table.rows({ search: 'applied' }).every(function () {
+
+                var row = this.data();
+
+                rows.push({
+                    LeaveRequestId: $('<div>').html(row[0]).text().trim(),
+                    Employee: $('<div>').html(row[1]).text().trim(),
+                    LeaveType: $('<div>').html(row[2]).text().trim(),
+                    StartDate: $('<div>').html(row[3]).text().trim(),
+                    EndDate: $('<div>').html(row[4]).text().trim(),
+                    NumberOfDays: $('<div>').html(row[5]).text().trim(),
+                    Reason: $('<div>').html(row[6]).text().trim(),
+                    ApprovedBy: $('<div>').html(row[7]).text().trim(),
+                    Status: $('<div>').html(row[8]).text().trim()
+                });
+
             });
 
+            var worksheet = XLSX.utils.json_to_sheet(rows);
+            var workbook = XLSX.utils.book_new();
+
+            XLSX.utils.book_append_sheet(
+                workbook,
+                worksheet,
+                "Leave Report"
+            );
+
+            XLSX.writeFile(
+                workbook,
+                "Leave_Report.xlsx"
+            );
         });
-    </script>
-}
+
+        $('#exportPdf').on('click', function () {
+
+            const { jsPDF } = window.jspdf;
+
+            var doc = new jsPDF("landscape");
+
+            doc.setFontSize(18);
+            doc.text("Leave Report", 14, 18);
+
+            doc.setFontSize(10);
+
+            doc.text("Total Leaves: @totalLeaves", 14, 27);
+            doc.text("Approved Leaves: @approvedLeaves", 65, 27);
+            doc.text("Pending Leaves: @pendingLeaves", 125, 27);
+            doc.text("Rejected Leaves: @rejectedLeaves", 190, 27);
+
+            var rows = [];
+
+            table.rows({ search: 'applied' }).every(function () {
+
+                var row = this.data();
+
+                rows.push([
+                    row[0],
+                    $('<div>').html(row[1]).text().trim(),
+                    $('<div>').html(row[2]).text().trim(),
+                    row[3],
+                    row[4],
+                    row[5],
+                    $('<div>').html(row[6]).text().trim(),
+                    $('<div>').html(row[7]).text().trim(),
+                    $('<div>').html(row[8]).text().trim()
+                ]);
+
+            });
+
+            doc.autoTable({
+                head: [[
+                    "Leave ID",
+                    "Employee",
+                    "Leave Type",
+                    "Start Date",
+                    "End Date",
+                    "Days",
+                    "Reason",
+                    "Approved By",
+                    "Status"
+                ]],
+                body: rows,
+                startY: 35,
+                theme: "grid",
+                styles: {
+                    fontSize: 8,
+                    cellPadding: 3
+                }
+            });
+
+            doc.save("Leave_Report.pdf");
+        });
+
+        var leaveData = @Html.Raw(
+            System.Text.Json.JsonSerializer.Serialize(
+                Model.Select(x => new
+                {
+                    LeaveType = x.LeaveType,
+                    Year = x.StartDate.Year,
+                    NumberOfDays = x.NumberOfDays
+                })
+            )
+        );
+
+        var paidLeaveData = leaveData.filter(function (x) {
+            return x.LeaveType && x.LeaveType.toLowerCase() === "paid leave";
+        });
+
+        var chartData = paidLeaveData.length > 0 ? paidLeaveData : leaveData;
+
+        var years = chartData
+            .map(function (x) {
+                return x.Year;
+            })
+            .filter(function (value, index, array) {
+                return array.indexOf(value) === index;
+            })
+            .sort();
+
+        var leaveTypes = chartData
+            .map(function (x) {
+                return x.LeaveType;
+            })
+            .filter(function (value, index, array) {
+                return array.indexOf(value) === index;
+            });
+
+        var datasets = [];
+
+        leaveTypes.forEach(function (leaveType) {
+
+            var values = years.map(function (year) {
+
+                return chartData
+                    .filter(function (x) {
+                        return x.Year === year && x.LeaveType === leaveType;
+                    })
+                    .reduce(function (total, item) {
+                        return total + Number(item.NumberOfDays || 0);
+                    }, 0);
+
+            });
+
+            datasets.push({
+                label: leaveType,
+                data: values,
+                backgroundColor: "#4e73df"
+            });
+        });
+
+        var canvas = document.getElementById("leaveChart");
+
+        if (canvas) {
+
+            new Chart(canvas, {
+                type: "bar",
+                data: {
+                    labels: years.map(function (year) {
+                        return year.toString();
+                    }),
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: "top"
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true
+                        },
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+    });
+</script>

@@ -22,14 +22,25 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
         public async Task<int> fetchPresentAttendance()
         {
             return await context.Attendance
-                .Where(x => x.Status == "Present")
+                .Where(x => x.Status != null &&
+                            x.Status.Trim().ToLower() == "present")
                 .CountAsync();
         }
 
         public async Task<int> fetchAbsentAttendance()
         {
             return await context.Attendance
-                .Where(x => x.Status == "Absent")
+                .Where(x => x.Status != null &&
+                            x.Status.Trim().ToLower() == "absent")
+                .CountAsync();
+        }
+
+        public async Task<int> fetchHalfdayAttendance()
+        {
+            return await context.Attendance
+                .Where(x => x.Status != null &&
+                           (x.Status.Trim().ToLower() == "halfday" ||
+                            x.Status.Trim().ToLower() == "half day"))
                 .CountAsync();
         }
 
@@ -54,6 +65,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
                     Late = x.Late,
                     ProductionHours = x.ProductionHours
                 })
+                .OrderByDescending(x => x.Date)
                 .ToListAsync();
 
             return attendance;
@@ -65,16 +77,18 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
         {
             var query = context.Attendance.AsQueryable();
 
-            if (!string.IsNullOrEmpty(statusType))
+            if (!string.IsNullOrWhiteSpace(statusType))
             {
-                query = query.Where(x => x.Status == statusType);
+                query = query.Where(x =>
+                    x.Status != null &&
+                    x.Status.Trim().ToLower() == statusType.Trim().ToLower());
             }
 
             if (sortType == "Ascending")
             {
                 query = query.OrderBy(x => x.Date);
             }
-            else if (sortType == "Descending")
+            else
             {
                 query = query.OrderByDescending(x => x.Date);
             }

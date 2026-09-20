@@ -2,150 +2,577 @@
 
 @{
     ViewData["Title"] = "Attendance Report";
+    int totalAttendance = Convert.ToInt32(ViewBag.TotalAttendance ?? 0);
+    int presentAttendance = Convert.ToInt32(ViewBag.PresentAttendance ?? 0);
+    int absentAttendance = Convert.ToInt32(ViewBag.AbsentAttendance ?? 0);
+    int halfDayAttendance = Convert.ToInt32(ViewBag.HalfDayAttendance ?? 0);
+    var attendanceYears = Model.Where(x => x.Date != null).Select(x => x.Date.Year).Distinct().OrderByDescending(x => x).ToList();
 }
 
-<link rel="stylesheet" href="~/css/attendance-report.css" />
-
-<div class="container-fluid">
-
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h2>Attendance Report</h2>
-            <p class="text-muted">Employee attendance details</p>
-        </div>
+<div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+    <div class="mb-2">
+        <h2 class="mb-1">Attendance Report</h2>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="/"><i class="ti ti-smart-home"></i></a></li>
+                <li class="breadcrumb-item">HR</li>
+                <li class="breadcrumb-item active">Attendance Report</li>
+            </ol>
+        </nav>
     </div>
-
-    <!-- Summary -->
-    <div class="row mb-4">
-
-        <div class="col-md-4">
-            <div class="report-card">
-                <h6>Total Attendance</h6>
-                <h3>@ViewBag.TotalAttendance</h3>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="report-card">
-                <h6>Present</h6>
-                <h3>@ViewBag.PresentAttendance</h3>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="report-card">
-                <h6>Absent</h6>
-                <h3>@ViewBag.AbsentAttendance</h3>
-            </div>
-        </div>
-
+    <div class="dropdown mb-2">
+        <button type="button" class="btn btn-white border dropdown-toggle d-inline-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="ti ti-file-export me-1"></i> Export
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end p-2">
+            <li><button type="button" class="dropdown-item rounded-1" id="exportPdf"><i class="ti ti-file-type-pdf me-1 text-danger"></i> Export as PDF</button></li>
+            <li><button type="button" class="dropdown-item rounded-1" id="exportExcel"><i class="ti ti-file-type-xls me-1 text-success"></i> Export as Excel</button></li>
+        </ul>
     </div>
-
-
-    <!-- Attendance Table -->
-    <div class="card">
-
-        <div class="card-header">
-            <h5>Attendance List</h5>
-        </div>
-
-        <div class="card-body">
-
-            <div class="table-responsive">
-
-                <table class="table table-bordered table-hover">
-
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Employee</th>
-                            <th>Date</th>
-                            <th>Check In</th>
-                            <th>Check Out</th>
-                            <th>Lunch In</th>
-                            <th>Lunch Out</th>
-                            <th>Status</th>
-                            <th>Working Hours</th>
-                            <th>Overtime</th>
-                            <th>Break Hours</th>
-                            <th>Late</th>
-                            <th>Production Hours</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-
-                        @{
-                            int i = 1;
-                        }
-
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-
-                                <td>@i</td>
-
-                                <td>
-                                    @item.UserName
-                                </td>
-
-                                <td>
-                                    @item.Date.ToString("dd/MM/yyyy")
-                                </td>
-
-                                <td>
-                                    @item.CheckIn?.ToString("hh:mm tt")
-                                </td>
-
-                                <td>
-                                    @item.CheckOut?.ToString("hh:mm tt")
-                                </td>
-
-                                <td>
-                                    @item.LunchIn?.ToString("hh:mm tt")
-                                </td>
-
-                                <td>
-                                    @item.LunchOut?.ToString("hh:mm tt")
-                                </td>
-
-                                <td>
-                                    @item.Status
-                                </td>
-
-                                <td>
-                                    @item.WorkingHours
-                                </td>
-
-                                <td>
-                                    @item.OvertimeHours
-                                </td>
-
-                                <td>
-                                    @item.BreakHours
-                                </td>
-
-                                <td>
-                                    @item.Late
-                                </td>
-
-                                <td>
-                                    @item.ProductionHours
-                                </td>
-
-                            </tr>
-
-                            i++;
-                        }
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </div>
-
-    </div>
-
 </div>
+
+<div class="row">
+    <div class="col-xl-6 d-flex">
+        <div class="row flex-fill">
+            <div class="col-lg-6 col-md-6 d-flex">
+                <div class="card flex-fill">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="me-2"><i class="ti ti-calendar-check fs-3" style="color:#ff6b00;"></i></span>
+                            <div>
+                                <p class="mb-1 text-muted small">Total Working Days</p>
+                                <h5 class="mb-0">@presentAttendance</h5>
+                            </div>
+                        </div>
+                        <div class="progress" style="height:5px;">
+                            <div class="progress-bar bg-success" style="width:100%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 d-flex">
+                <div class="card flex-fill">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="me-2"><i class="ti ti-calendar-off fs-3" style="color:#1677ff;"></i></span>
+                            <div>
+                                <p class="mb-1 text-muted small">Total Leave Taken</p>
+                                <h5 class="mb-0">@absentAttendance</h5>
+                            </div>
+                        </div>
+                        <div class="progress" style="height:5px;">
+                            <div class="progress-bar" style="width:100%; background-color:#ffb6c1;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 d-flex">
+                <div class="card flex-fill">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="me-2"><i class="ti ti-calendar-event fs-3" style="color:#f6339a;"></i></span>
+                            <div>
+                                <p class="mb-1 text-muted small">Total Holidays</p>
+                                <h5 class="mb-0">0</h5>
+                            </div>
+                        </div>
+                        <div class="progress" style="height:5px;">
+                            <div class="progress-bar" style="width:0%; background-color:#ffb6c1;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 d-flex">
+                <div class="card flex-fill">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="me-2"><i class="ti ti-calendar-time fs-3" style="color:#ffb000;"></i></span>
+                            <div>
+                                <p class="mb-1 text-muted small">Total Halfdays</p>
+                                <h5 class="mb-0">@halfDayAttendance</h5>
+                            </div>
+                        </div>
+                        <div class="progress" style="height:5px;">
+                            <div class="progress-bar bg-success" style="width:100%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-6 d-flex">
+        <div class="card flex-fill">
+            <div class="card-header border-0 pb-0">
+                <div class="d-flex flex-wrap justify-content-between align-items-center row-gap-2">
+                    <div class="d-flex align-items-center">
+                        <span class="me-2"><i class="ti ti-chart-line text-danger"></i></span>
+                        <h5 class="mb-0">Attendance</h5>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <p class="d-inline-flex align-items-center me-3 mb-0 small"><span class="me-2" style="width:16px;height:16px;border:3px solid #198754;background:#d1f7d6;display:inline-block;"></span>Present</p>
+                        <p class="d-inline-flex align-items-center mb-0 small"><span class="me-2" style="width:16px;height:16px;border:3px solid #ffb6c1;background:#ffe1e6;display:inline-block;"></span>Absent</p>
+                    </div>
+                    <div class="dropdown">
+                        <button type="button" id="attendanceYearButton" class="btn btn-sm btn-white border dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">This Year</button>
+                        <ul class="dropdown-menu dropdown-menu-end p-2">
+                            <li><button type="button" class="dropdown-item attendance-year-option" data-year="all">All Years</button></li>
+                            @foreach (var year in attendanceYears)
+                            {
+                                <li><button type="button" class="dropdown-item attendance-year-option" data-year="@year">@year</button></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body py-0">
+                <div style="height:300px;">
+                    <canvas id="attendanceChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-3">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <label class="form-label">Select Date Filter:</label>
+                <select id="dateFilter" class="form-select">
+                    <option value="">--Select Date Filter--</option>
+                    <option value="yesterday">Yesterday</option>
+                    <option value="last7Days">Last 7 Days</option>
+                    <option value="last30Days">Last 30 Days</option>
+                    <option value="lastYear">Last Year</option>
+                    <option value="thisYear">This Year</option>
+                    <option value="custom">Custom Range</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Select Status Filter:</label>
+                <select id="statusFilter" class="form-select">
+                    <option value="">--Select Status--</option>
+                    <option value="Present">Present</option>
+                    <option value="Absent">Absent</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Sort By:</label>
+                <select id="sortFilter" class="form-select">
+                    <option value="">--Select--</option>
+                    <option value="recent">Recently Added</option>
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="customDateSection" class="card mt-3" style="display:none;">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-5">
+                <label class="form-label">From Date</label>
+                <input type="date" id="fromDate" class="form-control" />
+            </div>
+            <div class="col-md-5">
+                <label class="form-label">To Date</label>
+                <input type="date" id="toDate" class="form-control" />
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="button" id="applyCustomDate" class="btn btn-primary w-100">Apply</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-3">
+    <div class="card-header">
+        <h5 class="mb-0">Attendance List</h5>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table id="attendanceTable" class="table table-hover mb-0 align-middle w-100">
+                <thead class="table-light">
+                    <tr>
+                        <th>AttendanceId</th>
+                        <th>Employee</th>
+                        <th>Date</th>
+                        <th>Check-In</th>
+                        <th>Check-Out</th>
+                        <th>Lunch In</th>
+                        <th>Lunch-Out</th>
+                        <th>Status</th>
+                        <th>Working Hours</th>
+                        <th>Overtime Hours</th>
+                        <th>Break Hours</th>
+                        <th>Late</th>
+                        <th>Production Hours</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var attendance in Model)
+                    {
+                        <tr>
+                            <td>@attendance.AttendanceId</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    @if (!string.IsNullOrWhiteSpace(attendance.ProfilePicture))
+                                    {
+                                        <img src="@Url.Content(attendance.ProfilePicture)" alt="Profile" class="rounded-circle" width="40" height="40" style="width:40px;height:40px;object-fit:cover;" />
+                                    }
+                                    else
+                                    {
+                                        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width:40px;height:40px;">
+                                            <i class="ti ti-user text-secondary"></i>
+                                        </div>
+                                    }
+                                    <span class="ms-2">@attendance.UserName</span>
+                                </div>
+                            </td>
+                            <td data-order="@attendance.Date.ToString("yyyy-MM-dd")">@attendance.Date.ToString("dd-MM-yyyy")</td>
+                            <td>@(attendance.CheckIn.HasValue ? attendance.CheckIn.Value.ToString("hh:mm tt") : "")</td>
+                            <td>@(attendance.CheckOut.HasValue ? attendance.CheckOut.Value.ToString("hh:mm tt") : "")</td>
+                            <td>@(attendance.LunchIn.HasValue ? attendance.LunchIn.Value.ToString("hh:mm tt") : "")</td>
+                            <td>@(attendance.LunchOut.HasValue ? attendance.LunchOut.Value.ToString("hh:mm tt") : "")</td>
+                            <td>
+                                @if (attendance.Status?.Trim().Equals("Present", StringComparison.OrdinalIgnoreCase) == true)
+                                {
+                                    <span class="badge bg-success-subtle text-success"><i class="ti ti-point-filled me-1"></i>Present</span>
+                                }
+                                else
+                                {
+                                    <span class="badge" style="background:#ffe1e6;color:#e83e55;"><i class="ti ti-point-filled me-1"></i>@(attendance.Status ?? "")</span>
+                                }
+                            </td>
+                            <td>@attendance.WorkingHours.ToString("0.00")</td>
+                            <td>@attendance.OvertimeHours.ToString("0.00")</td>
+                            <td>@attendance.BreakHours.ToString("0.00")</td>
+                            <td>@attendance.Late</td>
+                            <td>@attendance.ProductionHours.ToString("0.00")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#attendanceTable').DataTable({
+                pageLength: 10,
+                lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
+                searching: true,
+                ordering: true,
+                info: true,
+                order: [[2, 'desc']]
+            });
+
+            var customFrom = null;
+            var customTo = null;
+
+            $.fn.dataTable.ext.search.push(function (settings, data) {
+                if (settings.nTable.id !== 'attendanceTable') return true;
+
+                var selectedStatus = $('#statusFilter').val();
+
+                if (selectedStatus !== "") {
+                    var statusText = $('<div>').html(data[7]).text().trim();
+                    if (statusText.toLowerCase() !== selectedStatus.toLowerCase()) return false;
+                }
+
+                var selectedDate = $('#dateFilter').val();
+                if (selectedDate === "") return true;
+
+                var dateText = data[2];
+                if (!dateText) return false;
+
+                var parts = dateText.split("-");
+                if (parts.length !== 3) return false;
+
+                var attendanceDate = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
+                attendanceDate.setHours(0, 0, 0, 0);
+
+                var today = new Date();
+                today.setHours(0, 0, 0, 0);
+
+                if (selectedDate === "yesterday") {
+                    var yesterday = new Date(today);
+                    yesterday.setDate(today.getDate() - 1);
+                    return attendanceDate.getTime() === yesterday.getTime();
+                }
+
+                if (selectedDate === "last7Days") {
+                    var sevenDays = new Date(today);
+                    sevenDays.setDate(today.getDate() - 7);
+                    return attendanceDate >= sevenDays && attendanceDate <= today;
+                }
+
+                if (selectedDate === "last30Days") {
+                    var thirtyDays = new Date(today);
+                    thirtyDays.setDate(today.getDate() - 30);
+                    return attendanceDate >= thirtyDays && attendanceDate <= today;
+                }
+
+                if (selectedDate === "lastYear") return attendanceDate.getFullYear() === today.getFullYear() - 1;
+                if (selectedDate === "thisYear") return attendanceDate.getFullYear() === today.getFullYear();
+
+                if (selectedDate === "custom") {
+                    if (customFrom === null || customTo === null) return true;
+                    return attendanceDate >= customFrom && attendanceDate <= customTo;
+                }
+
+                return true;
+            });
+
+            $('#dateFilter').on('change', function () {
+                if (this.value === "custom") {
+                    $('#customDateSection').slideDown();
+                } else {
+                    $('#customDateSection').slideUp();
+                    customFrom = null;
+                    customTo = null;
+                    table.draw();
+                }
+            });
+
+            $('#applyCustomDate').on('click', function () {
+                var from = $('#fromDate').val();
+                var to = $('#toDate').val();
+
+                if (!from || !to) {
+                    alert("Please select both dates.");
+                    return;
+                }
+
+                customFrom = new Date(from);
+                customTo = new Date(to);
+                customFrom.setHours(0, 0, 0, 0);
+                customTo.setHours(23, 59, 59, 999);
+                table.draw();
+            });
+
+            $('#statusFilter').on('change', function () {
+                table.draw();
+            });
+
+            $('#sortFilter').on('change', function () {
+                var value = this.value;
+
+                if (value === "asc") {
+                    table.order([2, 'asc']).draw();
+                } else {
+                    table.order([2, 'desc']).draw();
+                }
+            });
+
+            $('#exportExcel').on('click', function () {
+                var rows = [];
+
+                table.rows({ search: 'applied' }).every(function () {
+                    var row = this.data();
+
+                    rows.push({
+                        AttendanceId: row[0],
+                        Employee: $('<div>').html(row[1]).text().trim(),
+                        Date: row[2],
+                        CheckIn: row[3],
+                        CheckOut: row[4],
+                        LunchIn: row[5],
+                        LunchOut: row[6],
+                        Status: $('<div>').html(row[7]).text().trim(),
+                        WorkingHours: row[8],
+                        OvertimeHours: row[9],
+                        BreakHours: row[10],
+                        Late: row[11],
+                        ProductionHours: row[12]
+                    });
+                });
+
+                var worksheet = XLSX.utils.json_to_sheet(rows);
+                var workbook = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(workbook, worksheet, "Attendance Report");
+                XLSX.writeFile(workbook, "Attendance_Report.xlsx");
+            });
+
+            $('#exportPdf').on('click', function () {
+                const { jsPDF } = window.jspdf;
+                var doc = new jsPDF("landscape");
+
+                doc.setFontSize(18);
+                doc.text("Attendance Report", 14, 18);
+                doc.setFontSize(10);
+                doc.text("Present: @presentAttendance", 14, 27);
+                doc.text("Absent: @absentAttendance", 80, 27);
+
+                var rows = [];
+
+                table.rows({ search: 'applied' }).every(function () {
+                    var row = this.data();
+
+                    rows.push([
+                        row[0],
+                        $('<div>').html(row[1]).text().trim(),
+                        row[2],
+                        row[3],
+                        row[4],
+                        row[7],
+                        row[8],
+                        row[9],
+                        row[11]
+                    ]);
+                });
+
+                doc.autoTable({
+                    head: [["Attendance ID", "Employee", "Date", "Check-In", "Check-Out", "Status", "Working Hours", "Overtime", "Late"]],
+                    body: rows,
+                    startY: 35,
+                    theme: "grid",
+                    styles: { fontSize: 8, cellPadding: 3 }
+                });
+
+                doc.save("Attendance_Report.pdf");
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var canvas = document.getElementById("attendanceChart");
+            if (!canvas) return;
+
+            var attendanceData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Select(x => new { Year = x.Date.Year, Month = x.Date.Month, Status = x.Status })));
+            var availableYears = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(attendanceYears));
+            var chart;
+
+            function getMonthData(year) {
+                var labels = [];
+                var presentData = [];
+                var absentData = [];
+
+                for (var month = 1; month <= 12; month++) {
+                    var monthName = new Date(year, month - 1, 1).toLocaleString("en-US", { month: "short" });
+                    labels.push(monthName + " " + year);
+
+                    var present = attendanceData.filter(function (item) {
+                        return item.Year === year && item.Month === month && item.Status && item.Status.trim().toLowerCase() === "present";
+                    }).length;
+
+                    var absent = attendanceData.filter(function (item) {
+                        return item.Year === year && item.Month === month && item.Status && item.Status.trim().toLowerCase() === "absent";
+                    }).length;
+
+                    presentData.push(present);
+                    absentData.push(absent);
+                }
+
+                return { labels: labels, presentData: presentData, absentData: absentData };
+            }
+
+            function getAllYearsData() {
+                var labels = [];
+                var presentData = [];
+                var absentData = [];
+
+                availableYears.slice().sort(function (a, b) {
+                    return a - b;
+                }).forEach(function (year) {
+                    labels.push(year);
+
+                    var present = attendanceData.filter(function (item) {
+                        return item.Year === year && item.Status && item.Status.trim().toLowerCase() === "present";
+                    }).length;
+
+                    var absent = attendanceData.filter(function (item) {
+                        return item.Year === year && item.Status && item.Status.trim().toLowerCase() === "absent";
+                    }).length;
+
+                    presentData.push(present);
+                    absentData.push(absent);
+                });
+
+                return { labels: labels, presentData: presentData, absentData: absentData };
+            }
+
+            function createChart(data) {
+                if (chart) chart.destroy();
+
+                chart = new Chart(canvas, {
+                    type: "bar",
+                    data: {
+                        labels: data.labels,
+                        datasets: [
+                            {
+                                label: "Present",
+                                data: data.presentData,
+                                backgroundColor: "rgba(25, 135, 84, 0.25)",
+                                borderColor: "#198754",
+                                borderWidth: 2
+                            },
+                            {
+                                label: "Absent",
+                                data: data.absentData,
+                                backgroundColor: "rgba(255, 182, 193, 0.35)",
+                                borderColor: "#ffb6c1",
+                                borderWidth: 2
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            x: { stacked: false },
+                            y: {
+                                beginAtZero: true,
+                                ticks: { stepSize: 1 },
+                                title: { display: true, text: "Number of Days" }
+                            }
+                        }
+                    }
+                });
+            }
+
+            if (availableYears.length > 0) {
+                var currentYear = new Date().getFullYear();
+
+                if (availableYears.includes(currentYear)) {
+                    $("#attendanceYearButton").text("This Year");
+                    createChart(getMonthData(currentYear));
+                } else {
+                    var latestYear = availableYears[0];
+                    $("#attendanceYearButton").text(latestYear);
+                    createChart(getMonthData(latestYear));
+                }
+            } else {
+                createChart({ labels: [], presentData: [], absentData: [] });
+            }
+
+            $(".attendance-year-option").on("click", function () {
+                var year = $(this).data("year");
+
+                if (year === "all") {
+                    $("#attendanceYearButton").text("All Years");
+                    createChart(getAllYearsData());
+                } else {
+                    year = parseInt(year);
+                    $("#attendanceYearButton").text(year);
+                    createChart(getMonthData(year));
+                }
+            });
+        });
+    </script>
+}

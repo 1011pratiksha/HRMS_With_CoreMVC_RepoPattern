@@ -14,46 +14,49 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
             this.context = context;
         }
 
-        public string AddResignation(Resignation r)
+        public async Task<string> AddResignation(Resignation r)
         {
             context.Resignation.Add(r);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             return "Added Successfully";
         }
 
-        public string DeleteResignation(int id)
+        public async Task<List<Resignation>> GetResignations()
         {
-            Resignation r = context.Resignation.Find(id);
+            return await context.Resignation
+                .Include(x => x.User)
+                .Include(x => x.Department)
+                .ToListAsync();
+        }
+
+        public async Task<Resignation?> GetResignationById(int id)
+        {
+            return await context.Resignation
+                .Include(x => x.User)
+                .Include(x => x.Department)
+                .FirstOrDefaultAsync(x => x.ResignationId == id);
+        }
+
+        public async Task<string> UpdateResignation(Resignation r)
+        {
+            context.Resignation.Update(r);
+            await context.SaveChangesAsync();
+            return "Updated Successfully";
+        }
+
+        public async Task<string> DeleteResignation(int id)
+        {
+            Resignation? r = await context.Resignation
+                .FirstOrDefaultAsync(x => x.ResignationId == id);
 
             if (r != null)
             {
                 context.Resignation.Remove(r);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
                 return "Delete Successfully";
             }
 
             return "Resignation not found";
-        }
-
-        public Resignation GetResignationById(int id)
-        {
-            return context.Resignation.Find(id);
-        }
-
-        public List<Resignation> GetResignations()
-        {
-            return context.Resignation
-                .Include(r => r.User)
-                .Include(r => r.Department)
-                .ToList();
-        }
-
-        public string UpdateResignation(Resignation r)
-        {
-            context.Resignation.Update(r);
-            context.SaveChanges();
-
-            return "Updated Successfully";
         }
     }
 }

@@ -34,7 +34,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
         {
             if (ModelState.IsValid)
             {
-              await  authService.SignUp(us);
+                await authService.SignUp(us);
 
                 TempData["Success"] = "User Registered Successfully";
 
@@ -60,16 +60,22 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
             }
             if (role == "Admin")
             {
+                HttpContext.Session.SetString("UserRole", "Admin");
+
                 return RedirectToAction("AdminDashboard", "Dashboard");
             }
 
             if (role == "Manager")
             {
+                HttpContext.Session.SetString("UserRole", "Manager");
+
                 return RedirectToAction("ManagerDashboard", "Dashboard");
             }
 
             if (role == "Employee")
             {
+                HttpContext.Session.SetString("UserRole", "Employee");
+
                 return RedirectToAction("EmployeeDashboard", "Dashboard");
             }
 

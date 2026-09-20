@@ -2,125 +2,525 @@
 
 @{
     ViewData["Title"] = "Employee Report";
+    int totalEmployees = Convert.ToInt32(ViewBag.TotalEmployees ?? 0);
+    int activeEmployees = Convert.ToInt32(ViewBag.ActiveEmployees ?? 0);
+    int inactiveEmployees = Convert.ToInt32(ViewBag.InactiveEmployees ?? 0);
+    int totalDepartments = Convert.ToInt32(ViewBag.TotalDepartments ?? 0);
+    int totalRoles = Convert.ToInt32(ViewBag.TotalRoles ?? 0);
+    var employeeYears = ViewBag.EmployeeYears as List<int> ?? new List<int>();
 }
 
-<div class="container-fluid">
-
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h2>Employee Report</h2>
-            <p class="text-muted">Employee details and information</p>
-        </div>
+<div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+    <div class="mb-2">
+        <h2 class="mb-1">Employee Report</h2>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item">
+                    <a href="/"><i class="ti ti-smart-home"></i></a>
+                </li>
+                <li class="breadcrumb-item">HR</li>
+                <li class="breadcrumb-item active" aria-current="page">Employee Report</li>
+            </ol>
+        </nav>
     </div>
 
-    <!-- Summary Cards -->
-    <div class="row mb-4">
-
-        <div class="col-md-3">
-            <div class="report-card">
-                <h6>Total Employees</h6>
-                <h3>@ViewBag.TotalEmployees</h3>
-            </div>
+    <div class="d-flex align-items-center flex-wrap mb-2">
+        <div class="dropdown">
+            <button type="button" class="btn btn-white border dropdown-toggle d-inline-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="ti ti-file-export me-1"></i> Export
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end p-2">
+                <li>
+                    <button type="button" class="dropdown-item rounded-1" id="exportPdf">
+                        <i class="ti ti-file-type-pdf me-1 text-danger"></i> Export as PDF
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="dropdown-item rounded-1" id="exportExcel">
+                        <i class="ti ti-file-type-xls me-1 text-success"></i> Export as Excel
+                    </button>
+                </li>
+            </ul>
         </div>
-
-        <div class="col-md-3">
-            <div class="report-card">
-                <h6>Active Employees</h6>
-                <h3>@ViewBag.ActiveEmployees</h3>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="report-card">
-                <h6>Inactive Employees</h6>
-                <h3>@ViewBag.InactiveEmployees</h3>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="report-card">
-                <h6>Total Departments</h6>
-                <h3>@ViewBag.TotalDepartments</h3>
-            </div>
-        </div>
-
     </div>
-
-
-    <!-- Employee Table -->
-    <div class="card">
-
-        <div class="card-header">
-            <h5>Employee List</h5>
-        </div>
-
-        <div class="card-body">
-
-            <div class="table-responsive">
-
-                <table class="table table-bordered table-hover">
-
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Employee Name</th>
-                            <th>Email</th>
-                            <th>Department</th>
-                            <th>Phone Number</th>
-                            <th>Date Of Joining</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-
-                        @{
-                            int i = 1;
-                        }
-
-                        @foreach (var employee in Model)
-                        {
-                            <tr>
-
-                                <td>@i</td>
-
-                                <td>
-                                    @employee.Name
-                                </td>
-
-                                <td>
-                                    @employee.Email
-                                </td>
-
-                                <td>
-                                    @employee.Department
-                                </td>
-
-                                <td>
-                                    @employee.PhoneNumber
-                                </td>
-
-                                <td>
-                                    @employee.DateOfJoining?.ToString("dd/MM/yyyy")
-                                </td>
-
-                                <td>
-                                    @employee.Status
-                                </td>
-
-                            </tr>
-
-                            i++;
-                        }
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </div>
-
-    </div>
-
 </div>
+
+<div class="row">
+    <div class="col-xl-6 d-flex">
+        <div class="row flex-fill">
+            <div class="col-lg-6 col-md-6 d-flex">
+                <div class="card flex-fill">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="me-2"><i class="ti ti-users fs-3 text-warning"></i></span>
+                            <div>
+                                <p class="mb-1 text-muted small">Total Employee</p>
+                                <h5 class="mb-0">@totalEmployees</h5>
+                            </div>
+                        </div>
+                        <p class="small text-muted mb-0">Total employees in system</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 d-flex">
+                <div class="card flex-fill">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="me-2"><i class="ti ti-building-community fs-3 text-success"></i></span>
+                            <div>
+                                <p class="mb-1 text-muted small">Total Department</p>
+                                <h5 class="mb-0">@totalDepartments</h5>
+                            </div>
+                        </div>
+                        <p class="small text-muted mb-0">Total departments</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 d-flex">
+                <div class="card flex-fill">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="me-2"><i class="ti ti-user-check fs-3 text-primary"></i></span>
+                            <div>
+                                <p class="mb-1 text-muted small">Active Employee</p>
+                                <h5 class="mb-0">@activeEmployees</h5>
+                            </div>
+                        </div>
+                        <p class="small text-muted mb-0">Currently active employees</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 d-flex">
+                <div class="card flex-fill">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="me-2"><i class="ti ti-user-cog fs-3 text-danger"></i></span>
+                            <div>
+                                <p class="mb-1 text-muted small">Roles</p>
+                                <h5 class="mb-0">@totalRoles</h5>
+                            </div>
+                        </div>
+                        <p class="small text-muted mb-0">Total roles</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-6 d-flex">
+        <div class="card flex-fill">
+            <div class="card-header border-0 pb-0">
+                <div class="d-flex flex-wrap justify-content-between align-items-center row-gap-2">
+                    <div class="d-flex align-items-center">
+                        <span class="me-2"><i class="ti ti-chart-bar text-danger"></i></span>
+                        <h5 class="mb-0">Employee</h5>
+                    </div>
+
+                    <div class="d-flex align-items-center">
+                        <p class="d-inline-flex align-items-center me-3 mb-0 small">
+                            <i class="ti ti-square-filled fs-12 text-success me-2"></i> Active Employees
+                        </p>
+                        <p class="d-inline-flex align-items-center mb-0 small">
+                            <i class="ti ti-square-filled fs-12 text-secondary me-2"></i> Inactive Employees
+                        </p>
+                    </div>
+
+                    <div class="dropdown">
+                        <button type="button" id="yearDropdownButton" class="btn btn-sm btn-white border dropdown-toggle d-inline-flex align-items-center" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                            All Years
+                        </button>
+
+                        <ul class="dropdown-menu dropdown-menu-end p-2" id="yearDropdownMenu" style="z-index:1055;">
+                            <li>
+                                <button type="button" class="dropdown-item rounded-1" id="allYearsOption">All Years</button>
+                            </li>
+
+                            @if (employeeYears.Count > 0)
+                            {
+                                foreach (var year in employeeYears)
+                                {
+                                    <li>
+                                        <button type="button" class="dropdown-item rounded-1 year-option" data-year="@year">@year</button>
+                                    </li>
+                                }
+                            }
+                            else
+                            {
+                                <li><span class="dropdown-item text-muted">No year available</span></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body py-0">
+                <div style="height:300px;">
+                    <canvas id="employeeChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-3">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
+        <h5 class="mb-0">Employees List</h5>
+
+        <div class="d-flex align-items-center flex-wrap row-gap-3">
+            <div class="me-3">
+                <select id="statusFilter" class="form-select form-select-sm">
+                    <option value="">All Employees</option>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                </select>
+            </div>
+
+            <div>
+                <select id="sortFilter" class="form-select form-select-sm">
+                    <option value="recent">Recently Added</option>
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
+                    <option value="lastMonth">Last Month</option>
+                    <option value="last7Days">Last 7 Days</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table id="employeeTable" class="table table-hover mb-0 align-middle w-100">
+                <thead class="table-light">
+                    <tr>
+                        <th>UserId</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Department</th>
+                        <th>PhoneNumber</th>
+                        <th>Date of Joining</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var employee in Model)
+                    {
+                        <tr>
+                            <td>@employee.UserId</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    @if (!string.IsNullOrWhiteSpace(employee.ProfilePicture))
+                                    {
+                                        <img src="@Url.Content(employee.ProfilePicture)" alt="Profile" class="rounded-circle" width="40" height="40" style="width:40px;height:40px;object-fit:cover;" />
+                                    }
+                                    else
+                                    {
+                                        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width:40px;height:40px;">
+                                            <i class="ti ti-user text-secondary"></i>
+                                        </div>
+                                    }
+
+                                    <div class="ms-2"><strong>@employee.Name</strong></div>
+                                </div>
+                            </td>
+                            <td>@employee.Email</td>
+                            <td>@employee.Department</td>
+                            <td>@employee.PhoneNumber</td>
+                            <td data-order="@(employee.DateOfJoining.HasValue ? employee.DateOfJoining.Value.ToString("yyyy-MM-dd") : "")">
+                                @(employee.DateOfJoining.HasValue ? employee.DateOfJoining.Value.ToString("dd-MM-yyyy") : "")
+                            </td>
+                            <td>
+                                @if (employee.Status != null && employee.Status.Trim().Equals("Active", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    <span class="badge bg-success-subtle text-success d-inline-flex align-items-center">
+                                        <i class="ti ti-point-filled me-1"></i> Active
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger-subtle text-danger d-inline-flex align-items-center">
+                                        <i class="ti ti-point-filled me-1"></i> Inactive
+                                    </span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#employeeTable').DataTable({
+                pageLength: 10,
+                lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
+                searching: true,
+                ordering: true,
+                info: true,
+                order: [[5, 'desc']]
+            });
+
+            $.fn.dataTable.ext.search.push(function (settings, data) {
+                if (settings.nTable.id !== 'employeeTable') return true;
+
+                var selectedStatus = $('#statusFilter').val();
+
+                if (selectedStatus !== "") {
+                    var statusText = $('<div>').html(data[6]).text().trim();
+                    if (statusText.toLowerCase() !== selectedStatus.toLowerCase()) return false;
+                }
+
+                var filter = $('#sortFilter').val();
+
+                if (filter !== 'lastMonth' && filter !== 'last7Days') return true;
+
+                var dateText = data[5];
+                if (!dateText) return false;
+
+                var parts = dateText.split('-');
+                if (parts.length !== 3) return false;
+
+                var joiningDate = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
+                var today = new Date();
+                today.setHours(23, 59, 59, 999);
+
+                if (filter === 'last7Days') {
+                    var sevenDaysAgo = new Date(today);
+                    sevenDaysAgo.setDate(today.getDate() - 7);
+                    sevenDaysAgo.setHours(0, 0, 0, 0);
+                    return joiningDate >= sevenDaysAgo && joiningDate <= today;
+                }
+
+                if (filter === 'lastMonth') {
+                    var month = today.getMonth() - 1;
+                    var year = today.getFullYear();
+
+                    if (month < 0) {
+                        month = 11;
+                        year--;
+                    }
+
+                    return joiningDate.getMonth() === month && joiningDate.getFullYear() === year;
+                }
+
+                return true;
+            });
+
+            $('#statusFilter').on('change', function () {
+                table.draw();
+            });
+
+            $('#sortFilter').on('change', function () {
+                var value = this.value;
+
+                if (value === 'recent') table.order([5, 'desc']).draw();
+                else if (value === 'asc') table.order([5, 'asc']).draw();
+                else if (value === 'desc') table.order([5, 'desc']).draw();
+                else table.draw();
+            });
+
+            $('#exportExcel').on('click', function () {
+                var rows = [];
+
+                table.rows({ search: 'applied' }).every(function () {
+                    var row = this.data();
+
+                    rows.push({
+                        UserId: row[0],
+                        Name: $('<div>').html(row[1]).text().trim(),
+                        Email: row[2],
+                        Department: row[3],
+                        PhoneNumber: row[4],
+                        DateOfJoining: row[5],
+                        Status: $('<div>').html(row[6]).text().trim()
+                    });
+                });
+
+                var worksheet = XLSX.utils.json_to_sheet(rows);
+                var workbook = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(workbook, worksheet, "Employee Report");
+                XLSX.writeFile(workbook, "Employee_Report.xlsx");
+            });
+
+            $('#exportPdf').on('click', function () {
+                const { jsPDF } = window.jspdf;
+                var doc = new jsPDF("landscape");
+
+                doc.setFontSize(18);
+                doc.text("Employee Report", 14, 18);
+                doc.setFontSize(10);
+                doc.text("Total Employees: @totalEmployees", 14, 27);
+                doc.text("Active Employees: @activeEmployees", 80, 27);
+                doc.text("Inactive Employees: @inactiveEmployees", 145, 27);
+                doc.text("Departments: @totalDepartments", 225, 27);
+
+                var rows = [];
+
+                table.rows({ search: 'applied' }).every(function () {
+                    var row = this.data();
+
+                    rows.push([
+                        row[0],
+                        $('<div>').html(row[1]).text().trim(),
+                        row[2],
+                        row[3],
+                        row[4],
+                        row[5],
+                        $('<div>').html(row[6]).text().trim()
+                    ]);
+                });
+
+                doc.autoTable({
+                    head: [["User ID", "Name", "Email", "Department", "Phone Number", "Date of Joining", "Status"]],
+                    body: rows,
+                    startY: 35,
+                    theme: "grid",
+                    styles: { fontSize: 8, cellPadding: 3 },
+                    headStyles: { fontSize: 8 }
+                });
+
+                doc.save("Employee_Report.pdf");
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var canvas = document.getElementById("employeeChart");
+            if (!canvas) return;
+
+            var employeeData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Where(x => x.DateOfJoining.HasValue).Select(x => new { Year = x.DateOfJoining.Value.Year, Month = x.DateOfJoining.Value.Month, Status = x.Status })));
+            var availableYears = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(employeeYears));
+            var chart = null;
+
+            function getAllYearsData() {
+                var labels = [];
+                var activeData = [];
+                var inactiveData = [];
+
+                availableYears.forEach(function (year) {
+                    labels.push(year);
+
+                    var activeCount = employeeData.filter(function (employee) {
+                        return employee.Year === year && employee.Status && employee.Status.trim().toLowerCase() === "active";
+                    }).length;
+
+                    var inactiveCount = employeeData.filter(function (employee) {
+                        return employee.Year === year && employee.Status && employee.Status.trim().toLowerCase() === "inactive";
+                    }).length;
+
+                    activeData.push(activeCount);
+                    inactiveData.push(inactiveCount);
+                });
+
+                return { labels: labels, activeData: activeData, inactiveData: inactiveData };
+            }
+
+            function getYearData(year) {
+                var labels = [];
+                var activeData = [];
+                var inactiveData = [];
+
+                for (var month = 1; month <= 12; month++) {
+                    var monthName = new Date(year, month - 1, 1).toLocaleString("en-US", { month: "short" });
+                    labels.push(monthName);
+
+                    var activeCount = employeeData.filter(function (employee) {
+                        return employee.Year === year && employee.Month === month && employee.Status && employee.Status.trim().toLowerCase() === "active";
+                    }).length;
+
+                    var inactiveCount = employeeData.filter(function (employee) {
+                        return employee.Year === year && employee.Month === month && employee.Status && employee.Status.trim().toLowerCase() === "inactive";
+                    }).length;
+
+                    activeData.push(activeCount);
+                    inactiveData.push(inactiveCount);
+                }
+
+                return { labels: labels, activeData: activeData, inactiveData: inactiveData };
+            }
+
+            function createChart(labels, activeData, inactiveData) {
+                if (chart) chart.destroy();
+
+                chart = new Chart(canvas, {
+                    type: "bar",
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: "Active Employees",
+                                data: activeData,
+                                backgroundColor: "rgba(75, 192, 75, 0.6)",
+                                borderColor: "rgba(75, 192, 75, 1)",
+                                borderWidth: 1
+                            },
+                            {
+                                label: "Inactive Employees",
+                                data: inactiveData,
+                                backgroundColor: "rgba(128, 128, 128, 0.6)",
+                                borderColor: "rgba(128, 128, 128, 1)",
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            x: { stacked: false },
+                            y: { beginAtZero: true, ticks: { stepSize: 1 } }
+                        }
+                    }
+                });
+            }
+
+            var allYearsData = getAllYearsData();
+            createChart(allYearsData.labels, allYearsData.activeData, allYearsData.inactiveData);
+
+            var yearButton = document.getElementById("yearDropdownButton");
+
+            if (yearButton) yearButton.innerText = "All Years";
+
+            $("#allYearsOption").on("click", function () {
+                $("#yearDropdownButton").text("All Years");
+                var allData = getAllYearsData();
+                createChart(allData.labels, allData.activeData, allData.inactiveData);
+                closeYearDropdown();
+            });
+
+            $(".year-option").on("click", function () {
+                var year = parseInt($(this).attr("data-year"));
+                $("#yearDropdownButton").text(year);
+
+                var yearData = getYearData(year);
+                createChart(yearData.labels, yearData.activeData, yearData.inactiveData);
+                closeYearDropdown();
+            });
+
+            function closeYearDropdown() {
+                var button = document.getElementById("yearDropdownButton");
+
+                if (button && typeof bootstrap !== "undefined") {
+                    var dropdown = bootstrap.Dropdown.getInstance(button);
+                    if (dropdown) dropdown.hide();
+                }
+            }
+
+            if (yearButton && typeof bootstrap !== "undefined") {
+                var existingDropdown = bootstrap.Dropdown.getInstance(yearButton);
+                if (!existingDropdown) new bootstrap.Dropdown(yearButton);
+            }
+        });
+    </script>
+}

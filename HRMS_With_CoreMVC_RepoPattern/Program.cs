@@ -1,4 +1,5 @@
 using HRMS_With_CoreMVC_RepoPattern.Data;
+using HRMS_With_CoreMVC_RepoPattern.Repositories;
 using HRMS_With_CoreMVC_RepoPattern.Repository;
 using HRMS_With_CoreMVC_RepoPattern.Services;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,11 @@ builder.Services.AddScoped<IEventTypeService, EventTypeService>();
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<ITaskService, TaskService>();
+<<<<<<< HEAD
+
+=======
 builder.Services.AddScoped<ITaskBoardService, TaskBoardService>();
+>>>>>>> ea107a6edb6852fac142fbbb64f3369548b2b2a6
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -19,16 +24,27 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     ));
 
 builder.Services.AddScoped<IAuthService, AuthService>();
+
 builder.Services.AddScoped<IPromotionRepository, PromotionService>();
 builder.Services.AddScoped<ITrainerRepository, TrainerService>();
 builder.Services.AddScoped<ITrainingTypeRepository, TrainingTypeService>();
-builder.Services.AddScoped<IProjectRepository, ProjectRepositoryServices>();
+
+builder.Services.AddScoped<ITaskReportRepository, TaskReportService>();
+builder.Services.AddScoped<IProjectReportRepository, ProjectReportRepositoryServices>();
+
+builder.Services.AddScoped<IProjectService, ProjectService>();
+
 builder.Services.AddScoped<IEmployeeReportRepository, EmployeeReportServices>();
 builder.Services.AddScoped<IAttendanceReportRepository, AttendanceReportServices>();
 builder.Services.AddScoped<IResignationRepository, ResignationService>();
 builder.Services.AddScoped<ITerminationRepository, TerminationService>();
+builder.Services.AddScoped<IDailyReportRepository, DailyReportService>();
 builder.Services.AddScoped<ILeaveReportRepository, LeaveReportServices>();
 builder.Services.AddScoped<IPayslipReportRepository, PayslipReportServices>();
+<<<<<<< HEAD
+builder.Services.AddScoped<ITrainingRepository, TrainingService>();
+builder.Services.AddScoped<IFileUploadRepository, FileUploadService>();
+
 builder.Services.AddScoped<ILeaveService, LeaveService>();
 builder.Services.AddScoped<ITimesheetRepository, TimesheetService>();
 builder.Services.AddScoped<IAttendanceRepository, AttendanceService>();
@@ -45,8 +61,11 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
 app.UseRouting();
+
 app.UseSession();
+
 app.UseAuthorization();
 
 app.MapControllerRoute(

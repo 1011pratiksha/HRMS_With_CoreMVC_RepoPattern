@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using HRMS_With_CoreMVC_RepoPattern.Models;
 using HRMS_With_CoreMVC_RepoPattern.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace HRMS_With_CoreMVC_RepoPattern.Controllers
 {
@@ -10,113 +11,101 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
         private readonly ITerminationRepository terminationRepository;
         private readonly ApplicationDbContext context;
 
-        public TerminationController(
-            ITerminationRepository terminationRepository,
-            ApplicationDbContext context)
+        public TerminationController(ITerminationRepository terminationRepository, ApplicationDbContext context)
         {
             this.terminationRepository = terminationRepository;
             this.context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string? dateFilter, string? sortType)
         {
-            List<Termination> li = terminationRepository.GetTerminations();
+            List<Termination> li = await terminationRepository.GetTerminations();
+            DateTime today = DateTime.Today;
+
+            if (dateFilter == "Today")
+                li = li.Where(x => x.NoticeDate.Date == today).ToList();
+            else if (dateFilter == "LastWeek")
+                li = li.Where(x => x.NoticeDate.Date >= today.AddDays(-7) && x.NoticeDate.Date <= today).ToList();
+            else if (dateFilter == "LastMonth")
+                li = li.Where(x => x.NoticeDate.Date >= today.AddMonths(-1) && x.NoticeDate.Date <= today).ToList();
+            else if (dateFilter == "LastYear")
+                li = li.Where(x => x.NoticeDate.Date >= today.AddYears(-1) && x.NoticeDate.Date <= today).ToList();
+
+            if (sortType == "Ascending")
+                li = li.OrderBy(x => x.NoticeDate).ToList();
+            else if (sortType == "Descending")
+                li = li.OrderByDescending(x => x.NoticeDate).ToList();
+
+            ViewBag.DateFilter = dateFilter;
+            ViewBag.SortType = sortType;
+            ViewBag.Users = await context.User.ToListAsync();
+            ViewBag.TerminationTypes = await context.Termination.Where(x => x.TerminationType != null).Select(x => x.TerminationType).Distinct().ToListAsync();
 
             return View("Termination", li);
         }
 
         [HttpGet]
-        public IActionResult AddTermination()
+        public async Task<IActionResult> AddTermination()
         {
-            ViewBag.Users = context.User.ToList();
-
-            ViewBag.TerminationTypes = context.Termination
-                .Where(x => x.TerminationType != null)
-                .Select(x => x.TerminationType)
-                .Distinct()
-                .ToList();
-
+            ViewBag.Users = await context.User.ToListAsync();
+            ViewBag.TerminationTypes = await context.Termination.Where(x => x.TerminationType != null).Select(x => x.TerminationType).Distinct().ToListAsync();
             return View();
         }
 
         [HttpPost]
-        public IActionResult AddTermination(Termination t)
+        public async Task<IActionResult> AddTermination(Termination t)
         {
             if (ModelState.IsValid)
             {
-                var user = context.User.Find(t.UserId);
+                var user = await context.User.FindAsync(t.UserId);
 
                 if (user != null)
                 {
-                    terminationRepository.AddTermination(t);
-
-                    TempData["msg"] = "Added Successfully";
-
+                    string msg = await terminationRepository.AddTermination(t);
+                    TempData["msg"] = msg;
                     return RedirectToAction("Index");
                 }
             }
 
-            ViewBag.Users = context.User.ToList();
-
-            ViewBag.TerminationTypes = context.Termination
-                .Where(x => x.TerminationType != null)
-                .Select(x => x.TerminationType)
-                .Distinct()
-                .ToList();
-
+            ViewBag.Users = await context.User.ToListAsync();
+            ViewBag.TerminationTypes = await context.Termination.Where(x => x.TerminationType != null).Select(x => x.TerminationType).Distinct().ToListAsync();
             return View(t);
         }
 
         [HttpPost]
-        public IActionResult DeleteTermination(int id)
+        public async Task<IActionResult> DeleteTermination(int id)
         {
-            string msg = terminationRepository.DeleteTermination(id);
-
+            string msg = await terminationRepository.DeleteTermination(id);
             TempData["msg"] = msg;
-
             return RedirectToAction("Index");
         }
 
         [HttpGet]
-        public IActionResult EditTermination(int id)
+        public async Task<IActionResult> EditTermination(int id)
         {
-            Termination t = terminationRepository.GetTerminationById(id);
+            Termination? t = await terminationRepository.GetTerminationById(id);
 
             if (t == null)
-            {
                 return NotFound();
-            }
 
-            ViewBag.Users = context.User.ToList();
-
-            ViewBag.TerminationTypes = context.Termination
-                .Where(x => x.TerminationType != null)
-                .Select(x => x.TerminationType)
-                .Distinct()
-                .ToList();
+            ViewBag.Users = await context.User.ToListAsync();
+            ViewBag.TerminationTypes = await context.Termination.Where(x => x.TerminationType != null).Select(x => x.TerminationType).Distinct().ToListAsync();
 
             return View(t);
         }
 
         [HttpPost]
-        public IActionResult EditTermination(Termination t)
+        public async Task<IActionResult> EditTermination(Termination t)
         {
             if (ModelState.IsValid)
             {
-                string msg = terminationRepository.UpdateTermination(t);
-
+                string msg = await terminationRepository.UpdateTermination(t);
                 TempData["msg"] = msg;
-
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Users = context.User.ToList();
-
-            ViewBag.TerminationTypes = context.Termination
-                .Where(x => x.TerminationType != null)
-                .Select(x => x.TerminationType)
-                .Distinct()
-                .ToList();
+            ViewBag.Users = await context.User.ToListAsync();
+            ViewBag.TerminationTypes = await context.Termination.Where(x => x.TerminationType != null).Select(x => x.TerminationType).Distinct().ToListAsync();
 
             return View(t);
         }

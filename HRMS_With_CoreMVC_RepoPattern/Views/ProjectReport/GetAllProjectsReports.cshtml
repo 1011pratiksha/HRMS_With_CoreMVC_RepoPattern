@@ -2,268 +2,422 @@
 
 @{
     ViewData["Title"] = "Project Report";
+
+    int totalProjects = ViewBag.allprojects ?? 0;
+    int overdueProjects = ViewBag.overdueprojects ?? 0;
+    int onHoldTasks = ViewBag.onholdtasks ?? 0;
+    int inProgressTasks = ViewBag.inProgressTasks ?? 0;
+    int completedTasks = ViewBag.completedTasks ?? 0;
+    int activeProjects = Model.Count(x => x.Status == "Active");
+    int inactiveProjects = Model.Count(x => x.Status == "Inactive");
 }
 
-<div class="container mt-4">
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="fw-bold mb-0">Project Report</h3>
 
-    <h2 class="mb-4">Project Report</h2>
+    <div class="position-relative">
+        <button type="button" id="exportButton" class="btn btn-primary">
+            <i class="bi bi-download"></i> Export <span class="ms-1">▼</span>
+        </button>
 
+        <div id="exportMenu" class="position-absolute bg-white border rounded shadow"
+             style="display:none;right:0;top:100%;margin-top:5px;min-width:190px;z-index:9999;">
 
-    <!-- Project Summary -->
+            <a href="#" id="exportPdf" class="dropdown-item py-3 px-3">
+                <i class="bi bi-file-earmark-pdf text-danger me-2"></i> Export as PDF
+            </a>
 
-    <div class="row mb-4">
-
-        <div class="col-md-4">
-
-            <div class="card shadow-sm">
-
-                <div class="card-body">
-
-                    <h5 class="card-title">
-                        Total Projects
-                    </h5>
-
-                    <h3>
-                        @ViewBag.allprojects
-                    </h3>
-
-                </div>
-
-            </div>
-
+            <a href="#" id="exportExcel" class="dropdown-item py-3 px-3">
+                <i class="bi bi-file-earmark-excel text-success me-2"></i> Export as Excel
+            </a>
         </div>
-
-
-        <div class="col-md-4">
-
-            <div class="card shadow-sm">
-
-                <div class="card-body">
-
-                    <h5 class="card-title">
-                        On Hold Projects
-                    </h5>
-
-                    <h3>
-                        @ViewBag.onholdprojects
-                    </h3>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="col-md-4">
-
-            <div class="card shadow-sm">
-
-                <div class="card-body">
-
-                    <h5 class="card-title">
-                        Overdue Projects
-                    </h5>
-
-                    <h3>
-                        @ViewBag.overdueprojects
-                    </h3>
-
-                </div>
-
-            </div>
-
-        </div>
-
     </div>
-
-
-    <!-- Filter Section -->
-
-    <form method="get"
-          asp-action="GetAllProjectsReports"
-          class="row mb-4">
-
-        <!-- Priority -->
-
-        <div class="col-md-3">
-
-            <label class="form-label">
-                Priority
-            </label>
-
-            <select name="priorityType"
-                    class="form-select">
-
-                <option value="">
-                    All
-                </option>
-
-                <option value="High">
-                    High
-                </option>
-
-                <option value="Medium">
-                    Medium
-                </option>
-
-                <option value="Low">
-                    Low
-                </option>
-
-            </select>
-
-        </div>
-
-
-        <!-- Status -->
-
-        <div class="col-md-3">
-
-            <label class="form-label">
-                Status
-            </label>
-
-            <select name="statusType"
-                    class="form-select">
-
-                <option value="">
-                    All
-                </option>
-
-                <option value="Active">
-                    Active
-                </option>
-
-                <option value="Inactive">
-                    Inactive
-                </option>
-
-            </select>
-
-        </div>
-
-
-        <!-- Sort -->
-
-        <div class="col-md-3">
-
-            <label class="form-label">
-                Sort By End Date
-            </label>
-
-            <select name="sortType"
-                    class="form-select">
-
-                <option value="">
-                    Default
-                </option>
-
-                <option value="Ascending">
-                    Ascending
-                </option>
-
-                <option value="Descending">
-                    Descending
-                </option>
-
-            </select>
-
-        </div>
-
-
-        <!-- Button -->
-
-        <div class="col-md-3 d-flex align-items-end">
-
-            <button type="submit"
-                    class="btn btn-primary">
-
-                Apply Filter
-
-            </button>
-
-        </div>
-
-    </form>
-
-
-    <!-- Project Report Table -->
-
-    <div class="table-responsive">
-
-        <table class="table table-bordered table-hover">
-
-            <thead class="table-dark">
-
-                <tr>
-
-                    <th>
-                        Project ID
-                    </th>
-
-                    <th>
-                        Project Name
-                    </th>
-
-                    <th>
-                        Manager Name
-                    </th>
-
-                    <th>
-                        End Date
-                    </th>
-
-                    <th>
-                        Priority
-                    </th>
-
-                    <th>
-                        Status
-                    </th>
-
-                </tr>
-
-            </thead>
-
-
-            <tbody>
-
-                @foreach (var project in Model)
-                {
-                    <tr>
-
-                        <td>
-                            @project.ProjectId
-                        </td>
-
-                        <td>
-                            @project.ProjectName
-                        </td>
-
-                        <td>
-                            @project.ManagerName
-                        </td>
-
-                        <td>
-                            @project.EndDate.ToString("dd/MM/yyyy")
-                        </td>
-
-                        <td>
-                            @project.Priority
-                        </td>
-
-                        <td>
-                            @project.Status
-                        </td>
-
-                    </tr>
-                }
-
-            </tbody>
-
-        </table>
-
-    </div>
-
 </div>
+
+<div class="row g-4 mb-4 align-items-stretch">
+
+    <div class="col-lg-6 d-flex">
+        <div class="row g-4 w-100 h-100">
+
+            <div class="col-md-6 d-flex">
+                <div class="card shadow-sm border-0 h-100 w-100">
+                    <div class="card-body">
+                        <h6 class="text-muted">Total Projects</h6>
+                        <h2 class="fw-bold">@totalProjects</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 d-flex">
+                <div class="card shadow-sm border-0 h-100 w-100">
+                    <div class="card-body">
+                        <h6 class="text-muted">Active Projects</h6>
+                        <h2 class="fw-bold text-success">@activeProjects</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 d-flex">
+                <div class="card shadow-sm border-0 h-100 w-100">
+                    <div class="card-body">
+                        <h6 class="text-muted">Overdue Projects</h6>
+                        <h2 class="fw-bold text-danger">@overdueProjects</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 d-flex">
+                <div class="card shadow-sm border-0 h-100 w-100">
+                    <div class="card-body">
+                        <h6 class="text-muted">Onhold Tasks</h6>
+                        <h2 class="fw-bold text-warning">@onHoldTasks</h2>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-lg-6 d-flex">
+        <div class="card shadow-sm border-0 h-100 w-100">
+
+            <div class="card-header bg-white">
+                <h5 class="mb-0 fw-bold">
+                    <i class="bi bi-pie-chart text-danger me-2"></i>
+                    Projects By Tasks
+                </h5>
+            </div>
+
+            <div class="card-body">
+                <div class="row align-items-center h-100">
+
+                    <div class="col-md-7">
+                        <div style="height:260px;">
+                            <canvas id="projectChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="col-md-5">
+                        <h6 class="fw-bold mb-3">Project & Task Summary</h6>
+
+                        <p class="mb-2">
+                            <span class="badge rounded" style="background:#18bce5;">&nbsp;</span>
+                            Active Project : <strong>@activeProjects</strong>
+                        </p>
+
+                        <p class="mb-2">
+                            <span class="badge rounded" style="background:#9c27b0;">&nbsp;</span>
+                            Inactive Project : <strong>@inactiveProjects</strong>
+                        </p>
+
+                        <p class="mb-2">
+                            <span class="badge rounded" style="background:#ffc107;">&nbsp;</span>
+                            On Hold Task : <strong>@onHoldTasks</strong>
+                        </p>
+
+                        <p class="mb-2">
+                            <span class="badge rounded" style="background:#ff9800;">&nbsp;</span>
+                            InProgress Task : <strong>@inProgressTasks</strong>
+                        </p>
+
+                        <p class="mb-2">
+                            <span class="badge rounded" style="background:#28a745;">&nbsp;</span>
+                            Completed Task : <strong>@completedTasks</strong>
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-body">
+
+        <form method="get" asp-controller="ProjectReport" asp-action="GetAllProjectsReports">
+
+            <div class="row g-3 align-items-end">
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Priority</label>
+
+                    <select name="priorityType" class="form-select" onchange="this.form.submit()">
+                        <option value="">All Priority</option>
+                        <option value="High" selected="@(ViewBag.priorityType == "High")">High</option>
+                        <option value="Medium" selected="@(ViewBag.priorityType == "Medium")">Medium</option>
+                        <option value="Low" selected="@(ViewBag.priorityType == "Low")">Low</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Status</label>
+
+                    <select name="statusType" class="form-select" onchange="this.form.submit()">
+                        <option value="">All Status</option>
+                        <option value="Active" selected="@(ViewBag.statusType == "Active")">Active</option>
+                        <option value="Inactive" selected="@(ViewBag.statusType == "Inactive")">Inactive</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Sort By</label>
+
+                    <select name="sortType" class="form-select" onchange="this.form.submit()">
+                        <option value="">Sort By</option>
+                        <option value="Ascending" selected="@(ViewBag.sortType == "Ascending")">Ascending</option>
+                        <option value="Descending" selected="@(ViewBag.sortType == "Descending")">Descending</option>
+                    </select>
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+
+        <div class="table-responsive">
+            <table id="projectTable" class="table table-bordered table-hover align-middle">
+
+                <thead class="table-light">
+                    <tr>
+                        <th>Project ID</th>
+                        <th>Project Name</th>
+                        <th>Manager</th>
+                        <th>Deadline</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.ProjectId</td>
+                            <td>@item.ProjectName</td>
+                            <td>@item.ManagerName</td>
+                            <td>@item.EndDate.ToString("yyyy-MM-dd")</td>
+
+                            <td>
+                                @if (item.Priority == "High")
+                                {
+                                    <span class="badge bg-danger">High</span>
+                                }
+                                else if (item.Priority == "Medium")
+                                {
+                                    <span class="badge bg-warning text-dark">Medium</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">Low</span>
+                                }
+                            </td>
+
+                            <td>
+                                @if (item.Status == "Active")
+                                {
+                                    <span class="badge bg-success">Active</span>
+                                }
+                                else if (item.Status == "Inactive")
+                                {
+                                    <span class="badge bg-secondary">Inactive</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">@item.Status</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+<script>
+    const activeProjects = @activeProjects;
+    const inactiveProjects = @inactiveProjects;
+    const onHoldTasks = @onHoldTasks;
+    const inProgressTasks = @inProgressTasks;
+    const completedTasks = @completedTasks;
+
+    const chartCanvas = document.getElementById("projectChart");
+
+    new Chart(chartCanvas, {
+        type: "pie",
+        data: {
+            labels: [
+                "Active Project",
+                "Inactive Project",
+                "On Hold Task",
+                "InProgress Task",
+                "Completed Task"
+            ],
+            datasets: [{
+                data: [
+                    activeProjects,
+                    inactiveProjects,
+                    onHoldTasks,
+                    inProgressTasks,
+                    completedTasks
+                ],
+                backgroundColor: [
+                    "#18bce5",
+                    "#9c27b0",
+                    "#ffc107",
+                    "#ff9800",
+                    "#28a745"
+                ],
+                borderColor: "#ffffff",
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: "bottom",
+                    labels: {
+                        boxWidth: 25,
+                        padding: 12
+                    }
+                }
+            }
+        }
+    });
+
+    const exportButton = document.getElementById("exportButton");
+    const exportMenu = document.getElementById("exportMenu");
+
+    exportButton.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        exportMenu.style.display =
+            exportMenu.style.display === "block" ? "none" : "block";
+    });
+
+    document.addEventListener("click", function () {
+        exportMenu.style.display = "none";
+    });
+
+    document.getElementById("exportExcel").addEventListener("click", function (e) {
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        exportMenu.style.display = "none";
+
+        const rows = [];
+
+        rows.push([
+            "Project ID",
+            "Project Name",
+            "Manager",
+            "Deadline",
+            "Priority",
+            "Status"
+        ]);
+
+        const tableRows = document.querySelectorAll("#projectTable tbody tr");
+
+        tableRows.forEach(function (row) {
+
+            const cells = row.querySelectorAll("td");
+
+            if (cells.length >= 6) {
+                rows.push([
+                    cells[0].innerText.trim(),
+                    cells[1].innerText.trim(),
+                    cells[2].innerText.trim(),
+                    cells[3].innerText.trim(),
+                    cells[4].innerText.trim(),
+                    cells[5].innerText.trim()
+                ]);
+            }
+        });
+
+        const worksheet = XLSX.utils.aoa_to_sheet(rows);
+        const workbook = XLSX.utils.book_new();
+
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Project Report");
+        XLSX.writeFile(workbook, "Project_Report.xlsx");
+    });
+
+    document.getElementById("exportPdf").addEventListener("click", function (e) {
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        exportMenu.style.display = "none";
+
+        if (!window.jspdf) {
+            alert("PDF library not loaded.");
+            return;
+        }
+
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF("landscape");
+
+        doc.setFontSize(18);
+        doc.text("Project Report", 14, 15);
+
+        const pdfRows = [];
+        const tableRows = document.querySelectorAll("#projectTable tbody tr");
+
+        tableRows.forEach(function (row) {
+
+            const cells = row.querySelectorAll("td");
+
+            if (cells.length >= 6) {
+                pdfRows.push([
+                    cells[0].innerText.trim(),
+                    cells[1].innerText.trim(),
+                    cells[2].innerText.trim(),
+                    cells[3].innerText.trim(),
+                    cells[4].innerText.trim(),
+                    cells[5].innerText.trim()
+                ]);
+            }
+        });
+
+        if (typeof doc.autoTable !== "function") {
+            alert("PDF table library not loaded.");
+            return;
+        }
+
+        doc.autoTable({
+            head: [[
+                "Project ID",
+                "Project Name",
+                "Manager",
+                "Deadline",
+                "Priority",
+                "Status"
+            ]],
+            body: pdfRows,
+            startY: 25,
+            theme: "grid",
+            styles: {
+                fontSize: 9
+            }
+        });
+
+        doc.save("Project_Report.pdf");
+    });
+</script>
