@@ -1,6 +1,7 @@
 ﻿using HRMS_With_CoreMVC_RepoPattern.Models;
 using HRMS_With_CoreMVC_RepoPattern.Repository;
 using HRMS_With_CoreMVC_RepoPattern.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -299,18 +300,66 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
         //for employee list all the employee related functionality will be here
 
         [HttpGet]
-        public async Task<IActionResult> EmployeeList()
+        public async Task<IActionResult> EmployeeList(
+    DateTime? startDate,
+    DateTime? endDate,
+    int? designationId,
+    string? status,
+    string? sorting)
         {
-            var employees = await EmployeeServices.GetAllEmployees();
+            var employees = await EmployeeServices.GetAllEmployees(
+                startDate,
+                endDate,
+                designationId,
+                status,
+                sorting);
+
+            ViewBag.Designations = await EmployeeServices.GetAllDesignations();
+            ViewBag.Roles = await EmployeeServices.GetAllRoles();
+            ViewBag.Departments = await EmployeeServices.GetAllDepartments();
+
+            // Get all users for Reporting Manager dropdown
+            ViewBag.Users = await EmployeeServices.GetAllEmployees(
+                null,
+                null,
+                null,
+                null,
+                null);
+
+            // Keep selected filter values
+            ViewBag.StartDate = startDate?.ToString("yyyy-MM-dd");
+            ViewBag.EndDate = endDate?.ToString("yyyy-MM-dd");
+            ViewBag.DesignationId = designationId;
+            ViewBag.Status = status;
+            ViewBag.Sorting = sorting;
+
             return View(employees);
         }
-        //[HttpGet]
 
-        //public async Task<IActionResult> GetAllEmployees()
-        //{
-        //    var employees = await EmployeeServices.GetAllEmployees();
-        //    return View(employees);
-        //}
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllEmployees()
+        {
+            var employees = await EmployeeServices.GetAllEmployees(
+                null,
+                null,
+                null,
+                null,
+                null);
+
+            ViewBag.Designations = await EmployeeServices.GetAllDesignations();
+            ViewBag.Roles = await EmployeeServices.GetAllRoles();
+            ViewBag.Departments = await EmployeeServices.GetAllDepartments();
+
+            ViewBag.Users = await EmployeeServices.GetAllEmployees(
+                null,
+                null,
+                null,
+                null,
+                null);
+
+            return View(employees);
+        }
 
         [HttpGet]
 
@@ -324,36 +373,81 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
             return View(employee);
 
         }
-        [HttpPost]
 
-        public async Task<IActionResult> AddEmployee(User user)
-        {
-            if (ModelState.IsValid)
-            {
-                await EmployeeServices.AddEmployee(user);
-                TempData["success"] = "employee Added Successfully";
-                return RedirectToAction("EmployeeList");
-            }
-            return View(user);
-
-        }
         
-
         [HttpPost]
-        public async Task<IActionResult> EditEmployee(User user)
+        public async Task<IActionResult> AddEmployee(User user, IFormFile? profilePicture)
         {
+            if (profilePicture != null && profilePicture.Length > 0)
+            {
+                string uploadsFolder = Path.Combine(
+                    Directory.GetCurrentDirectory(),
+                    "wwwroot",
+                    "uploads"
+                );
+
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+
+                string fileName = Guid.NewGuid().ToString()
+                    + Path.GetExtension(profilePicture.FileName);
+
+                string filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await profilePicture.CopyToAsync(stream);
+                }
+
+                user.ProfilePicture = "/uploads/" + fileName;
+            }
             if (ModelState.IsValid)
             {
-                await EmployeeServices.EditEmployee(user);
+                user.CreatedBy = "Admin";
+                user.CreatedAt = DateTime.Now;
 
-                TempData["Success"] = "Employee updated successfully";
+                var passwordHasher = new PasswordHasher<User>();
+
+                user.PasswordHash = passwordHasher.HashPassword(user, user.PasswordHash);
+
+                var addedEmployee = await EmployeeServices.AddEmployee(user);
 
                 return RedirectToAction("EmployeeList");
             }
+            else
+            {
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
 
-            return View(user);
+                return Json(new
+                {
+                    success = false,
+                    message = "Validation failed.",
+                    errors
+                });
+            }
         }
+        [HttpPost]
+public async Task<IActionResult> EditEmployee(User user)
+{
+    // Password is not edited from the Edit Employee modal
+    ModelState.Remove("PasswordHash");
 
+    if (ModelState.IsValid)
+    {
+        await EmployeeServices.EditEmployee(user);
+
+        TempData["Success"] = "Employee updated successfully";
+
+        return RedirectToAction("EmployeeList");
+    }
+
+    return RedirectToAction("EmployeeList");
+}
 
 
         [HttpPost]
@@ -372,14 +466,141 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
         }
 
 
-        public async Task<IActionResult>  EmployeeGrid()
+       
+       
+
+        //-----for employee grid data
+        [HttpGet]
+        public async Task<IActionResult> EmployeeGrid()
         {
-            return View();
-        }
-        public IActionResult EmployeeDetails()
-        {
-            return View();
+            var employees = await EmployeeServices.GetEmployeeGridData();
+
+            ViewBag.Designations = await EmployeeServices.GetAllDesignations();
+            ViewBag.Roles = await EmployeeServices.GetAllRoles();
+            ViewBag.Departments = await EmployeeServices.GetAllDepartments();
+
+            ViewBag.Users = await EmployeeServices.GetAllEmployees(
+                null,
+                null,
+                null,
+                null,
+                null);
+
+            return View(employees);
         }
 
+
+        //------for employee details page
+        [HttpGet]
+        public async Task<IActionResult> EmployeeDetails()
+        {
+            var userId = HttpContext.Session.GetInt32("UserId");
+
+            if (userId == null)
+            {
+                return RedirectToAction("SignIn", "Auth");
+            }
+
+            var userProfile = await EmployeeServices.GetUserProfile(userId.Value);
+
+            if (userProfile == null)
+            {
+                return NotFound();
+            }
+
+            var bankDetails = await EmployeeServices.GetBankDetails(userId.Value);
+            var familyDetails = await EmployeeServices.GetFamilyDetails(userId.Value);
+            var educationDetails = await EmployeeServices.GetEducationDetails(userId.Value);
+            var experiences = await EmployeeServices.GetExperiences(userId.Value);
+
+            ViewBag.BankDetails = bankDetails;
+            ViewBag.FamilyDetails = familyDetails;
+            ViewBag.EducationDetails = educationDetails;
+            ViewBag.Experiences = experiences;
+
+            return View(userProfile);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditEmployeeProfile(User user)
+        {
+            await EmployeeServices.EditEmployeeProfile(user);
+
+            return RedirectToAction("EmployeeDetails");
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddBankDetails(EmployeeBankDetails bankDetails)
+        {
+            if (ModelState.IsValid)
+            {
+                await EmployeeServices.AddBankDetails(bankDetails);
+
+                return RedirectToAction("EmployeeDetails");
+            }
+
+            return RedirectToAction("EmployeeDetails");
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> EditBankDetails(EmployeeBankDetails bankDetails)
+        {
+            if (ModelState.IsValid)
+            {
+                await EmployeeServices.EditBankDetails(bankDetails);
+
+                return RedirectToAction("EmployeeDetails");
+            }
+
+            return RedirectToAction("EmployeeDetails");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddFamilyDetails(EmployeeFamilyDetail familyDetails)
+        {
+            await EmployeeServices.AddFamilyDetails(familyDetails);
+
+            return RedirectToAction("EmployeeDetails");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditFamilyDetails(EmployeeFamilyDetail familyDetails)
+        {
+            await EmployeeServices.EditFamilyDetails(familyDetails);
+
+            return RedirectToAction("EmployeeDetails");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddEducationDetails(EducationDetails educationDetails)
+        {
+            await EmployeeServices.AddEducationDetails(educationDetails);
+
+            return RedirectToAction("EmployeeDetails");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditEducationDetails(EducationDetails educationDetails)
+        {
+            await EmployeeServices.EditEducationDetails(educationDetails);
+
+            return RedirectToAction("EmployeeDetails");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddExperience(Experience experience)
+        {
+            await EmployeeServices.AddExperience(experience);
+
+            return RedirectToAction("EmployeeDetails");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditExperience(Experience experience)
+        {
+            await EmployeeServices.EditExperience(experience);
+
+            return RedirectToAction("EmployeeDetails");
+        }
     }
 }
