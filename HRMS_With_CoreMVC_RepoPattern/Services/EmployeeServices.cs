@@ -329,9 +329,9 @@ public async Task<List<EmployeeGridViewModel>> GetEmployeeGridData()
                                 x.Task.Status == "Pending");
 
                 // Get employee timesheets
-                var timesheets = await db.Timesheet
-                    .Where(x => x.UserId == employee.UserId)
-                    .ToListAsync();
+                var timesheets = await db.Timesheets
+       .Where(x => x.UserId == employee.UserId)
+       .ToListAsync();
 
                 // Productivity
                 // 8 working hours per recorded day = 100%
