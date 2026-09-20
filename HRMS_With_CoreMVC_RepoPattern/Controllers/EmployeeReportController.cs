@@ -7,8 +7,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
     {
         private readonly IEmployeeReportRepository employeeRepository;
 
-        public EmployeeReportController(
-            IEmployeeReportRepository employeeRepository)
+        public EmployeeReportController(IEmployeeReportRepository employeeRepository)
         {
             this.employeeRepository = employeeRepository;
         }
@@ -22,6 +21,15 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
             ViewBag.InactiveEmployees = await employeeRepository.fetchInactiveEmployees();
             ViewBag.TotalDepartments = await employeeRepository.fetchTotalDepartments();
             ViewBag.TotalRoles = await employeeRepository.fetchTotalRoles();
+
+            var employeeYears = employees
+                .Where(x => x.DateOfJoining.HasValue)
+                .Select(x => x.DateOfJoining!.Value.Year)
+                .Distinct()
+                .OrderByDescending(x => x)
+                .ToList();
+
+            ViewBag.EmployeeYears = employeeYears;
 
             return View(employees);
         }

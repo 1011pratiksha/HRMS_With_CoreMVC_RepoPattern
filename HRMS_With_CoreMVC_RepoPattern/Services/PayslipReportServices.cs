@@ -37,26 +37,36 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
                 .Select(x => new PayslipReport
                 {
                     PayslipId = x.PayslipId,
-
                     UserName = x.User.FirstName + " " + x.User.LastName,
-
-                    Designation = x.User.Designation.Name,
-
+                    Designation = x.User.Designation != null
+                        ? x.User.Designation.Name
+                        : "",
                     ProfilePicture = x.User.ProfilePicture,
-
                     PaidAmount = context.EmployeeSalaries
                         .Where(s => s.UserId == x.UserId)
                         .OrderByDescending(s => s.CreatedDate)
                         .Select(s => s.NetSalary)
                         .FirstOrDefault(),
-
                     PaidMonth = x.Month,
-
                     PaidYear = x.Year
                 })
+                .OrderByDescending(x => x.PaidYear)
                 .ToListAsync();
 
             return payslips;
+        }
+
+        public async Task<Dictionary<int, decimal>> fetchSalaryChartData()
+        {
+            return await context.EmployeeSalaries
+                .GroupBy(x => x.CreatedDate.Year)
+                .Select(x => new
+                {
+                    Year = x.Key,
+                    TotalSalary = x.Sum(s => s.TotalSalary)
+                })
+                .OrderBy(x => x.Year)
+                .ToDictionaryAsync(x => x.Year, x => x.TotalSalary);
         }
     }
 }

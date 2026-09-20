@@ -4,14 +4,14 @@ namespace HRMS_With_CoreMVC_RepoPattern.Repository
 {
     public interface ITerminationRepository
     {
-        string AddTermination(Termination t);
+        Task<string> AddTermination(Termination t);
 
-        List<Termination> GetTerminations();
+        Task<List<Termination>> GetTerminations();
 
-        string UpdateTermination(Termination t);
+        Task<string> UpdateTermination(Termination t);
 
-        Termination GetTerminationById(int id);
+        Task<Termination?> GetTerminationById(int id);
 
-        string DeleteTermination(int id);
+        Task<string> DeleteTermination(int id);
     }
 }

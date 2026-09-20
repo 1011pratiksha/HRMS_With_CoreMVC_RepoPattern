@@ -4,11 +4,14 @@ namespace HRMS_With_CoreMVC_RepoPattern.Repository
 {
     public interface IResignationRepository
     {
-        string AddResignation(Resignation r);
-        List<Resignation> GetResignations();
-        string UpdateResignation(Resignation r);
+        Task<string> AddResignation(Resignation r);
 
-        Resignation GetResignationById(int id);
-        string DeleteResignation(int id);
+        Task<List<Resignation>> GetResignations();
+
+        Task<string> UpdateResignation(Resignation r);
+
+        Task<Resignation?> GetResignationById(int id);
+
+        Task<string> DeleteResignation(int id);
     }
 }

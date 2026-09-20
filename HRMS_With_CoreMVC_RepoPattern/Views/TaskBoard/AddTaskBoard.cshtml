@@ -1,0 +1,55 @@
+﻿@model TaskBoards
+
+<h2>Add Task Board</h2>
+
+<form asp-action="AddTask" asp-controller="TaskBoard" method="post">
+
+    <div class="mb-3">
+        <label>Project Name</label>
+        <select asp-for="ProjectId" class="form-select"
+        onchange="location.href='/TaskBoard/AddTaskBoard?projectId=' + this.value">
+            <option value="">Select Project</option>
+            
+            @foreach(var pro in ViewBag.GetProject)
+                    {
+                        <option value="@pro.ProjectId">
+                            @pro.ProjectName
+                        </option>
+                    }
+
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Task Name</label>
+        <select asp-for="TaskId" class="form-select">
+            <option value="">Select Task</option>
+
+                    @foreach(var task in ViewBag.GetTask)
+                    {
+                        <option value="@task.TaskId">
+                            @task.Title
+                        </option>
+                    }
+                </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Percentage</label>
+        <input asp-for="Percentage"
+               type="number"
+               class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Due Date</label>
+        <input asp-for="DueDate"
+               type="date"
+               class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-warning">
+        Save
+    </button>
+
+</form>

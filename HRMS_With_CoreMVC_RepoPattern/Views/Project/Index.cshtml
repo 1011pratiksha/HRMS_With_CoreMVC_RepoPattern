@@ -32,8 +32,6 @@
             <i class="bi bi-grid"></i>
         </a>
 
-        <button type="button" class="btn btn-info">Export</button>
-
 
     <a asp-controller="Project"
        asp-action="AddProject"
@@ -150,7 +148,7 @@
         $(document).ready(function () {
 
     $('#projectTable').DataTable({
-        "ordering": false
+        "ordering": true
     });
 
 });

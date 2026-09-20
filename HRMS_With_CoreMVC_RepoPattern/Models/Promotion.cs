@@ -25,7 +25,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Models
         [Required]
         public DateTime Date { get; set; }
 
-        // Navigation Property
         public virtual User User { get; set; }
     }
 }

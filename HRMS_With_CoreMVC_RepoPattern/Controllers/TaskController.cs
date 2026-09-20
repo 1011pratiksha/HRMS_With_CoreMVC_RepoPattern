@@ -42,15 +42,12 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
             ViewBag.GetProject = service.GetProject();
             ViewBag.GetUser = service.GetUsers(projectId);
 
-            ViewBag.ProjectId = projectId;
-
             return View();
         }
 
         [HttpPost]
-        public IActionResult AddProjectForm(Tasks tk, IFormFile file, int[] Users)
+        public IActionResult AddTaskForm(Tasks tk, IFormFile file, int[] Users)
         {
-
             service.AddTask(tk, file, Users);
             return RedirectToAction("Index");
         }

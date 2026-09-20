@@ -63,7 +63,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
 
         public List<Projects> GetProjects()
         {
-            return data.AllProjects.Include(x => x.Users).Include(x => x.Task).ToList();
+            return data.AllProjects.Include(x => x.Users).ToList();
         }
 
         public List<User> getUser()

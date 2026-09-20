@@ -1,8 +1,6 @@
 
-﻿using HRMS_With_CoreMVC_RepoPattern.Models;
 
 
-﻿using HRMS_With_CoreMVC_RepoPattern.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace HRMS_With_CoreMVC_RepoPattern.Models
@@ -61,5 +59,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Models
         public List<Tasks> Task { get; set; }
 
         public List<TaskBoards> TaskBoard { get; set; }
+
     }
 }

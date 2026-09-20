@@ -7,25 +7,22 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
     {
         private readonly IPayslipReportRepository payslipReportRepository;
 
-        public PayslipReportController(
-            IPayslipReportRepository payslipReportRepository)
+        public PayslipReportController(IPayslipReportRepository payslipReportRepository)
         {
             this.payslipReportRepository = payslipReportRepository;
         }
 
         public async Task<IActionResult> Index()
         {
-            var payslipReports =
-                await payslipReportRepository.fetchPayslipReports();
+            var payslipReports = await payslipReportRepository.fetchPayslipReports();
 
-            ViewBag.TotalPayslips =
-                await payslipReportRepository.fetchTotalPayslips();
+            ViewBag.TotalPayslips = await payslipReportRepository.fetchTotalPayslips();
+            ViewBag.TotalPayroll = await payslipReportRepository.fetchTotalPayroll();
+            ViewBag.TotalNetPay = await payslipReportRepository.fetchTotalNetPay();
 
-            ViewBag.TotalPayroll =
-                await payslipReportRepository.fetchTotalPayroll();
+            var salaryChartData = await payslipReportRepository.fetchSalaryChartData();
 
-            ViewBag.TotalNetPay =
-                await payslipReportRepository.fetchTotalNetPay();
+            ViewBag.SalaryChartData = salaryChartData;
 
             return View(payslipReports);
         }

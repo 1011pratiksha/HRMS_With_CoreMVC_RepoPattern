@@ -1,83 +1,331 @@
 ﻿@model List<HRMS_With_CoreMVC_RepoPattern.Models.Termination>
 
 @{
-    ViewData["Title"] = "Termination List";
+    ViewData["Title"] = "Termination";
 }
 
-@if (TempData["msg"] != null)
-{
-    <script>
-        alert('@TempData["msg"]');
-    </script>
-}
+<div class="container-fluid mt-4">
 
-<h2>Termination List</h2>
-
-<a asp-controller="Termination"asp-action="AddTermination">
-    Add Termination
-</a>
-
-<br />
-<br />
-
-<table border="1">
-
-    <tr>
-        <th>Termination ID</th>
-        <th>Employee</th>
-        <th>Termination Type</th>
-        <th>Notice Date</th>
-        <th>Resign Date</th>
-        <th>Reason</th>
-        <th>Action</th>
-    </tr>
-
-    @foreach (var item in Model)
+    @if (TempData["msg"] != null)
     {
-        <tr>
-
-            <td>
-                @item.TerminationId
-            </td>
-
-            <td>
-                @if (item.User != null)
-                {
-                    @item.User.FirstName @item.User.LastName
-                }
-            </td>
-
-            <td>
-                @item.TerminationType
-            </td>
-
-            <td>
-                @item.NoticeDate.ToString("dd/MM/yyyy")
-            </td>
-
-            <td>
-                @item.ResignDate.ToString("dd/MM/yyyy")
-            </td>
-
-            <td>
-                @item.Reason
-            </td>
-
-            <td>
-
-                <a asp-controller="Termination" asp-action="EditTermination" asp-route-id="@item.TerminationId">Edit</a>
-
-                <form asp-controller="Termination" asp-action="DeleteTermination" method="post">
-
-                    <input type="hidden" name="id" value="@item.TerminationId" />
-
-                    <button type="submit" onclick="return confirm('Are you sure you want to delete this termination?');">Delete</button>
-
-                </form>
-
-            </td>
-
-        </tr>
+        <div class="alert alert-success alert-dismissible fade show">
+            @TempData["msg"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
     }
 
-</table>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold mb-1">Termination</h3>
+            <p class="text-muted mb-0">Manage employee termination</p>
+        </div>
+
+        <button type="button" class="btn text-white" style="background-color:#ff641f;" data-bs-toggle="modal" data-bs-target="#addTerminationModal">
+            <i class="bi bi-plus-lg"></i>
+            Add Termination
+        </button>
+    </div>
+
+    <div class="card shadow-sm border-0 mb-3">
+        <div class="card-body">
+            <div class="row align-items-end">
+                <div class="col-md-3 mb-2">
+                    <label class="form-label">Show Entries</label>
+                    <select id="pageSize" class="form-select" style="width:150px;">
+                        <option value="5">5</option>
+                        <option value="10" selected>10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                    </select>
+                </div>
+
+                <div class="col-md-5 mb-2">
+                    <label class="form-label">Filter</label>
+                    <form asp-controller="Termination" asp-action="Index" method="get" class="d-flex gap-2">
+                        <select name="sortType" class="form-select" onchange="this.form.submit()">
+                            <option value="">Sort By</option>
+                            <option value="Ascending" selected="@(ViewBag.SortType == "Ascending")">Ascending</option>
+                            <option value="Descending" selected="@(ViewBag.SortType == "Descending")">Descending</option>
+                        </select>
+
+                        <select name="dateFilter" class="form-select" onchange="this.form.submit()">
+                            <option value="">All</option>
+                            <option value="Today" selected="@(ViewBag.DateFilter == "Today")">Today</option>
+                            <option value="LastWeek" selected="@(ViewBag.DateFilter == "LastWeek")">Last Week</option>
+                            <option value="LastMonth" selected="@(ViewBag.DateFilter == "LastMonth")">Last Month</option>
+                            <option value="LastYear" selected="@(ViewBag.DateFilter == "LastYear")">Last Year</option>
+                        </select>
+                    </form>
+                </div>
+
+                <div class="col-md-4 mb-2">
+                    <label class="form-label">Search</label>
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search..." />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4">#</th>
+                            <th>Employee</th>
+                            <th>Termination Type</th>
+                            <th>Notice Date</th>
+                            <th>Resign Date</th>
+                            <th>Reason</th>
+                            <th class="text-center">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="terminationBody">
+                        @if (Model != null && Model.Count > 0)
+                        {
+                            int count = 1;
+
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="ps-4">@count</td>
+
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            @if (item.User != null)
+                                            {
+                                                @if (!string.IsNullOrWhiteSpace(item.User.ProfilePicture))
+                                                {
+                                                    <img src="@Url.Content(item.User.ProfilePicture)" class="rounded-circle me-2" style="width:40px;height:40px;object-fit:cover;" />
+                                                }
+                                                else
+                                                {
+                                                    <div class="rounded-circle bg-light text-secondary d-flex align-items-center justify-content-center me-2" style="width:40px;height:40px;">
+                                                        <i class="bi bi-person"></i>
+                                                    </div>
+                                                }
+
+                                                <span class="fw-semibold">@item.User.FirstName @item.User.LastName</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">No User</span>
+                                            }
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <span class="badge bg-danger">@item.TerminationType</span>
+                                    </td>
+
+                                    <td>@item.NoticeDate.ToString("dd-MM-yyyy")</td>
+                                    <td>@item.ResignDate.ToString("dd-MM-yyyy")</td>
+
+                                    <td>
+                                        @if (!string.IsNullOrWhiteSpace(item.Reason))
+                                        {
+                                            @(item.Reason.Length > 40 ? item.Reason.Substring(0, 40) + "..." : item.Reason)
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">-</span>
+                                        }
+                                    </td>
+
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-sm btn-outline-primary me-1" data-bs-toggle="modal" data-bs-target="#editTerminationModal" data-id="@item.TerminationId" data-userid="@item.UserId" data-type="@item.TerminationType" data-notice="@item.NoticeDate.ToString("yyyy-MM-dd")" data-resign="@item.ResignDate.ToString("yyyy-MM-dd")" data-reason="@item.Reason">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+
+                                        <form asp-controller="Termination" asp-action="DeleteTermination" asp-route-id="@item.TerminationId" method="post" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this termination record?');">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+
+                                count++;
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="7" class="text-center text-muted py-5">No termination records found.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="addTerminationModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header text-white" style="background-color:#ff641f;">
+                <h5 class="modal-title">Add Termination</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <form asp-controller="Termination" asp-action="AddTermination" method="post">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Employee</label>
+                            <select name="UserId" class="form-select" required>
+                                <option value="">Select Employee</option>
+                                @foreach (var user in ViewBag.Users)
+                                {
+                                    <option value="@user.UserId">@user.FirstName @user.LastName</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Termination Type</label>
+                            <select name="TerminationType" class="form-select" required>
+                                <option value="">Select Termination Type</option>
+                                @foreach (var type in ViewBag.TerminationTypes)
+                                {
+                                    <option value="@type">@type</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Notice Date</label>
+                            <input type="date" name="NoticeDate" class="form-control" required />
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Resign Date</label>
+                            <input type="date" name="ResignDate" class="form-control" required />
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <label class="form-label">Reason</label>
+                            <textarea name="Reason" class="form-control" rows="4" placeholder="Enter reason" required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="text-end">
+                        <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn text-white" style="background-color:#ff641f;">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editTerminationModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header text-white" style="background-color:#ff641f;">
+                <h5 class="modal-title">Edit Termination</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <form asp-controller="Termination" asp-action="EditTermination" method="post">
+                    <input type="hidden" id="editTerminationId" name="TerminationId" />
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Employee</label>
+                            <select id="editUserId" name="UserId" class="form-select" required>
+                                <option value="">Select Employee</option>
+                                @foreach (var user in ViewBag.Users)
+                                {
+                                    <option value="@user.UserId">@user.FirstName @user.LastName</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Termination Type</label>
+                            <select id="editTerminationType" name="TerminationType" class="form-select" required>
+                                <option value="">Select Termination Type</option>
+                                @foreach (var type in ViewBag.TerminationTypes)
+                                {
+                                    <option value="@type">@type</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Notice Date</label>
+                            <input type="date" id="editNoticeDate" name="NoticeDate" class="form-control" required />
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Resign Date</label>
+                            <input type="date" id="editResignDate" name="ResignDate" class="form-control" required />
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <label class="form-label">Reason</label>
+                            <textarea id="editReason" name="Reason" class="form-control" rows="4" placeholder="Enter reason" required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="text-end">
+                        <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn text-white" style="background-color:#ff641f;">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var editModal = document.getElementById('editTerminationModal');
+
+    editModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        var id = button.getAttribute('data-id');
+        var userId = button.getAttribute('data-userid');
+        var type = button.getAttribute('data-type');
+        var notice = button.getAttribute('data-notice');
+        var resign = button.getAttribute('data-resign');
+        var reason = button.getAttribute('data-reason');
+
+        document.getElementById('editTerminationId').value = id;
+        document.getElementById('editUserId').value = userId;
+        document.getElementById('editTerminationType').value = type;
+        document.getElementById('editNoticeDate').value = notice;
+        document.getElementById('editResignDate').value = resign;
+        document.getElementById('editReason').value = reason;
+    });
+
+    document.getElementById("searchInput").addEventListener("keyup", function () {
+        let value = this.value.toLowerCase();
+        let rows = document.querySelectorAll("#terminationBody tr");
+
+        rows.forEach(function (row) {
+            let text = row.innerText.toLowerCase();
+            row.style.display = text.includes(value) ? "" : "none";
+        });
+    });
+
+    document.getElementById("pageSize").addEventListener("change", function () {
+        let size = parseInt(this.value);
+        let rows = document.querySelectorAll("#terminationBody tr");
+        let count = 0;
+
+        rows.forEach(function (row) {
+            if (count < size) {
+                row.style.display = "";
+                count++;
+            } else {
+                row.style.display = "none";
+            }
+        });
+    });
+</script>

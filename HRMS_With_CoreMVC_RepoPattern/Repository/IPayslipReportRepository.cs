@@ -11,5 +11,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Repository
         Task<decimal> fetchTotalNetPay();
 
         Task<IEnumerable<PayslipReport>> fetchPayslipReports();
+
+        Task<Dictionary<int, decimal>> fetchSalaryChartData();
     }
 }
