@@ -14,45 +14,43 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
             this.context = context;
         }
 
-        public string AddTermination(Termination t)
+        public async Task<string> AddTermination(Termination t)
         {
             context.Termination.Add(t);
-            context.SaveChanges();
-
+            await context.SaveChangesAsync();
             return "Added Successfully";
         }
 
-        public List<Termination> GetTerminations()
+        public async Task<List<Termination>> GetTerminations()
         {
-            return context.Termination
+            return await context.Termination
                 .Include(t => t.User)
-                .ToList();
+                .ToListAsync();
         }
 
-        public Termination GetTerminationById(int id)
+        public async Task<Termination?> GetTerminationById(int id)
         {
-            return context.Termination
+            return await context.Termination
                 .Include(t => t.User)
-                .FirstOrDefault(t => t.TerminationId == id);
+                .FirstOrDefaultAsync(t => t.TerminationId == id);
         }
 
-        public string UpdateTermination(Termination t)
+        public async Task<string> UpdateTermination(Termination t)
         {
             context.Termination.Update(t);
-            context.SaveChanges();
-
+            await context.SaveChangesAsync();
             return "Updated Successfully";
         }
 
-        public string DeleteTermination(int id)
+        public async Task<string> DeleteTermination(int id)
         {
-            Termination t = context.Termination.Find(id);
+            Termination? t = await context.Termination
+                .FirstOrDefaultAsync(x => x.TerminationId == id);
 
             if (t != null)
             {
                 context.Termination.Remove(t);
-                context.SaveChanges();
-
+                await context.SaveChangesAsync();
                 return "Delete Successfully";
             }
 

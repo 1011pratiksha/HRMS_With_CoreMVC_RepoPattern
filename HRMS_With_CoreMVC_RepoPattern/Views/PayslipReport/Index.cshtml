@@ -2,276 +2,447 @@
 
 @{
     ViewData["Title"] = "Payslip Report";
+
+    decimal totalPayroll = Convert.ToDecimal(ViewBag.TotalPayroll ?? 0);
+    decimal totalNetPay = Convert.ToDecimal(ViewBag.TotalNetPay ?? 0);
+    int totalPayslips = Convert.ToInt32(ViewBag.TotalPayslips ?? 0);
+    decimal deductions = totalPayroll - totalNetPay;
+    decimal averageNetPay = totalPayslips > 0 ? totalNetPay / totalPayslips : 0;
 }
 
-<div class="container-fluid">
-
-    <!-- Page Header -->
-    <div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
-
-        <div class="my-auto mb-2">
-            <h2 class="mb-1">Payslip Report</h2>
-
-            <nav>
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item">
-                        <a href="/">HR</a>
-                    </li>
-
-                    <li class="breadcrumb-item active">
-                        Payslip Report
-                    </li>
-                </ol>
-            </nav>
-        </div>
-
+<div class="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
+    <div class="my-auto mb-2">
+        <h2 class="mb-1">Payslip Report</h2>
+        <nav>
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item">
+                    <a href="/"><i class="ti ti-smart-home"></i></a>
+                </li>
+                <li class="breadcrumb-item">HR</li>
+                <li class="breadcrumb-item active">Payslip Report</li>
+            </ol>
+        </nav>
     </div>
 
+    <div class="d-flex align-items-center flex-wrap mb-2">
+        <div class="dropdown">
+            <button type="button" class="btn btn-white border dropdown-toggle d-inline-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="ti ti-file-export me-1"></i> Export
+            </button>
 
-    <!-- Summary Cards -->
-    <div class="row">
+            <ul class="dropdown-menu dropdown-menu-end p-2">
+                <li>
+                    <button type="button" class="dropdown-item rounded-1" id="exportPdf">
+                        <i class="ti ti-file-type-pdf me-1 text-danger"></i> Export as PDF
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="dropdown-item rounded-1" id="exportExcel">
+                        <i class="ti ti-file-type-xls me-1 text-success"></i> Export as Excel
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
 
-        <!-- Total Payroll -->
-        <div class="col-xl-3 col-md-6 mb-4">
+<div class="row">
+    <div class="col-xl-6 d-flex">
+        <div class="row flex-fill">
 
-            <div class="card shadow-sm">
+            <div class="col-lg-6 col-md-6 d-flex">
+                <div class="card flex-fill">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <p class="mb-2 text-muted">Total Payroll</p>
+                                <h3 class="mb-3">₹@totalPayroll.ToString("N2")</h3>
+                            </div>
+                            <div class="text-warning">
+                                <i class="ti ti-wallet fs-24"></i>
+                            </div>
+                        </div>
 
-                <div class="card-body">
-
-                    <h6 class="text-muted">
-                        Total Payroll
-                    </h6>
-
-                    <h3 class="mb-0">
-                        ₹@Convert.ToDecimal(ViewBag.TotalPayroll).ToString("N2")
-                    </h3>
-
+                        <div class="bg-light rounded p-2">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="text-muted small">Total Payslips</span>
+                                <span class="text-success small"><i class="ti ti-arrow-up-right"></i> @totalPayslips</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
 
+            <div class="col-lg-6 col-md-6 d-flex">
+                <div class="card flex-fill">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <p class="mb-2 text-muted">Deductions</p>
+                                <h3 class="mb-3">₹@deductions.ToString("N2")</h3>
+                            </div>
+                            <div class="text-danger">
+                                <i class="ti ti-cash-off fs-24"></i>
+                            </div>
+                        </div>
+
+                        <div class="bg-light rounded p-2">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="text-muted small">Payroll Difference</span>
+                                <span class="text-danger small"><i class="ti ti-arrow-down-right"></i> ₹@deductions.ToString("N2")</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 d-flex">
+                <div class="card flex-fill">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <p class="mb-2 text-muted">Net Pay</p>
+                                <h3 class="mb-3">₹@totalNetPay.ToString("N2")</h3>
+                            </div>
+                            <div class="text-success">
+                                <i class="ti ti-currency-rupee fs-24"></i>
+                            </div>
+                        </div>
+
+                        <div class="bg-light rounded p-2">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="text-muted small">Average</span>
+                                <span class="text-success small"><i class="ti ti-arrow-up-right"></i> ₹@averageNetPay.ToString("N2")</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 d-flex">
+                <div class="card flex-fill">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <p class="mb-2 text-muted">Earnings</p>
+                                <h3 class="mb-3">₹@totalPayroll.ToString("N2")</h3>
+                            </div>
+                            <div class="text-info">
+                                <i class="ti ti-cash fs-24"></i>
+                            </div>
+                        </div>
+
+                        <div class="bg-light rounded p-2">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="text-muted small">Total Salary</span>
+                                <span class="text-info small"><i class="ti ti-arrow-up-right"></i> ₹@totalPayroll.ToString("N2")</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>
-
-
-        <!-- Total Net Pay -->
-        <div class="col-xl-3 col-md-6 mb-4">
-
-            <div class="card shadow-sm">
-
-                <div class="card-body">
-
-                    <h6 class="text-muted">
-                        Net Pay
-                    </h6>
-
-                    <h3 class="mb-0">
-                        ₹@Convert.ToDecimal(ViewBag.TotalNetPay).ToString("N2")
-                    </h3>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- Total Payslips -->
-        <div class="col-xl-3 col-md-6 mb-4">
-
-            <div class="card shadow-sm">
-
-                <div class="card-body">
-
-                    <h6 class="text-muted">
-                        Total Payslips
-                    </h6>
-
-                    <h3 class="mb-0">
-                        @ViewBag.TotalPayslips
-                    </h3>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- Average Net Pay -->
-        <div class="col-xl-3 col-md-6 mb-4">
-
-            <div class="card shadow-sm">
-
-                <div class="card-body">
-
-                    <h6 class="text-muted">
-                        Average Net Pay
-                    </h6>
-
-                    <h3 class="mb-0">
-
-                        @{
-                            decimal totalNetPay =
-                                Convert.ToDecimal(ViewBag.TotalNetPay);
-
-                            int totalPayslips =
-                                Convert.ToInt32(ViewBag.TotalPayslips);
-
-                            decimal averageNetPay =
-                                totalPayslips > 0
-                                ? totalNetPay / totalPayslips
-                                : 0;
-                        }
-
-                        ₹@averageNetPay.ToString("N2")
-
-                    </h3>
-
-                </div>
-
-            </div>
-
-        </div>
-
     </div>
 
+    <div class="col-xl-6 d-flex">
+        <div class="card flex-fill">
+            <div class="card-header border-0 pb-0">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <span class="me-2"><i class="ti ti-chart-line text-danger"></i></span>
+                        <h5 class="mb-0">Payroll</h5>
+                    </div>
 
-    <!-- Payslip List -->
-
-    <div class="card shadow-sm">
-
-        <div class="card-body">
-
-            <div class="d-flex justify-content-between align-items-center mb-3">
-
-                <h4 class="mb-0">
-                    Payslip List
-                </h4>
-
+                    <div class="d-flex align-items-center">
+                        <span class="me-2" style="width:45px;height:14px;background:#ff6384;display:inline-block;"></span>
+                        <span class="small">Total Salary</span>
+                    </div>
+                </div>
             </div>
 
+            <div class="card-body">
+                <div style="height:250px;">
+                    <canvas id="payrollChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-            <div class="table-responsive">
+<div class="card mt-3">
+    <div class="card-header">
+        <div class="d-flex align-items-center justify-content-between">
+            <h5 class="mb-0">Payslip List</h5>
 
-                <table id="payslipReportTable"
-                       class="table table-hover align-middle">
+            <div class="d-flex align-items-center gap-2">
+                <div class="dropdown">
+                    <button type="button" id="monthDropdownButton" class="btn btn-sm text-white dropdown-toggle" style="background:#ff6b00;" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                        Month
+                    </button>
 
-                    <thead>
+                    <ul class="dropdown-menu dropdown-menu-end p-2" id="monthDropdownMenu" style="min-width:160px;z-index:1055;">
+                        <li><button type="button" class="dropdown-item rounded-1 month-option" data-month="">All Months</button></li>
+                        <li><button type="button" class="dropdown-item rounded-1 month-option" data-month="January">January</button></li>
+                        <li><button type="button" class="dropdown-item rounded-1 month-option" data-month="February">February</button></li>
+                        <li><button type="button" class="dropdown-item rounded-1 month-option" data-month="March">March</button></li>
+                        <li><button type="button" class="dropdown-item rounded-1 month-option" data-month="April">April</button></li>
+                        <li><button type="button" class="dropdown-item rounded-1 month-option" data-month="May">May</button></li>
+                        <li><button type="button" class="dropdown-item rounded-1 month-option" data-month="June">June</button></li>
+                        <li><button type="button" class="dropdown-item rounded-1 month-option" data-month="July">July</button></li>
+                        <li><button type="button" class="dropdown-item rounded-1 month-option" data-month="August">August</button></li>
+                        <li><button type="button" class="dropdown-item rounded-1 month-option" data-month="September">September</button></li>
+                        <li><button type="button" class="dropdown-item rounded-1 month-option" data-month="October">October</button></li>
+                        <li><button type="button" class="dropdown-item rounded-1 month-option" data-month="November">November</button></li>
+                        <li><button type="button" class="dropdown-item rounded-1 month-option" data-month="December">December</button></li>
+                    </ul>
+                </div>
 
-                        <tr>
+                <div class="dropdown">
+                    <button type="button" id="sortDropdownButton" class="btn btn-sm btn-white border dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                        Sort By : Last 7 Days
+                    </button>
 
-                            <th>#</th>
+                    <ul class="dropdown-menu dropdown-menu-end p-2" style="min-width:180px;z-index:1055;">
+                        <li><button type="button" class="dropdown-item rounded-1 sort-option" data-sort="last7days">Last 7 Days</button></li>
+                        <li><button type="button" class="dropdown-item rounded-1 sort-option" data-sort="ascending">Ascending</button></li>
+                        <li><button type="button" class="dropdown-item rounded-1 sort-option" data-sort="descending">Descending</button></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-                            <th>Employee</th>
+<div class="card mt-3">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table id="payslipReportTable" class="table table-hover align-middle w-100 mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Payslip ID</th>
+                        <th>Employee</th>
+                        <th>Designation</th>
+                        <th>Paid Amount</th>
+                        <th>Paid Month</th>
+                        <th>Paid Year</th>
+                    </tr>
+                </thead>
 
-                            <th>Designation</th>
-
-                            <th>Paid Amount</th>
-
-                            <th>Paid Month</th>
-
-                            <th>Paid Year</th>
-
-                        </tr>
-
-                    </thead>
-
-
-                    <tbody>
-
-                        @foreach (var item in Model)
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
                         {
                             <tr>
+                                <td>@item.PayslipId</td>
 
                                 <td>
-                                    @item.PayslipId
-                                </td>
-
-
-                                <td>
-
                                     <div class="d-flex align-items-center">
-
-                                        @if (!string.IsNullOrEmpty(item.ProfilePicture))
+                                        @if (!string.IsNullOrWhiteSpace(item.ProfilePicture))
                                         {
-                                            <img src="@item.ProfilePicture"
-                                                 alt="Profile"
-                                                 class="rounded-circle me-2"
-                                                 style="width:40px;height:40px;object-fit:cover;" />
+                                            <img src="@Url.Content(item.ProfilePicture)" alt="Profile" class="rounded-circle me-2" width="40" height="40" style="width:40px;height:40px;object-fit:cover;" />
                                         }
                                         else
                                         {
-                                            <div class="rounded-circle bg-light me-2 d-flex align-items-center justify-content-center"
-                                                 style="width:40px;height:40px;">
-                                                <i class="fa fa-user"></i>
+                                            <div class="rounded-circle bg-light me-2 d-flex align-items-center justify-content-center" style="width:40px;height:40px;">
+                                                <i class="ti ti-user text-secondary"></i>
                                             </div>
                                         }
 
-                                        <span>
-                                            @item.UserName
-                                        </span>
-
+                                        <span>@item.UserName</span>
                                     </div>
-
                                 </td>
 
-
-                                <td>
-                                    @item.Designation
-                                </td>
-
-
-                                <td>
-                                    ₹@item.PaidAmount.ToString("N2")
-                                </td>
-
-
-                                <td>
-                                    @item.PaidMonth
-                                </td>
-
-
-                                <td>
-                                    @item.PaidYear
-                                </td>
-
+                                <td>@item.Designation</td>
+                                <td>₹@item.PaidAmount.ToString("N2")</td>
+                                <td>@item.PaidMonth</td>
+                                <td>@item.PaidYear</td>
                             </tr>
                         }
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center py-4">No payslip records found.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
-
     </div>
-
 </div>
-
 
 @section Scripts
 {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"></script>
+
     <script>
+        $(document).ready(function () {
 
-        $(document).ready(function() {
-
-            $('#payslipReportTable').DataTable({
-
-                pageLength: 10,
-
-                lengthMenu: [5, 10, 25, 50, 100],
-
+            var table = $('#payslipReportTable').DataTable({
+                pageLength: 5,
+                lengthMenu: [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
                 ordering: true,
-
                 searching: true,
-
-                responsive: true
-
+                info: true,
+                order: [[5, 'desc']]
             });
 
+            $('.month-option').on('click', function () {
+
+                var month = $(this).data('month');
+
+                if (!month) {
+                    table.column(4).search('').draw();
+                    $('#monthDropdownButton').text('Month');
+                }
+                else {
+                    table.column(4).search('^' + month + '$', true, false).draw();
+                    $('#monthDropdownButton').text(month);
+                }
+            });
+
+            $('.sort-option').on('click', function () {
+
+                var sort = $(this).data('sort');
+
+                if (sort === 'last7days') {
+                    table.order([[5, 'desc'], [4, 'desc']]).draw();
+                    $('#sortDropdownButton').text('Sort By : Last 7 Days');
+                }
+                else if (sort === 'ascending') {
+                    table.order([[3, 'asc']]).draw();
+                    $('#sortDropdownButton').text('Sort By : Ascending');
+                }
+                else if (sort === 'descending') {
+                    table.order([[3, 'desc']]).draw();
+                    $('#sortDropdownButton').text('Sort By : Descending');
+                }
+            });
+
+            $('#exportExcel').on('click', function () {
+
+                var rows = [];
+
+                table.rows({ search: 'applied' }).every(function () {
+
+                    var row = this.data();
+
+                    rows.push({
+                        PayslipID: $('<div>').html(row[0]).text().trim(),
+                        Employee: $('<div>').html(row[1]).text().trim(),
+                        Designation: $('<div>').html(row[2]).text().trim(),
+                        PaidAmount: $('<div>').html(row[3]).text().trim(),
+                        PaidMonth: $('<div>').html(row[4]).text().trim(),
+                        PaidYear: $('<div>').html(row[5]).text().trim()
+                    });
+                });
+
+                var worksheet = XLSX.utils.json_to_sheet(rows);
+                var workbook = XLSX.utils.book_new();
+
+                XLSX.utils.book_append_sheet(workbook, worksheet, "Payslip Report");
+                XLSX.writeFile(workbook, "Payslip_Report.xlsx");
+            });
+
+            $('#exportPdf').on('click', function () {
+
+                const { jsPDF } = window.jspdf;
+                var doc = new jsPDF("landscape");
+
+                doc.setFontSize(18);
+                doc.text("Payslip Report", 14, 18);
+
+                doc.setFontSize(10);
+                doc.text("Total Payroll: ₹@totalPayroll.ToString("N2")", 14, 27);
+                doc.text("Net Pay: ₹@totalNetPay.ToString("N2")", 80, 27);
+                doc.text("Total Payslips: @totalPayslips", 145, 27);
+
+                var rows = [];
+
+                table.rows({ search: 'applied' }).every(function () {
+
+                    var row = this.data();
+
+                    rows.push([
+                        row[0],
+                        $('<div>').html(row[1]).text().trim(),
+                        $('<div>').html(row[2]).text().trim(),
+                        $('<div>').html(row[3]).text().trim(),
+                        row[4],
+                        row[5]
+                    ]);
+                });
+
+                doc.autoTable({
+                    head: [["Payslip ID", "Employee", "Designation", "Paid Amount", "Paid Month", "Paid Year"]],
+                    body: rows,
+                    startY: 35,
+                    theme: "grid",
+                    styles: {
+                        fontSize: 8,
+                        cellPadding: 3
+                    }
+                });
+
+                doc.save("Payslip_Report.pdf");
+            });
         });
 
+        document.addEventListener("DOMContentLoaded", function () {
+
+            var canvas = document.getElementById("payrollChart");
+
+            if (!canvas) {
+                return;
+            }
+
+            var salaryChartData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.SalaryChartData));
+            var years = Object.keys(salaryChartData).map(Number).sort();
+            var salaryData = years.map(function (year) {
+                return Number(salaryChartData[year]);
+            });
+
+            new Chart(canvas, {
+                type: "line",
+                data: {
+                    labels: years.map(function (year) {
+                        return year.toString();
+                    }),
+                    datasets: [{
+                        label: "Total Salary",
+                        data: salaryData,
+                        borderColor: "#ff6384",
+                        backgroundColor: "#ff6384",
+                        borderWidth: 4,
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                        tension: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: "top"
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: false
+                        },
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
     </script>
 }

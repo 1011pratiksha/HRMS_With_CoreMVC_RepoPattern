@@ -1,0 +1,775 @@
+﻿@model IEnumerable<HRMS_With_CoreMVC_RepoPattern.Models.TaskReport>
+
+@{
+    ViewData["Title"] = "Task Report";
+
+    int totalTasks = ViewBag.TotalTasks ?? 0;
+    int completedTasks = ViewBag.CompletedTasks ?? 0;
+    int onHoldTasks = ViewBag.OnHoldTasks ?? 0;
+    int overdueTasks = ViewBag.OverdueTasks ?? 0;
+    int completedCount = ViewBag.CompletedCount ?? 0;
+    int pendingCount = ViewBag.PendingCount ?? 0;
+    int inProgressCount = ViewBag.InProgressCount ?? 0;
+    int onHoldCount = ViewBag.OnHoldCount ?? 0;
+}
+
+<div class="container-fluid mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-1">Task Report</h2>
+
+            <nav>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a asp-controller="Home" asp-action="Index" class="text-decoration-none">Home</a>
+                    </li>
+                    <li class="breadcrumb-item active">Task Report</li>
+                </ol>
+            </nav>
+        </div>
+
+        <div class="position-relative">
+
+            <button type="button" id="exportButton" class="btn btn-primary">
+                <i class="bi bi-download"></i> Export <span class="ms-1">▼</span>
+            </button>
+
+            <div id="exportMenu"
+                 class="position-absolute bg-white border rounded shadow"
+                 style="display:none;right:0;top:100%;margin-top:5px;min-width:190px;z-index:9999;">
+
+                <a href="#" id="exportPdf" class="dropdown-item py-3 px-3">
+                    <i class="bi bi-file-earmark-pdf text-danger me-2"></i>
+                    Export as PDF
+                </a>
+
+                <a href="#" id="exportExcel" class="dropdown-item py-3 px-3">
+                    <i class="bi bi-file-earmark-excel text-success me-2"></i>
+                    Export as Excel
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row g-4 mb-4 align-items-stretch">
+
+        <div class="col-lg-6 d-flex">
+
+            <div class="row g-4 w-100 h-100">
+
+                <div class="col-md-6 d-flex">
+                    <div class="card shadow-sm border-0 h-100 w-100">
+
+                        <div class="card-body">
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+                                <div>
+                                    <h6 class="text-muted mb-2">Total Tasks</h6>
+                                    <h2 class="fw-bold mb-0">@totalTasks</h2>
+                                </div>
+
+                                <div>
+                                    <i class="bi bi-list-task fs-1 text-primary"></i>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-md-6 d-flex">
+                    <div class="card shadow-sm border-0 h-100 w-100">
+
+                        <div class="card-body">
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+                                <div>
+                                    <h6 class="text-muted mb-2">Completed Tasks</h6>
+                                    <h2 class="fw-bold text-success mb-0">@completedTasks</h2>
+                                </div>
+
+                                <div>
+                                    <i class="bi bi-check-circle fs-1 text-success"></i>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-md-6 d-flex">
+                    <div class="card shadow-sm border-0 h-100 w-100">
+
+                        <div class="card-body">
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+                                <div>
+                                    <h6 class="text-muted mb-2">OnHold Tasks</h6>
+                                    <h2 class="fw-bold text-warning mb-0">@onHoldTasks</h2>
+                                </div>
+
+                                <div>
+                                    <i class="bi bi-pause-circle fs-1 text-warning"></i>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-md-6 d-flex">
+                    <div class="card shadow-sm border-0 h-100 w-100">
+
+                        <div class="card-body">
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+                                <div>
+                                    <h6 class="text-muted mb-2">Overdue Tasks</h6>
+                                    <h2 class="fw-bold text-danger mb-0">@overdueTasks</h2>
+                                </div>
+
+                                <div>
+                                    <i class="bi bi-clock-history fs-1 text-danger"></i>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-6 d-flex">
+
+            <div class="card shadow-sm border-0 h-100 w-100">
+
+                <div class="card-header bg-white">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <h5 class="mb-0 fw-bold">
+                            <i class="bi bi-pie-chart text-danger me-2"></i> Tasks
+                        </h5>
+
+                        <span class="fw-semibold">Task Data</span>
+
+                    </div>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="row align-items-center h-100">
+
+                        <div class="col-md-7">
+
+                            <div style="height:260px;">
+                                <canvas id="taskChart"></canvas>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-5">
+
+                            <h6 class="fw-bold mb-3">Task Summary</h6>
+
+                            <p class="mb-3">
+                                <span class="badge rounded" style="background:#28a745;">&nbsp;</span>
+                                Completed : <strong>@completedCount</strong>
+                            </p>
+
+                            <p class="mb-3">
+                                <span class="badge rounded" style="background:#0d6efd;">&nbsp;</span>
+                                Pending : <strong>@pendingCount</strong>
+                            </p>
+
+                            <p class="mb-3">
+                                <span class="badge rounded" style="background:#ff9800;">&nbsp;</span>
+                                InProgress : <strong>@inProgressCount</strong>
+                            </p>
+
+                            <p class="mb-3">
+                                <span class="badge rounded" style="background:#9c27b0;">&nbsp;</span>
+                                On Hold : <strong>@onHoldCount</strong>
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-body">
+
+            <form method="get"
+                  asp-controller="ProjectTaskReport"
+                  asp-action="TaskReport">
+
+                <div class="row g-3 align-items-end">
+
+                    <div class="col-md-4">
+
+                        <label class="form-label fw-semibold">
+                            Priority
+                        </label>
+
+                        <select name="priorityType"
+                                class="form-select"
+                                onchange="this.form.submit()">
+
+                            <option value="">All Priority</option>
+                            <option value="High" selected="@(ViewBag.priorityType == "High")">High</option>
+                            <option value="Medium" selected="@(ViewBag.priorityType == "Medium")">Medium</option>
+                            <option value="Low" selected="@(ViewBag.priorityType == "Low")">Low</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <label class="form-label fw-semibold">
+                            Status
+                        </label>
+
+                        <select name="statusType"
+                                class="form-select"
+                                onchange="this.form.submit()">
+
+                            <option value="">All Status</option>
+                            <option value="Completed" selected="@(ViewBag.statusType == "Completed")">Completed</option>
+                            <option value="Pending" selected="@(ViewBag.statusType == "Pending")">Pending</option>
+                            <option value="In Progress" selected="@(ViewBag.statusType == "In Progress")">In Progress</option>
+                            <option value="On Hold" selected="@(ViewBag.statusType == "On Hold")">On Hold</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <label class="form-label fw-semibold">
+                            Sort By
+                        </label>
+
+                        <select name="sortType"
+                                class="form-select"
+                                onchange="this.form.submit()">
+
+                            <option value="">Sort By</option>
+                            <option value="Ascending" selected="@(ViewBag.sortType == "Ascending")">Ascending</option>
+                            <option value="Descending" selected="@(ViewBag.sortType == "Descending")">Descending</option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-header bg-white">
+            <h5 class="mb-0 fw-bold">Tasks List</h5>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row mb-3 align-items-center">
+
+                <div class="col-md-6">
+
+                    <label class="d-flex align-items-center gap-2">
+
+                        <span>Show</span>
+
+                        <select id="pageSize"
+                                class="form-select"
+                                style="width:auto;">
+
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+
+                        </select>
+
+                        <span>entries</span>
+
+                    </label>
+
+                </div>
+
+                <div class="col-md-6 text-md-end">
+
+                    <label class="d-inline-flex align-items-center gap-2">
+
+                        <span>Search:</span>
+
+                        <input type="text"
+                               id="taskSearch"
+                               class="form-control"
+                               style="width:200px;"
+                               placeholder="Search..." />
+
+                    </label>
+
+                </div>
+
+            </div>
+
+            <div class="table-responsive">
+
+                <table id="taskTable"
+                       class="table table-bordered table-hover align-middle">
+
+                    <thead class="table-light">
+
+                        <tr>
+                            <th>Task ID</th>
+                            <th>Task Name</th>
+                            <th>Project Name</th>
+                            <th>Due Date</th>
+                            <th>Priority</th>
+                            <th>Status</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td>@item.TaskId</td>
+                                <td>@item.Title</td>
+                                <td>@item.ProjectName</td>
+                                <td>@item.Deadline.ToString("yyyy-MM-dd")</td>
+
+                                <td>
+
+                                    @if (item.Priority == "High")
+                                    {
+                                        <span class="badge bg-danger">High</span>
+                                    }
+                                    else if (item.Priority == "Medium")
+                                    {
+                                        <span class="badge bg-warning text-dark">Medium</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-success">@item.Priority</span>
+                                    }
+
+                                </td>
+
+                                <td>
+
+                                    @if (item.Status == "Completed")
+                                    {
+                                        <span class="badge bg-success">Completed</span>
+                                    }
+                                    else if (item.Status == "In Progress")
+                                    {
+                                        <span class="badge bg-info text-dark">In Progress</span>
+                                    }
+                                    else if (item.Status == "Pending")
+                                    {
+                                        <span class="badge bg-primary">Pending</span>
+                                    }
+                                    else if (item.Status == "On Hold")
+                                    {
+                                        <span class="badge bg-warning text-dark">On Hold</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">@item.Status</span>
+                                    }
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-3">
+
+                <div id="showingText"></div>
+
+                <div>
+                    <button id="previousButton"
+                            class="btn btn-outline-secondary btn-sm">
+                        Previous
+                    </button>
+
+                    <button id="nextButton"
+                            class="btn btn-outline-primary btn-sm">
+                        Next
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+<script>
+
+    const completedCount = @completedCount;
+    const pendingCount = @pendingCount;
+    const inProgressCount = @inProgressCount;
+    const onHoldCount = @onHoldCount;
+
+    const taskCanvas = document.getElementById("taskChart");
+
+    new Chart(taskCanvas, {
+        type: "doughnut",
+        data: {
+            labels: [
+                "Completed",
+                "Pending",
+                "In Progress",
+                "On Hold"
+            ],
+            datasets: [{
+                data: [
+                    completedCount,
+                    pendingCount,
+                    inProgressCount,
+                    onHoldCount
+                ],
+                backgroundColor: [
+                    "#28a745",
+                    "#0d6efd",
+                    "#ff9800",
+                    "#9c27b0"
+                ],
+                borderColor: "#ffffff",
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: "65%",
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+
+</script>
+
+<script>
+
+    let currentPage = 1;
+
+    function getRows() {
+        return Array.from(document.querySelectorAll("#taskTable tbody tr"));
+    }
+
+    function updateTable() {
+
+        const searchText =
+            document.getElementById("taskSearch").value.toLowerCase();
+
+        const pageSize =
+            parseInt(document.getElementById("pageSize").value);
+
+        const allRows = getRows();
+
+        const filteredRows = allRows.filter(function (row) {
+            return row.innerText.toLowerCase().includes(searchText);
+        });
+
+        const totalRows = filteredRows.length;
+        const totalPages = Math.ceil(totalRows / pageSize);
+
+        if (currentPage > totalPages) {
+            currentPage = totalPages || 1;
+        }
+
+        allRows.forEach(function (row) {
+            row.style.display = "none";
+        });
+
+        const start = (currentPage - 1) * pageSize;
+        const end = start + pageSize;
+
+        filteredRows.slice(start, end).forEach(function (row) {
+            row.style.display = "";
+        });
+
+        const showingText =
+            document.getElementById("showingText");
+
+        if (totalRows === 0) {
+            showingText.innerText = "Showing 0 entries";
+        }
+        else {
+            showingText.innerText =
+                "Showing " +
+                (start + 1) +
+                " to " +
+                Math.min(end, totalRows) +
+                " of " +
+                totalRows +
+                " entries";
+        }
+
+        document.getElementById("previousButton").disabled =
+            currentPage <= 1;
+
+        document.getElementById("nextButton").disabled =
+            currentPage >= totalPages;
+    }
+
+    document.getElementById("taskSearch").addEventListener("input", function () {
+
+        currentPage = 1;
+        updateTable();
+
+    });
+
+    document.getElementById("pageSize").addEventListener("change", function () {
+
+        currentPage = 1;
+        updateTable();
+
+    });
+
+    document.getElementById("previousButton").addEventListener("click", function () {
+
+        if (currentPage > 1) {
+            currentPage--;
+            updateTable();
+        }
+
+    });
+
+    document.getElementById("nextButton").addEventListener("click", function () {
+
+        currentPage++;
+        updateTable();
+
+    });
+
+    updateTable();
+
+</script>
+
+<script>
+
+    const exportButton =
+        document.getElementById("exportButton");
+
+    const exportMenu =
+        document.getElementById("exportMenu");
+
+    exportButton.addEventListener("click", function (e) {
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (exportMenu.style.display === "block") {
+            exportMenu.style.display = "none";
+        }
+        else {
+            exportMenu.style.display = "block";
+        }
+
+    });
+
+    document.addEventListener("click", function () {
+        exportMenu.style.display = "none";
+    });
+
+</script>
+
+<script>
+
+    document.getElementById("exportExcel").addEventListener("click", function (e) {
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        exportMenu.style.display = "none";
+
+        const rows = [];
+
+        rows.push([
+            "Task ID",
+            "Task Name",
+            "Project Name",
+            "Due Date",
+            "Priority",
+            "Status"
+        ]);
+
+        const tableRows =
+            document.querySelectorAll("#taskTable tbody tr");
+
+        tableRows.forEach(function (row) {
+
+            const cells =
+                row.querySelectorAll("td");
+
+            if (cells.length >= 6) {
+
+                rows.push([
+                    cells[0].innerText.trim(),
+                    cells[1].innerText.trim(),
+                    cells[2].innerText.trim(),
+                    cells[3].innerText.trim(),
+                    cells[4].innerText.trim(),
+                    cells[5].innerText.trim()
+                ]);
+
+            }
+
+        });
+
+        const worksheet =
+            XLSX.utils.aoa_to_sheet(rows);
+
+        const workbook =
+            XLSX.utils.book_new();
+
+        XLSX.utils.book_append_sheet(
+            workbook,
+            worksheet,
+            "Task Report"
+        );
+
+        XLSX.writeFile(
+            workbook,
+            "Task_Report.xlsx"
+        );
+
+    });
+
+</script>
+
+<script>
+
+    document.getElementById("exportPdf").addEventListener("click", function (e) {
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        exportMenu.style.display = "none";
+
+        if (!window.jspdf) {
+            alert("PDF library not loaded.");
+            return;
+        }
+
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF("landscape");
+
+        doc.setFontSize(18);
+        doc.text("Task Report", 14, 15);
+
+        const pdfRows = [];
+
+        const tableRows =
+            document.querySelectorAll("#taskTable tbody tr");
+
+        tableRows.forEach(function (row) {
+
+            const cells =
+                row.querySelectorAll("td");
+
+            if (cells.length >= 6) {
+
+                pdfRows.push([
+                    cells[0].innerText.trim(),
+                    cells[1].innerText.trim(),
+                    cells[2].innerText.trim(),
+                    cells[3].innerText.trim(),
+                    cells[4].innerText.trim(),
+                    cells[5].innerText.trim()
+                ]);
+
+            }
+
+        });
+
+        if (typeof doc.autoTable !== "function") {
+            alert("PDF table library not loaded.");
+            return;
+        }
+
+        doc.autoTable({
+            head: [[
+                "Task ID",
+                "Task Name",
+                "Project Name",
+                "Due Date",
+                "Priority",
+                "Status"
+            ]],
+            body: pdfRows,
+            startY: 25,
+            theme: "grid",
+            styles: {
+                fontSize: 9
+            }
+        });
+
+        doc.save("Task_Report.pdf");
+
+    });
+
+</script>

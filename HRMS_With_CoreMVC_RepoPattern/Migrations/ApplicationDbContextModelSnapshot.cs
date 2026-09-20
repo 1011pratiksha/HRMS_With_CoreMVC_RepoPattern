@@ -681,6 +681,38 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     b.ToTable("EventTypes");
                 });
 
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.Experience", b =>
+                {
+                    b.Property<int>("ExperienceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExperienceId"));
+
+                    b.Property<string>("CompanyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DesignationName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("FromDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ToDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ExperienceId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Experiences");
+                });
+
             modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.FileUpload", b =>
                 {
                     b.Property<int>("id")
@@ -1047,16 +1079,11 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserId1")
-                        .HasColumnType("int");
-
                     b.HasKey("AssignedId");
 
                     b.HasIndex("TaskId");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("Taskmember");
                 });
@@ -1499,7 +1526,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -1510,7 +1537,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -1571,7 +1598,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -1597,6 +1624,17 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                         .IsRequired();
 
                     b.Navigation("EventType");
+                });
+
+            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.Experience", b =>
+                {
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.FileUpload", b =>
@@ -1725,14 +1763,10 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                         .IsRequired();
 
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
-                        .WithMany()
+                        .WithMany("TaskMembers")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", null)
-                        .WithMany("TaskMembers")
-                        .HasForeignKey("UserId1");
 
                     b.Navigation("Task");
 
