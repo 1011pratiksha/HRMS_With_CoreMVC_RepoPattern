@@ -1,21 +1,24 @@
-﻿using HRMS_With_CoreMVC_RepoPattern.Models;
+﻿
+using HRMS_With_CoreMVC_RepoPattern.Models;
 using Microsoft.AspNetCore.Http;
 
 namespace HRMS_With_CoreMVC_RepoPattern.Repository
 {
     public interface IProjectService
     {
-        public void AddProject(Projects pro, IFormFile logo, IFormFile file, int[] Users);
+        public Task AddProject(Projects pro, IFormFile logo, IFormFile file, int[] Users);
 
-        public List<User> getUser();
+        public Task<List<User>> getUser();
 
-        public List<User> GetManagers();
+        public Task<List<User>> GetManagers();
 
-        public List<Projects> GetProjects();
+        public Task<List<Projects>> GetProjects();
 
-        public void DeleteProject(int id);
+        public Task DeleteProject(int id);
 
-        public Projects GetById(int id);
-        public void UpdateProject(Projects pro, IFormFile logo, IFormFile file, int[] Users);
+        public Task<Projects> GetById(int id);
+
+        public Task UpdateProject(Projects pro, IFormFile logo, IFormFile file, int[] Users);
     }
 }
+

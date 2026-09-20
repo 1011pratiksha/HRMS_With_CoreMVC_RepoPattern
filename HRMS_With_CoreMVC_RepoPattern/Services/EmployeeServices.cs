@@ -329,7 +329,7 @@ public async Task<List<EmployeeGridViewModel>> GetEmployeeGridData()
                                 x.Task.Status == "Pending");
 
                 // Get employee timesheets
-                var timesheets = await db.Timesheet
+                var timesheets = await db.Timesheets
                     .Where(x => x.UserId == employee.UserId)
                     .ToListAsync();
 

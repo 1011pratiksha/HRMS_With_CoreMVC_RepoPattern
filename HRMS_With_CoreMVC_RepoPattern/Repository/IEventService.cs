@@ -1,17 +1,18 @@
-﻿using HRMS_With_CoreMVC_RepoPattern.Models;
+﻿
+using HRMS_With_CoreMVC_RepoPattern.Models;
 
 namespace HRMS_With_CoreMVC_RepoPattern.Repository
 {
     public interface IEventService
     {
-        public void AddEvent(EventModel model);
+        Task AddEvent(EventModel model);
 
-        public List<EventTypes> GetEventTypes();
+        Task<List<EventTypes>> GetEventTypes();
 
-        public List<EventModel> GetEvent();
+        Task<List<EventModel>> GetEvent();
 
-        public void DeleteEvent(int id);
+        Task DeleteEvent(int id);
 
-        public void UpdateEvent(EventModel model);
+        Task UpdateEvent(EventModel model);
     }
 }

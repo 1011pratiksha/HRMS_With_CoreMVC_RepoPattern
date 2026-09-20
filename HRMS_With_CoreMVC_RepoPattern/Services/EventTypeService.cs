@@ -1,6 +1,8 @@
-﻿using HRMS_With_CoreMVC_RepoPattern.Data;
+﻿
+using HRMS_With_CoreMVC_RepoPattern.Data;
 using HRMS_With_CoreMVC_RepoPattern.Models;
 using HRMS_With_CoreMVC_RepoPattern.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace HRMS_With_CoreMVC_RepoPattern.Services
 {
@@ -13,29 +15,29 @@ namespace HRMS_With_CoreMVC_RepoPattern.Services
             data = context;
         }
 
-
-        public void AddMasterEvent(EventTypes masterEvent)
+        public async Task AddMasterEvent(EventTypes masterEvent)
         {
             data.EventTypes.Add(masterEvent);
-            data.SaveChanges();
+
+            await data.SaveChangesAsync();
         }
 
-        public List<EventTypes> GetMasterEvents()
+        public async Task<List<EventTypes>> GetMasterEvents()
         {
-            var masterData = data.EventTypes.ToList();
+            var masterData = await data.EventTypes.ToListAsync();
+
             return masterData;
-
         }
 
-        public void RemoveMasterEvent(int id)
+        public async Task RemoveMasterEvent(int id)
         {
-            var getEvent = data.EventTypes.Find(id);
+            var getEvent = await data.EventTypes.FindAsync(id);
 
             if (getEvent != null)
             {
                 data.EventTypes.Remove(getEvent);
-                data.SaveChanges();
 
+                await data.SaveChangesAsync();
             }
         }
     }
