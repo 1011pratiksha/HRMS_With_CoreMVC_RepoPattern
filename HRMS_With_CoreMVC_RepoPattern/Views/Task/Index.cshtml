@@ -33,29 +33,29 @@
 
     <div class="btn-group ms-2">
 
-    <a asp-action="Index"
-       class="btn btn-outline-secondary ms-2">
-        All
-    </a>
+        <a asp-action="Index"
+           class="btn btn-outline-secondary ms-2">
+            All
+        </a>
 
-    <a asp-action="Index"
-       asp-route-priority="High"
-       class="btn btn-outline-secondary">
-        High
-    </a>
+        <a asp-action="Index"
+           asp-route-priority="High"
+           class="btn btn-outline-secondary">
+            High
+        </a>
 
-    <a asp-action="Index"
-       asp-route-priority="Medium"
-       class="btn btn-outline-secondary">
-        Medium
-    </a>
+        <a asp-action="Index"
+           asp-route-priority="Medium"
+           class="btn btn-outline-secondary">
+            Medium
+        </a>
 
-    <a asp-action="Index"
-       asp-route-priority="Low"
-       class="btn btn-outline-secondary">
-        Low
-    </a>
-</div>
+        <a asp-action="Index"
+           asp-route-priority="Low"
+           class="btn btn-outline-secondary">
+            Low
+        </a>
+    </div>
 </div>
 
 
@@ -63,95 +63,97 @@
 
 <div class="row mt-4">
 
-@* Left Side *@
+    @* Left Side *@
 
-<div class="col-xl-4">
+    <div class="col-xl-4">
 
-              @foreach (var projectGroup in Model.GroupBy(task => task.Project))
-                {
-                    var project = projectGroup.Key;
+        @foreach (var projectGroup in Model.GroupBy(task => task.Project))
+        {
+            var project = projectGroup.Key;
 
-                    var totalTasks = projectGroup.Count();
-                    var completedTasks = projectGroup.Count(task => task.Status == "Completed");
+            var totalTasks = projectGroup.Count();
+            var completedTasks = projectGroup.Count(task => task.Status == "Completed");
 
-                    var percentage = totalTasks == 0 ? 0 : completedTasks * 100 / totalTasks;
-                
-
-        <div class="card mb-3">
-
-            <div class="card-body">
+            var percentage = totalTasks == 0 ? 0 : completedTasks * 100 / totalTasks;
 
 
-                <div class="d-flex align-items-center">
+            <div class="card mb-3">
 
-                  @if (project.LogoPath != null)
-                    {
-                        <img src="@project.LogoPath" width="50" height="50" />
-                    }
+                <div class="card-body">
 
-                    <div>
-                        <h5>
-                            @project.ProjectName
-                        </h5>
 
-                        <div class="text-muted">
-                            @totalTasks tasks
-                            •
-                            @completedTasks Completed
+                    <div class="d-flex align-items-center">
+
+                        @if (project.LogoPath != null)
+                        {
+                            <img src="@project.LogoPath" width="50" height="50" />
+                        }
+
+                        <div>
+                            <h5>
+                                @project.ProjectName
+                            </h5>
+
+                            <div class="text-muted">
+                                @totalTasks tasks
+                                •
+                                @completedTasks Completed
+                            </div>
                         </div>
+
                     </div>
 
-                </div>
-
-                <hr />
+                    <hr />
 
 
-                <div class="row">
+                    <div class="row">
 
-                    <div class="col-8">
+                        <div class="col-8">
 
-                        <span>Deadline</span>
-                        <br />
-
-                        <span>
-
-                            Due on: 
-                           @projectGroup.Max(task => task.Deadline).ToString("dd MMM yyyy")
+                            <span>Deadline</span>
                             <br />
-                            Fixes &
-                        </span>
+
+                            <span>
+
+                                Due on:
+                                @projectGroup.Max(task => task.Deadline).ToString("dd MMM yyyy")
+                                <br />
+                                Fixes &
+                            </span>
+
+                        </div>
+
+                        <div class="col-4">
+
+                            <span>Value</span>
+                            <br />
+                            <span>
+                                @project.ProjectValue
+                            </span>
+
+                        </div>
 
                     </div>
 
-                    <div class="col-4">
 
-                        <span>Value</span>
-                        <br />
+                    @* Progress *@
+
+                    <div class="bg-light">
+
                         <span>
-                            @project.ProjectValue
+                            Total @totalTasks Tasks
                         </span>
 
-                    </div>
+                        <span class="float-end">
+                            @percentage% Completed
+                        </span>
 
-                </div>
+                        <div class="progress mt-2" style="width:80%; height:5px;">
 
+                            <div class="progress-bar"
+                                 style="width:@percentage%">
+                            </div>
 
-                @* Progress *@
-
-                <div class="bg-light">
-
-                    <span>
-                        Total @totalTasks Tasks
-                    </span>
-
-                    <span class="float-end">
-                        @percentage% Completed
-                    </span>
-
-                    <div class="progress mt-2" style="width:80%; height:5px;">
-
-                        <div class="progress-bar"
-                             style="width:@percentage%">
                         </div>
 
                     </div>
@@ -159,11 +161,9 @@
                 </div>
 
             </div>
+        }
 
-        </div>
-    }
-
-</div>
+    </div>
 
 
     @* Right side *@
@@ -171,14 +171,14 @@
     <div class="col-xl-8">
 
         @foreach (var projectGroup in Model.GroupBy(task => task.Project))
-                {
-                    var project = projectGroup.Key;
+        {
+            var project = projectGroup.Key;
 
-                    var totalTasks = projectGroup.Count();
-                    var completedTasks = projectGroup.Count(task => task.Status == "Completed");
+            var totalTasks = projectGroup.Count();
+            var completedTasks = projectGroup.Count(task => task.Status == "Completed");
 
-                    var percentage = totalTasks == 0 ? 0 : completedTasks * 100 / totalTasks;
-                
+            var percentage = totalTasks == 0 ? 0 : completedTasks * 100 / totalTasks;
+
 
             <div class="card mb-3">
 
@@ -217,7 +217,7 @@
             </div>
 
 
-@* Task Row *@
+            @* Task Row *@
 
 
             <div class="card mb-3">
@@ -231,7 +231,7 @@
                     </strong>
 
                     <span class="badge bg-light text-dark ms-2">
-                       @projectGroup.Max(task => task.Deadline).ToString("dd MMM yyyy")
+                        @projectGroup.Max(task => task.Deadline).ToString("dd MMM yyyy")
                     </span>
 
                     <span class="badge bg-info float-end">

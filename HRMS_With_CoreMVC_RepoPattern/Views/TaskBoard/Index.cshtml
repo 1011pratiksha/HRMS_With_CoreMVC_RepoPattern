@@ -1,0 +1,171 @@
+﻿@model List<Projects>
+
+<div class="row">
+    <div class="col">
+        <h2>Task Board</h2>
+
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a><i class="bi bi-house"></i></a>
+            </li>
+            <li class="breadcrumb-item">Projects</li>
+            <li class="breadcrumb-item active">Task Board</li>
+        </ol>
+    </div>
+
+    <div class="col-auto">
+        <a asp-controller="TaskBoard"
+           asp-action="AddTaskBoard"
+           class="btn btn-warning">
+            <i class="bi bi-plus-circle"></i>
+            Add New Board
+        </a>
+    </div>
+</div>
+
+<div class="container">
+
+    @foreach (var project in Model)
+    {
+        <div class="card mb-4">
+
+            <div class="card-header">
+                <div class="d-flex justify-content-between">
+
+                    <h4>@project.ProjectName</h4>
+
+                    <div>
+                        Total Task : @project.Task.Count
+                        &nbsp;&nbsp;
+                        Pending : @project.Task.Count(x => x.Status == "Pending")
+                        &nbsp;&nbsp;
+                        Completed : @project.Task.Count(x => x.Status == "Completed")
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card-body">
+
+                <div class="mb-4">
+                    <b>Priority</b>
+
+                    <a asp-action="Index"
+                       class="btn btn-outline-secondary ms-2">
+                        All
+                    </a>
+
+                    <a asp-action="Index"
+                       asp-route-priority="High"
+                       class="btn btn-outline-secondary">
+                        High
+                    </a>
+
+                    <a asp-action="Index"
+                       asp-route-priority="Medium"
+                       class="btn btn-outline-secondary">
+                        Medium
+                    </a>
+
+                    <a asp-action="Index"
+                       asp-route-priority="Low"
+                       class="btn btn-outline-secondary">
+                        Low
+                    </a>
+                </div>
+
+
+                <div class="row">
+
+                    @{
+                        var statuses = new List<string>
+                        {
+                            "Pending",
+                            "In Progress",
+                            "On Hold",
+                            "Completed"
+                        };
+                    }
+
+                    @foreach (var status in statuses)
+                    {
+                        <div class="col-md-3">
+
+                            <div class="card">
+
+                                <div class="card-header text-center">
+                                    <h5>@status</h5>
+                                </div>
+
+                                <div class="card-body">
+
+                                    @foreach (var task in project.Task
+                                        .Where(x => x.Status == status))
+                                    {
+                                        <div class="card mb-3">
+
+                                            <div class="card-body">
+
+                                                <span class="badge bg-light text-dark">
+                                                    @task.Priority
+                                                </span>
+
+                                                <h6 class="mt-2">
+                                                    @task.Title
+                                                </h6>
+
+                                                @if (task.TaskBoard != null)
+                                                {
+                                                    @foreach (var board in task.TaskBoard)
+                                                    {
+                                                        <div class="progress mt-2">
+                                                            <div class="progress-bar" style="width:@board.Percentage%"></div>
+                                                        </div>
+
+                                                        <small>@board.Percentage%</small>
+
+                                                        <p class="mt-2">
+                                                            Due on: @board.DueDate.ToString("dd MMM yyyy")
+                                                        </p>
+                                                    }
+
+                                                }
+
+                                                @foreach (var member in task.Taskmember)
+                                                {
+                                                    if (member.User != null)
+                                                    {
+                                                        <img src="@member.User.ProfilePicture"
+                                                             width="35"
+                                                             height="35"
+                                                             class="rounded-circle me-1"
+                                                             alt="Profile" />
+                                                    }
+                                                }
+
+                                            </div>
+
+                                        </div>
+                                    }
+
+                                    <a asp-controller="Task"
+                                       asp-action="AddTask"
+                                       class="btn btn-light border w-100">
+                                        + New Task
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+</div>

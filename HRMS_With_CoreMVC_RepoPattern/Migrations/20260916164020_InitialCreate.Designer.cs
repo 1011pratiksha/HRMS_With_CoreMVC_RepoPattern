@@ -4,6 +4,7 @@ using HRMS_With_CoreMVC_RepoPattern.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HRMS_With_CoreMVC_RepoPattern.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260916164020_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -681,38 +684,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     b.ToTable("EventTypes");
                 });
 
-            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.Experience", b =>
-                {
-                    b.Property<int>("ExperienceId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExperienceId"));
-
-                    b.Property<string>("CompanyName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DesignationName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("FromDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ToDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ExperienceId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Experiences");
-                });
-
             modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.FileUpload", b =>
                 {
                     b.Property<int>("id")
@@ -1079,11 +1050,16 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("UserId1")
+                        .HasColumnType("int");
+
                     b.HasKey("AssignedId");
 
                     b.HasIndex("TaskId");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("UserId1");
 
                     b.ToTable("Taskmember");
                 });
@@ -1197,6 +1173,9 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("UserId1")
+                        .HasColumnType("int");
+
                     b.Property<int>("WorkHours")
                         .HasColumnType("int");
 
@@ -1206,7 +1185,9 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Timesheets");
+                    b.HasIndex("UserId1");
+
+                    b.ToTable("Timesheet");
                 });
 
             modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.Trainer", b =>
@@ -1358,7 +1339,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("DesignationId")
+                    b.Property<int?>("DesignationtId")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
@@ -1406,7 +1387,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.HasIndex("DesignationId");
+                    b.HasIndex("DesignationtId");
 
                     b.HasIndex("RoleId");
 
@@ -1526,7 +1507,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -1537,7 +1518,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -1598,7 +1579,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -1624,17 +1605,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                         .IsRequired();
 
                     b.Navigation("EventType");
-                });
-
-            modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.Experience", b =>
-                {
-                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("HRMS_With_CoreMVC_RepoPattern.Models.FileUpload", b =>
@@ -1746,7 +1716,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.Tasks", "Task")
                         .WithMany("TaskBoard")
                         .HasForeignKey("TaskId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Project");
@@ -1763,10 +1733,14 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                         .IsRequired();
 
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
-                        .WithMany("TaskMembers")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", null)
+                        .WithMany("TaskMembers")
+                        .HasForeignKey("UserId1");
 
                     b.Navigation("Task");
 
@@ -1804,10 +1778,14 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
                         .IsRequired();
 
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", "User")
-                        .WithMany("Timesheets")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.User", null)
+                        .WithMany("Timesheets")
+                        .HasForeignKey("UserId1");
 
                     b.Navigation("Projects");
 
@@ -1849,7 +1827,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Migrations
 
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.Designation", "Designation")
                         .WithMany()
-                        .HasForeignKey("DesignationId");
+                        .HasForeignKey("DesignationtId");
 
                     b.HasOne("HRMS_With_CoreMVC_RepoPattern.Models.Role", "Role")
                         .WithMany("Users")
