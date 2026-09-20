@@ -5,37 +5,10 @@
 
         <h3>Add New Task</h3>
 
-     
-        <div class="mb-3">
-            <label>Select Project</label>
-
-            <select name="projectId"
-                    class="form-select"
-                    onchange="location.href='/Task/AddTask?projectId=' + this.value">
-
-                <option value="">Select Project</option>
-
-                @foreach (var project in ViewBag.GetProject)
-                {
-                    <option value="@project.ProjectId" 
-                    selected="@(project.ProjectId == ViewBag.ProjectId)">
-                        @project.ProjectName
-                    </option>
-                }
-
-                
-            </select>
-        </div>
-
         <form method="post"
               asp-controller="Task"
-              asp-action="AddProjectForm"
+              asp-action="AddTaskForm"
               enctype="multipart/form-data">
-
-          
-            <input type="hidden"
-                   name="ProjectId"
-                   value="@ViewBag.ProjectId" />
 
 
             <div class="mb-3">
@@ -49,6 +22,27 @@
                 <input asp-for="Deadline"
                        type="date"
                        class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label>Select Project</label>
+
+                <select asp-for="ProjectId"
+                        class="form-select"
+                        onchange="location.href='/Task/AddTask?projectId=' + this.value">
+
+                    <option value="">Select Project</option>
+
+                    @foreach (var project in ViewBag.GetProject)
+                    {
+                        <option value="@project.ProjectId"
+                                selected="@(project.ProjectId == ViewBag.ProjectId)">
+                            @project.ProjectName
+                        </option>
+                    }
+
+                
+                </select>
             </div>
 
 

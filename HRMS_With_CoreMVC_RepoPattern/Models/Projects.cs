@@ -61,5 +61,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Models
         public List<Tasks> Task { get; set; }
 
         public List<TaskBoards> TaskBoard { get; set; }
+
     }
 }

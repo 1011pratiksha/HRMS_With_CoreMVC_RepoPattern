@@ -10,6 +10,7 @@ builder.Services.AddScoped<IEventTypeService, EventTypeService>();
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<ITaskService, TaskService>();
+builder.Services.AddScoped<ITaskBoardService, TaskBoardService>();
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -28,9 +29,6 @@ builder.Services.AddScoped<IResignationRepository, ResignationService>();
 builder.Services.AddScoped<ITerminationRepository, TerminationService>();
 builder.Services.AddScoped<ILeaveReportRepository, LeaveReportServices>();
 builder.Services.AddScoped<IPayslipReportRepository, PayslipReportServices>();
-builder.Services.AddScoped<ITrainingRepository, TrainingService>();
-builder.Services.AddScoped<IFileUploadRepository, FileUploadService>();
-
 builder.Services.AddScoped<ILeaveService, LeaveService>();
 builder.Services.AddScoped<ITimesheetRepository, TimesheetService>();
 builder.Services.AddScoped<IAttendanceRepository, AttendanceService>();
@@ -53,15 +51,10 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
+
     pattern: "{controller=Auth}/{action=SignIn}/{id?}")
+
     .WithStaticAssets();
-//  pattern: "{controller=Project}/{action=Index}/{id?}")
-//  pattern: "{controller=Auth}/{action=SignIn}/{id?}")
-
-//pattern: "{controller=Resignation}/{action=Index}/{id?}")
-
-
-
 
 
 app.Run();

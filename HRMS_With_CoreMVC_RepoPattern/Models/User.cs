@@ -61,7 +61,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Models
 
 
         // Navigation properties
-        public ICollection<TaskMembers> TaskMembers { get; set; } = new List<TaskMembers>();
+        public List<TaskMembers> TaskMembers { get; set; } = new List<TaskMembers>();
 
         public List<Timesheet> Timesheets { get; set; } = new List<Timesheet>();
 
@@ -71,6 +71,8 @@ namespace HRMS_With_CoreMVC_RepoPattern.Models
 
         public ICollection<FileUpload> FileUploads { get; set; } = new List<FileUpload>();
 
-        public ICollection<Projects> Projects { get; set; } = new List<Projects>();
+        public List<Projects> Projects { get; set; } = new List<Projects>();
+
+
     }
 }

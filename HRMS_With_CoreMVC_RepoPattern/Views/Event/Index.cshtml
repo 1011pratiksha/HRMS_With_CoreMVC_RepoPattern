@@ -101,3 +101,37 @@
     </div>
 </div>
 
+
+ @section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            var calendarDispaly = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarDispaly, {
+                initialView: 'dayGridMonth',
+
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+
+                 events: [
+                        @foreach (var item in Model)
+                        {
+                            <text>
+                            {
+                                title: '@item.Title',
+                                start: '@item.Date.ToString("yyyy-MM-dd")',
+                                color: '@item.EventType.color'
+                            },
+                            </text>
+                 }
+         ]
+    });
+
+calendar.render();
+        });
+    </script>
+} 

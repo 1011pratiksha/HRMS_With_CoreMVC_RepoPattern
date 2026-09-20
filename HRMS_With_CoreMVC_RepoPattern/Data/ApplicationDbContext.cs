@@ -38,6 +38,13 @@ namespace HRMS_With_CoreMVC_RepoPattern.Data
                     .HasForeignKey(x => x.UserId)
                     .OnDelete(DeleteBehavior.Restrict);
             });
+            builder.Entity<TaskBoards>(e =>
+            {
+                e.HasOne(x => x.Task)
+                    .WithMany(x => x.TaskBoard)
+                    .HasForeignKey(x => x.TaskId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
             builder.Entity<LeaveBalance>(e =>
             {
                 e.HasOne(x => x.MasterLeaveType)
