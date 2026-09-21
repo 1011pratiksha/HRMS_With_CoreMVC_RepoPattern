@@ -1,4 +1,5 @@
-﻿using HRMS_With_CoreMVC_RepoPattern.Models;
+﻿
+using HRMS_With_CoreMVC_RepoPattern.Models;
 using HRMS_With_CoreMVC_RepoPattern.Repository;
 using HRMS_With_CoreMVC_RepoPattern.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
     public class AuthController : Controller
     {
         private readonly IAuthService authService;
-
         public AuthController(IAuthService authService)
         {
             this.authService = authService;
@@ -28,7 +28,6 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
         {
             return View();
         }
-
         [HttpPost]
         public async Task<IActionResult> SignUp(User us)
         {
@@ -58,24 +57,19 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
                 HttpContext.Session.SetInt32("UserId", user.UserId);
                 HttpContext.Session.SetString("Role", role);
             }
+
             if (role == "Admin")
             {
-                HttpContext.Session.SetString("UserRole", "Admin");
-
                 return RedirectToAction("AdminDashboard", "Dashboard");
             }
 
             if (role == "Manager")
             {
-                HttpContext.Session.SetString("UserRole", "Manager");
-
                 return RedirectToAction("ManagerDashboard", "Dashboard");
             }
 
             if (role == "Employee")
             {
-                HttpContext.Session.SetString("UserRole", "Employee");
-
                 return RedirectToAction("EmployeeDashboard", "Dashboard");
             }
 
@@ -85,3 +79,4 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
         }
     }
 }
+

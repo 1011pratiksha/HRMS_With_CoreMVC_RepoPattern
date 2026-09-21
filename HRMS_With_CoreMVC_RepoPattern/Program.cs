@@ -14,11 +14,7 @@ builder.Services.AddScoped<IEventTypeService, EventTypeService>();
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<ITaskService, TaskService>();
-<<<<<<< HEAD
-
-=======
 builder.Services.AddScoped<ITaskBoardService, TaskBoardService>();
->>>>>>> ea107a6edb6852fac142fbbb64f3369548b2b2a6
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -44,7 +40,6 @@ builder.Services.AddScoped<ITerminationRepository, TerminationService>();
 builder.Services.AddScoped<IDailyReportRepository, DailyReportService>();
 builder.Services.AddScoped<ILeaveReportRepository, LeaveReportServices>();
 builder.Services.AddScoped<IPayslipReportRepository, PayslipReportServices>();
-<<<<<<< HEAD
 builder.Services.AddScoped<ITrainingRepository, TrainingService>();
 builder.Services.AddScoped<IFileUploadRepository, FileUploadService>();
 
