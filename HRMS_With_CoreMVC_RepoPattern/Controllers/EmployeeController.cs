@@ -334,7 +334,7 @@ namespace HRMS_With_CoreMVC_RepoPattern.Controllers
             ViewBag.Roles = await EmployeeServices.GetAllRoles();
             ViewBag.Departments = await EmployeeServices.GetAllDepartments();
 
-            ViewBag.Users = await EmployeeServices.GetAllEmployees(null, null, null, null, null);s
+            ViewBag.Users = await EmployeeServices.GetAllEmployees(null, null, null, null, null);
 
             return View(employees);
         }
